@@ -1,0 +1,91 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 22-Jul-2011
+ * @fechaModificacion: 27-Dic-2011
+ * @version: 1.0
+ * @description: Layout TuPlan.net
+ * @media: Screen
+ */
+
+/* CSS RESET */
+@import url(reset.css);
+
+/* GLOBALS */
+* {
+	outline:none!important;
+}
+
+body {
+	background:#F1F1F1;	
+}
+
+/* LAYOUT */
+
+/* General */
+#HeaderWrapper {
+    height:40px;
+    line-height:40px;
+    border-bottom:1px solid;
+    margin-bottom:20px;
+    /*estilo*/
+    border-bottom-color: #FFF;
+    background-color:#2D2D2D;
+}
+
+#MainWrapper {
+    margin:20px 20px 10px 20px;
+    display:block;
+}
+
+.mainWrapper {
+    min-width:900px;
+    display:block;
+    width:100%;
+}
+
+#MainMenu {
+    float:left;
+    width:125px;
+}
+
+#Content {
+    display:block;
+    margin-left:140px;
+    background:#FFF;
+    border:1px solid;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px; 
+    -webkit-box-shadow: 2px 2px 3px 0px #999;
+    -moz-box-shadow: 2px 2px 3px 0px #999;
+    box-shadow: 2px 2px 3px 0px #999; 
+    /*estilo*/
+    border-color:#D2D2D2;
+}
+
+.wToolbar {
+    padding-right:231px;
+}
+
+#Workspace {
+    width:100%;
+}
+
+#Toolbar {
+    margin-right:-231px;
+    width:230px;
+    border-left:1px dotted;
+    /*estilo*/
+    border-left-color:#D2D2D2;
+}
+
+.colum {
+    float:left;
+}
+
+#FooterWrapper {
+    margin-left:170px;
+    margin-bottom:5px;
+}

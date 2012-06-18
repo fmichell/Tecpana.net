@@ -1,0 +1,89 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 31-Jul-2011
+ * @fechaModificacion: 31-Jul-2011
+ * @version: 1.0
+ * @description: Ventanas TuPlan.net
+ * @media: Screen, Print
+ */
+
+/* Cuadro de dialogo */
+.dialog h1 {
+    font-size:1.1em;
+    margin:0;
+    padding:5px;
+    background-color:#F1F1F1;
+}
+
+.dialog h1 .fuiBotonCerrar {
+    font-size:0.6em;
+    float:right;
+}
+
+.icono_info {
+    background-image:url(../js/jquery-ui/css/tuplan/images/ui-icons_2e83ff_256x240.png);
+    height: 16px;
+    width: 16px;
+    background-position: -16px -144px;
+}
+
+/* Contactos involucrados */
+#involucrarContactos .contactos {
+    border:1px solid #F1F1F1;
+    overflow-y:scroll;
+    display:block;
+    padding:5px;
+}
+
+#involucrarContactos .contacto {
+    padding:5px;
+    border:1px solid;
+    border-color:#F1F1F1 #D2D2D2 #D2D2D2 #F1F1F1;
+    background:url(../imgs/bg_involucrarContacto.png) repeat-x;
+    background-position:0 0;
+    width:150px;
+    height:50px;
+    float:left;
+    margin:0 10px 10px 0;
+    font-size:12px;
+    overflow:hidden;
+    color:#3d3d3d;
+    -moz-box-shadow: 1px 2px 2px #666;
+    -webkit-box-shadow: 1px 2px 2px #666;
+    box-shadow: 1px 2px 2px #666;
+}
+
+#involucrarContactos .contacto:hover {
+    text-decoration:none;
+}
+
+#involucrarContactos .selected {
+    background-position:0 -60px;
+}
+
+#involucrarContactos .contacto .userThumb {
+    margin-right:5px;
+    overflow:hidden;
+}
+
+#involucrarContactos .buscar, .comentArea {
+    display:block;
+    border:1px solid;
+    border-color:#D2D2D2;
+    border-top-color:#999;
+    padding:5px;
+}
+
+#involucrarContactos .buscar input, #filtroGrupos {
+    border:none;
+    width:90%;
+    /*color:#999;*/
+    font-size:1.2em;
+    font-weight:lighter;
+}
+
+#filtroGrupos {
+    width:100%;
+}

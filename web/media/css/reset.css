@@ -1,0 +1,26 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 12-Dic-2009
+ * @fechaModificacion: 12-Dic-2009
+ * @version: 1.0
+ * @description: CSS Reset
+ * @media: Screen, Print
+ */
+/* CSS RESET */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big,
+cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strike,
+strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+b, i{/*vertical-align: baseline;*/ border: 0; outline: 0;
+                font-weight: normal; font-style: normal; font-size: 100%; font-family: inherit;}
+*              {margin: 0; padding: 0}
+body           {line-height: 1; height:100%}
+:focus         {outline: 0}
+ol, ul         {list-style: none}
+table          {border-collapse: collapse; border-spacing: 0;}
+blockquote, q  {quotes: "" ""}
+hr             {border: 0; color: #000; background-color: #000; height:1px}
+blockquote:before, blockquote:after, q:before, q:after {content: ""}

@@ -1,0 +1,228 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 26-Jul-2011
+ * @fechaModificacion: 26-Jul-2011
+ * @version: 1.0
+ * @description: Forms TuPlan.net
+ * @media: Screen
+ */
+
+/* Anchos estaticos */
+/* para igualar el ancho entre el text y el select se le suman 12px al select */
+.ancho75es {
+    width:75px;
+}
+
+select.ancho75es {
+    width:87px;
+}
+
+.ancho85es {
+    width:85px;
+}
+
+select.ancho85es {
+    width:97px;
+}
+
+.ancho90es {
+    width:90px;
+}
+
+select.ancho90es {
+    width:102px;
+}
+
+.ancho110es {
+    width:110px;
+}
+
+select.ancho110es {
+    width:122px;
+}
+
+.ancho120es {
+    width:120px;
+}
+
+select.ancho120es {
+    width:132px;
+}
+
+.ancho150es {
+    width:150px;
+}
+
+select.ancho150es {
+    width:162px;
+}
+
+.ancho250es {
+    width:250px;
+}
+
+select.ancho250es {
+    width:262px;
+}
+
+.ancho300es {
+    width:332px;
+}
+
+select.ancho300es {
+    width:344px;
+}
+
+.ancho465es {
+    width:465px;
+}
+
+select.ancho465es {
+    width:477px;
+}
+
+.ancho500es {
+    width:500px;
+}
+
+/* Anchos dinamicos */
+.ancho10di {
+    width:10%;
+}
+
+.ancho20di {
+    width:20%;
+}
+
+.ancho30di {
+    width:30%;
+}
+
+.ancho40di {
+    width:40%;
+}
+
+.ancho50di {
+    width:50%;
+}
+
+.ancho60di {
+    width:60%;
+}
+
+.ancho70di {
+    width:70%;
+}
+
+.ancho80di {
+    width:80%;
+}
+
+.ancho90di {
+    width:90%;
+}
+
+.ancho98di {
+    width:98%;
+}
+
+.ancho100di {
+    width:100%;
+}
+
+.formulario .btnForm {
+    margin-right:10px;
+}
+
+/* Formulario de Contacto */
+.frmContacto input {
+    height:18px;
+    line-height:18px;
+    font-size:14px;
+}
+
+.frmContacto .bigText {
+    width:459px!important;
+}
+
+.frmContacto .elemento input, .frmContacto .elemento select {
+    float:left;
+    margin-right:5px;
+}
+
+.frmContacto .elemento select {
+    height:20px;
+}
+
+.frmContacto select, .frmContacto textarea {
+    font-size:14px;
+}
+
+.frmContacto dt {
+    width:128px;
+    text-align:left;
+    font-size:14px;
+    color:#6C6C6C;
+    line-height:1.3em;
+}
+
+.frmContacto dd {
+    display:block;
+    padding-left:138px;
+    margin-bottom:20px;
+    line-height:1.3em;
+}
+
+.elementoDireccion .linea {
+    clear:none;
+    margin-bottom:5px;
+}
+
+.frmContacto .userPic {
+    position:relative;
+}
+
+.frmContacto .userPic a {
+    position:absolute;
+    width:100%;
+    background-color:#222;
+    opacity:0.7;
+    bottom:0;
+    left:0;
+    text-align:center;
+    color:#FFF;
+    padding:5px 0;
+    font-size:0.9em;
+}
+
+/* Formulario Proyecto */
+.frmProyecto input {
+    height:18px;
+    line-height:18px;
+    font-size:14px;
+}
+
+.frmProyecto select, .frmProyecto textarea {
+    font-size:14px;
+}
+
+.frmProyecto textarea {
+    line-height:1.5em;
+    padding:3px;
+}
+
+.frmProyecto .fecha, .frmProyecto dt, .frmProyecto .contactosInvolucrados p {
+    font-size:14px;
+    color:#6C6C6C;
+    line-height:1.3em;
+}
+
+.frmProyecto .horizontal dt {
+    margin-right:5px;
+}
+
+.frmProyecto .vertical dt {
+    margin-bottom:5px;
+}

@@ -1,0 +1,8 @@
+Options +FollowSymLinks
+RewriteEngine On
+Options -MultiViews
+RewriteBase /
+#Controles generales
+Rewriterule ^([a-zA-Z-]+)/([a-zA-Z0-9,]+)/([a-zA-Z0-9-]+)/?$ $1/$3/ini.php?id=$2 [NC,QSA,L]
+Rewriterule ^([a-zA-Z-]+)/?$ $1/ini.php [L]
+DirectoryIndex ini.php index.php ini.html index.html

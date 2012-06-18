@@ -1,0 +1,1314 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 23-Jul-2011
+ * @fechaModificacion: 23-Jul-2011
+ * @version: 1.0
+ * @description: Document TuPlan.net
+ * @media: Screen
+ */
+
+/* FONT FACE */
+@import url(fontface.css);
+/* FORM */
+
+/* 1. GLOBALS */
+
+/* 1.1 General */
+body {
+    color:#3D3D3D;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+    font-style:normal;
+    text-align:left;
+    
+}
+
+a {
+    text-decoration:none;
+}
+
+a:hover {
+    text-decoration:underline;
+}
+
+a {
+    color:#0054FF;
+}
+
+a img {
+    border:none;
+}
+
+p {
+    line-height:1.3em;
+    padding-bottom:5px;
+}
+
+strong {
+    font-weight:bold;
+    outline:none;
+}
+
+em {
+    font-style:italic;
+}
+
+input[type="text"], input[type="search"], input[type="tel"], input[type="url"], input[type="email"], input[type="date"], select, textarea {
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:13px;
+    font-weight:normal;
+    /*color:#3D3D3D;*/
+    color:#333;
+    line-height:13px;
+}
+
+/* 1.2 Headers */
+h1 {
+    font-size:2em;
+}
+
+.textshadow h1 {
+    /*css3 - modernizr*/
+    text-shadow: 1px 1px 1px #CFCFCF;
+    filter: dropshadow(color=#CFCFCF, offx=1, offy=1);
+}
+
+h2 {
+    font-size:1.6em;
+}
+
+.textshadow h2 {
+    /*css3 - modernizr*/
+    text-shadow: 1px 1px 1px #CFCFCF;
+    filter: dropshadow(color=#CFCFCF, offx=1, offy=1);
+}
+
+h2.subtitulo {
+    font-size:1.2em;
+    color:#6C6C6C;
+    letter-spacing:0.1em;
+    font-weight:normal;
+}
+
+h2.subtitulo a {
+    color:#6C6C6C;
+}
+
+h3 {
+    font-size:1.4em;
+}
+
+h4 {
+    font-size:1.2em;
+}
+
+h5 {
+    font-size:1em;
+}
+
+/* 1.3 Format */
+span.negrita {
+    font-weight:bold;
+}
+
+span.rojo {
+    color:#DD4B39;
+}
+
+span.sub_rayado {
+    text-decoration:underline;
+}
+
+span.sobre_rayado {
+    text-decoration:overline;
+}
+
+span.tachado {
+    text-decoration:line-through;
+}
+
+span.cursiva {
+    font-style:italic;
+}
+
+span.vendana {
+    font-family:Verdana, Geneva, sans-serif!important;
+}
+
+span.font_size_10 {
+    font-size:10px;
+}
+
+.justificado {
+    text-align:justify!important;
+}
+
+.centrado {
+    text-align:center!important;
+}
+
+.izquierda {
+    text-align:left!important;
+}
+
+.derecha {
+    text-align:right!important;
+}
+
+.sangria25 {
+    padding-left:25px;
+}
+
+.sangria25Derecha {
+    padding-right:25px;
+}
+
+.margen_inferior15 {
+    margin-bottom:15px;
+}
+
+.margen_superior15 {
+    margin-bottom:15px;
+}
+
+.margen_derecho15 {
+    margin-right:15px!important;
+}
+
+.margen_izquierdo15 {
+    margin-left:15px!important;
+}
+
+.gris {
+    color:#6C6C6C!important;
+}
+
+.nota {
+    font-size:11px;
+    color:#6C6C6C;
+}
+
+.floatLeft {
+    float:left;
+}
+
+.floatRight {
+    float:right;
+}
+
+.fondoAzul:hover {
+    text-decoration:none;
+    color:#FFF;
+    background-color:#0054FF;
+}
+
+/* 1.4 Shadows */
+.shadow {
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+}
+
+.textshadow .textShadow {
+    /*css3 - modernizr*/
+    filter: dropshadow(color=#666, offx=1, offy=1); 
+    text-shadow: 1px 1px 1px #666;
+}
+
+/* 1.5 Spacers */
+.interior5 {
+    padding:5px;
+}
+
+.interior10 {
+    padding:10px;
+}
+
+.clear {
+    clear:both;
+}
+
+.linea, .linea5, .linea10, .linea20, .linea30, .linea40, .linea50, .linea60, .linea70, .linea80 {
+    clear:both;
+    display:block;
+}
+
+.linea5 {
+    height:5px;
+}
+
+.linea10 {
+    height:10px;
+}
+
+.linea20 {
+    height:20px;
+}
+
+.linea30 {
+    height:30px;
+}
+
+.linea40 {
+    height:40px;
+}
+
+.linea50 {
+    height:50px;
+}
+
+.linea60 {
+    height:60px;
+}
+
+.linea70 {
+    height:70px;
+}
+
+.linea80 {
+    height:80px;
+}
+
+.separador {
+    border-bottom:1px solid;
+    /*estilo*/
+    border-bottom-color:#D2D2D2;
+}
+
+/* 1.6 Enlaces */
+.action_icon {
+    cursor:pointer;
+}
+
+/* 1.7 Etiquetas */
+.labelPausada {
+    background-color:#FF9900;
+    color:#FFF;
+    font-weight:bold;
+    padding:0 2px;
+    margin-right:3px;
+}
+
+.labelRetrazada {
+    background-color:#DD4B39;
+    color:#FFF;
+    font-weight:bold;
+    padding:0 2px;
+    margin-right:3px;
+}
+
+.labelCompletada {
+    background-color:#3C9100;
+    color:#FFF;
+    font-weight:bold;
+    padding:0 2px;
+    margin-right:3px;
+}
+
+.labelCancelada {
+    background-color:#666666;
+    color:#FFF;
+    font-weight:bold;
+    padding:0 2px;
+    margin-right:3px;
+}
+
+/* 1.8 Botones */
+.botong {
+    color:#FFF;
+    font-weight:bold;
+    line-height:30px;
+    height:30px;
+    padding:0 10px;
+    border:1px solid;
+    display:table-cell;
+    /*css3*/
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius:4px;
+}
+
+.botong:hover {
+    text-decoration:none;
+}
+
+.botong_azul {
+    border-color:#3079ED;
+    background:url(../imgs/bg_botonesg.png) repeat-x 0 -30px;
+}
+
+.botong_azul:hover {
+    border-color:#2F5BB7;
+    background:url(../imgs/bg_botonesg.png) repeat-x 0 0;
+    
+}
+
+.botong_verde {
+    border-color:#29691D;
+    background:url(../imgs/bg_botonesg.png) repeat-x 0 -90px;
+}
+
+.botong_verde:hover {
+    border-color:#2D6200;
+    background:url(../imgs/bg_botonesg.png) repeat-x 0 -60px;
+    
+}
+
+.botong_naranja {
+    border-color:#FCB112;
+    background:url(../imgs/bg_botonesg.png) repeat-x 0 -150px;
+}
+
+.botong_naranja:hover {
+    border-color:#F5A51F;
+    background:url(../imgs/bg_botonesg.png) repeat-x 0 -120px;
+    
+}
+
+.boton_gris {
+    color:#3D3D3D;
+    line-height:30px;
+    height:30px;
+    padding:0 10px;
+    border:1px solid;
+    display:table-cell;
+    background:url(../imgs/bg_boton_gris.png) repeat-x;
+    border-color:#AAA;
+    /*css3*/
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.boton_gris:hover {
+    border-color:#99CCFF #6699EE #6699EE #6699EE;
+    text-decoration:none;
+    color:#333;
+}
+
+.botonCerrarGris {
+    width:25px;
+    height:20px;
+    display:block;
+    float:left;
+    background:url(../imgs/btnEliElemento.png) no-repeat;
+    background-position:0 0;
+}
+
+.botonCerrarGris:hover {
+    background-position:0 -20px;
+}
+
+.icono16 {
+    width:16px;
+    height:16px;
+    display:block;
+}
+
+.toggleListaVisible {
+    background:url(../imgs/icono_flecha.png) no-repeat 0 0;
+}
+
+.toggleListaOculta {
+    background:url(../imgs/icono_flecha.png) no-repeat 0 -16px;
+}
+
+/* 1.8.1 Botones UI */
+.fuiBotonSelect {
+    font-size:1em;
+}
+
+.fuiBotonSelect .ui-button-text {
+    line-height:1;
+    text-align:left;
+}
+
+.fuiBotonCerrar {
+    font-size:1em;
+}
+
+.fuiBotonCerrar:hover {
+    color:#0F0!important;
+}
+
+.fuiBotonCerrar .ui-button-text {
+    line-height:1;
+}
+
+.comboOpciones {
+    position:relative;
+    display:inline-block;
+}
+
+.comboOpciones ul {
+    display:none;
+    position:absolute;
+    background-color:#FFF;
+    border:1px solid;
+    border-color:#D2D2D2 #888 #888 #D2D2D2;
+    padding:3px 5px;
+    box-shadow:2px 2px 2px #DDD;
+    z-index:9999;
+}
+
+.comboOpciones ul li {
+    white-space:nowrap;
+    padding:3px 5px;
+    cursor:pointer;
+}
+
+.comboOpciones ul li:hover {
+    background-color:#F1F1F1;
+    color:#000;
+}
+
+/* 2. DOCUMENT */
+
+/* 2.1 Header */
+#HeaderWrapper {
+    position:relative;
+}
+
+#Logo {
+    position:absolute;
+    left:18px;
+    top:0px;
+    display:inline-block;
+}
+
+#Logo a {
+    font-family: EnigmaticBold;
+    font-size: 26px;
+    color:#FFF;
+    text-decoration: none;
+    padding:1px 3px;
+    border-style: solid;
+    border-width: 1px;
+    border-color:#2D2D2D;
+    /*css3*/
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+.textshadow #Logo a {
+    /*css3 - modernizr*/
+    filter: dropshadow(color=#666, offx=1, offy=1);
+    text-shadow: 1px 1px 2px #666; 
+}
+
+#Logo a:hover {
+    border-color:#4C4C4C;
+    background: #2D2D2D url(../imgs/bg_logo.png) repeat-x top;
+}
+
+#Logo a span {
+    color:#FF9900;
+}
+
+#HeaderMenu {
+    position:absolute;
+    right:18px;
+    top:0px;
+    color:#FFF;
+}
+
+#HeaderMenu .divisor {
+    width:1px;
+    height:40px;
+    background:url(../imgs/menuHeader_divisor.png) no-repeat;
+}
+
+#HeaderMenu li {
+    float:left;
+}
+
+#HeaderMenu #hm_trigger_element {
+    position: relative;
+}
+
+#HeaderMenu a {
+    color:#FFF;
+    text-decoration:none;
+    padding:0 5px;
+    line-height:40px;
+    height:40px;
+    display: block;
+}
+
+#HeaderMenu a:hover {
+    /*estilo*/
+    background-color:#4C4C4C;
+}
+
+#HeaderMenu #hm_trigger {
+    background-image: url(../imgs/hm_vineta.png);
+    background-position: right center;
+    background-repeat: no-repeat;
+    padding-right: 17px!important;
+}
+
+#HeaderMenu a.active {
+    background-color: #FFF;
+    color: #0054FF;
+}
+
+#HeaderMenu a#hm_trigger.active {
+    background-image: url(../imgs/hm_vineta_hover.png);
+}
+
+/* 2.2 Header Menu - Settings */
+#SettingsMenu {
+    visibility: hidden;
+    position: absolute;
+    right: -1px;
+    top: 40px;
+    background-color:#FFF;
+    border-width: 0px 1px 1px 1px;
+    border-style: solid;
+    border-color: #D2D2D2;
+    width: 200px;
+    z-index: 999;
+    /*css3*/
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-topright: 0px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -webkit-border-radius: 0px 0px 5px 5px;
+    border-radius: 0px 0px 5px 5px; 
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2); 
+}
+
+#SettingsMenu li {
+    float: none;
+}
+
+#SettingsMenu a {
+    color: #0054FF;
+    display: block;
+}
+
+#SettingsMenu a:hover {
+    background: #FAFAFA;
+    text-decoration:underline;
+}
+
+/* 2.3 Footer */
+#FooterWrapper {
+    color:#666;
+    line-height:1.3em;
+    font-size:11px;
+}
+
+#FooterWrapper a {
+    color:#666;
+}
+
+/* 2.4 Main Menu */
+#MainMenu ul {
+    padding:20px 0;
+    border-bottom:1px dashed;
+    /*estilo*/
+    border-bottom-color:#D2D2D2;
+}
+
+#MainMenu li {
+    line-height:16px;
+    font-size:16px;
+    margin-bottom:1em;
+}
+
+#MainMenu a {
+    text-decoration:none;
+    color:#666;
+    display:block;
+    padding:5px;
+    border:1px solid;
+    /*css3*/
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px; 
+    /*estilo*/
+    border-color:#F1F1F1;
+}
+
+.textshadow #MainMenu a {
+    /*css3 - modernizr*/
+    filter: dropshadow(color=#CFCFCF, offx=1, offy=1);
+    text-shadow: 1px 1px 1px #CFCFCF; 
+}
+
+#MainMenu a:hover {
+    color:#333;
+    border-color:#D2D2D2;
+    background:url(../imgs/bg_menu.png) bottom repeat-x #FFF;
+}
+
+#MainMenu a.activo {
+    color:#333;
+}
+
+#MainMenu .icono16 {
+    margin-right:5px;
+    float:left;
+    background-repeat:no-repeat;
+    /*estilo*/
+    background-image:url(../imgs/iconos_menu.png);
+}
+
+.icono_inicio {
+    background-position:0 0;
+}
+
+.icono_contacto {
+    background-position:-16px 0;
+}
+
+.icono_tareas {
+    background-position:-32px 0;
+}
+
+.icono_proyectos {
+    background-position:-48px 0;
+}
+
+.icono_archivos {
+    background-position:-64px 0;
+}
+
+/* 3. WORKSPACE */
+
+/* 3.1 Workspace Header, Coment Area */
+.workspaceHeader .mainBoton {
+    float: right;
+    display: inline-block;
+}
+
+.workspaceHeader .buscar, .comentArea {
+    display:block;
+    /*border:1px solid;
+    border-color:#D2D2D2;
+    border-top-color:#999;
+    padding:5px;*/
+}
+
+.workspaceHeader .buscar input {
+    /*border:none;*/
+    width:99%;
+    /*color:#999;*/
+    /*font-size:1.2em;
+    font-weight:lighter;*/
+}
+
+/* 3.2 Workspace Toolbar, Paginador, Opciones */
+.workspaceToolbar {
+    display:block;
+    padding:10px;
+    border-top:1px solid;
+    border-bottom:1px solid;
+    /*estilo*/
+    background-color:#F1F1F1;
+    border-color:#D2D2D2;
+}
+
+.paginas {
+    text-align:right;
+}
+
+.paginas a {
+    padding:0 2px;
+    background:none;
+}
+
+.paginas a:hover {
+    text-decoration:none;
+    color:#FFF;
+    background:#0054FF;
+}
+
+.opciones li {
+    display:inline;
+    margin-right:15px;
+}
+
+.opciones li:last-child {
+    margin-right:0px;
+}
+
+.opciones a {
+    font-weight:bold;
+    color:#6C6C6C;
+}
+
+.opciones a:hover {
+    text-decoration:none;
+    color:#3D3D3D;
+}
+
+.opciones .activo {
+    color:#DD4B39;
+}
+
+.opciones .activo:hover {
+    color:#DD4B39;
+}
+
+/* 3.3 Workspace Area */
+
+/* 3.3.1 Toolbar */
+#Toolbar .recuadro {
+    margin-bottom:35px;
+}
+
+#Toolbar .recuadro h3 {
+    font-size:0.9em;
+    font-weight:bold;
+    color:#484848;
+    padding-bottom:5px;
+    margin-bottom:5px;
+    border-bottom:1px dotted;   
+    /*estilo*/
+    border-bottom-color:#D2D2D2;
+}
+
+#Toolbar .recuadro li {
+    line-height:1.3em;
+    margin-bottom:5px;
+}
+
+#Toolbar .recuadro a:hover {
+    background-color:#0054FF;
+    color:#FFF;
+    text-decoration:none;
+}
+
+.listLabels .letter {
+    float:left;
+    font-weight:bold;
+}
+
+.listLabels .labels {
+    margin-left:15px;
+}
+
+.listLabels .labels a:hover {
+    background-color:#0054FF;
+    color:#FFF;
+    text-decoration:none;
+}
+
+/* 3.3.2 Thumbnail del usuario */
+.userThumb {
+    background-color: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    height: 48px;
+    width: 48px;
+    position:relative;
+}
+
+.userThumb a {
+    display:block;
+    height:48px;
+    width:48px;
+    overflow:hidden;
+}
+
+.userThumb .tooltipNombre {
+    position:absolute;
+    top:52px;
+    white-space:nowrap;
+    padding:5px;
+    color:#FFF;
+    visibility:hidden;
+    border-radius:3px;
+    font-size:12px;
+    background:url(../imgs/bgTooltipB.png) repeat;
+}
+
+.addInvolucrados {
+    height:48px;
+    width:48px;
+    display:table;
+    text-align:center;
+}
+
+.addInvolucrados a {
+    display:table-cell;
+    vertical-align:middle;
+}
+
+/* 3.3.3 Foto del usuario */
+.userPic {
+    background-color: #FFFFFF;
+    border: 1px solid #D2D2D2;
+    height: 128px;
+    width: 128px;
+    overflow: hidden;
+    float:left;
+    margin-right:10px;
+}
+
+/* 3.3.4 dl horizontal */
+dl.horizontal dt {
+    float:left;
+}
+
+/* 3.3.5 Recuadro para eliminar o seleccionar */
+.auxiliaryToolbar {
+    background-color:#FFF9D5;
+    border:1px dotted #DD4B39;
+    padding:5px;
+    display:none;
+}
+
+.auxiliaryToolbar .eliminar {
+    color:#DD4B39;
+}
+
+.auxiliaryToolbar .seleccion {
+    float:right;
+    color:#0054FF;
+}
+
+/* 3.3.6 Listas */
+
+/* 3.3.6.1 General */
+.registerList article {
+    display:block;
+    padding:10px 0;
+    border-bottom:1px solid;
+    /*estilo*/
+    border-bottom-color:#D2D2D2;
+}
+
+.registerList article.last-child {
+    border-bottom:none;
+}
+
+.check {
+    margin-top:3px;
+}
+
+/* 3.3.6.2 Lista de contactos */
+.contact {
+    padding-left:60px;
+    padding-right:170px;
+}
+
+.contact .userThumb {
+    margin-left:-60px;
+    margin-right:10px;
+}
+
+.contact .desc {
+    width:100%;
+}
+
+.contact .info {
+    margin-right:-170px;
+    margin-left:10px;
+    width:160px;
+}
+
+.wCheckbox .contact {
+    padding-left:80px;
+}
+
+.contact .check {
+    margin-left:-80px;
+}
+
+.contact .desc {
+    line-height:1.3em;
+}
+
+.contact, .contact a {
+    color:#6C6C6C;
+}
+
+.contact .nombre a {
+    color:#3D3D3D;
+    font-weight:bold;
+    font-size:14px;
+    display:block;
+    margin-bottom:3px;
+}
+
+.contact .nombre a:hover {
+    color:#000;
+    text-decoration:none;
+}
+
+/* 3.3.6.3 Lista de tareas */
+.task {
+    padding-left:60px;
+}
+
+.task .userThumb {
+    margin-left:-60px;
+    margin-right:10px;
+}
+
+.task .desc {
+    width:100%;
+    max-height:180px;
+    overflow:hidden;
+}
+
+.wCheckbox .task {
+    padding-left:80px;
+}
+
+.task .check {
+    margin-left:-80px;
+}
+
+.task .desc {
+    line-height:1.3em;
+}
+
+.task .titulo {
+    font-weight:bold;
+    color:#000;
+}
+
+.task .referencia, .task .referencia a {
+    color:#6C6C6C;
+}
+
+.task .referencia a {
+    font-weight:bold;
+}
+
+.task .info {
+    margin:10px 0 0 10px;
+    color:#0054FF;
+    line-height:16px;
+}
+
+/* 3.3.6.4 Lista de proyectos */
+.proyect {
+    padding-left:60px;
+    padding-right:50px;
+}
+
+.proyect .userThumb {
+    margin-left:-60px;
+    margin-right:10px;
+}
+
+.proyect .desc {
+    width:100%;
+}
+
+.proyect .info {
+    margin-right:-50px;
+    margin-left:10px;
+    width:40px;
+}
+
+.proyect .desc {
+    line-height:1.3em;
+}
+
+.proyect, .proyect a {
+    color:#6C6C6C;
+}
+
+.proyect .titulo {
+    display:block;
+    margin-bottom:3px;
+}
+
+.proyect .nombre {
+    color:#3D3D3D;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.proyect .nombre:hover {
+    color:#000;
+    text-decoration:none;
+}
+
+/* 3.3.6.5 Lista de comentarios */
+.coment {
+    padding-left:60px;
+}
+
+.coment .userThumb {
+    margin-left:-60px;
+    margin-right:10px;
+}
+
+.coment .desc {
+    width:100%;
+}
+
+.coment .desc {
+    line-height:1.3em;
+}
+
+.coment .remitente {
+    display:block;
+    margin-bottom:3px;
+    color:#6C6C6C;
+}
+
+.coment .nombre {
+    color:#3D3D3D;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.coment .nombre:hover {
+    color:#000;
+    text-decoration:none;
+}
+
+/* 3.3.7 Seccion Contacto */
+
+/* 3.3.7.1 Detalle de contacto */
+.contactInfo dt {
+    width:90px;
+    text-align:right;
+    font-size:14px;
+    color:#6C6C6C;
+    line-height:1.3em;
+}
+
+.contactInfo dd {
+    display:block;
+    padding-left:100px;
+    margin-bottom:20px;
+    line-height:1.3em;
+}
+
+.contactInfo dl .elemento {
+    margin-bottom:3px;
+}
+
+.contactInfo dd.direccion .elemento {
+    margin-bottom:10px;
+}
+
+.contactInfo dd.direccion .nota {
+    display:block;
+}
+
+/* 3.3.7.2 Comentarios de contacto */
+.comentTextArea {
+    width:100%;
+    /*color:#6C6C6C;
+    color:#333;
+    border:none;*/
+}
+
+/* 3.3.8 Seccion Tareas y Proyectos */
+
+/* 3.3.8.1 Detalle de Tarea y Proyecto */
+.contactosInvolucrados .userThumb {
+    float:left;
+    margin:0 10px 10px 0;
+}
+
+.proyectInfo .descripcion h1 {
+    text-shadow:none;
+    font-variant:small-caps;
+    font-size:2em;
+    margin-bottom:1.5em;
+    font-weight:bold;
+}
+
+.proyectInfo .descripcion h2 {
+    text-shadow:none;
+    font-size:1.6em;
+    font-weight:bold;
+    margin-bottom:1em;
+}
+
+.proyectInfo .descripcion h3 {
+    margin-bottom:1em;
+    font-size:1.3em;
+    font-variant:small-caps;
+}
+
+.proyectInfo .descripcion h4 {
+    font-size:1em;
+    font-weight:bold;
+    text-decoration:underline;
+    margin-bottom:1em;
+}
+
+.proyectInfo .descripcion p {
+    margin-bottom:1em;
+    line-height:1.5em;
+}
+
+.proyectInfo .descripcion ul, .proyectInfo .descripcion ol {
+    margin-left:3em;
+    margin-bottom:1em;
+    list-style-position:outside;
+    line-height:1.5em;
+}
+
+.proyectInfo .descripcion ul {
+    list-style-type:disc;
+}
+
+.proyectInfo .descripcion ol {
+    list-style-type:decimal;
+}
+
+.proyectInfo .descripcion li {
+    margin-bottom:1em;
+}
+
+/* 3.3.8.2 Plan de trabajo proyecto */
+fieldset.plan_trabajo {
+    margin-bottom:15px;
+}
+
+fieldset.plan_trabajo legend {
+    display:none;
+}
+
+fieldset.plan_trabajo .titLista {
+    background-color: #F1F1F1;
+    border: 1px dotted #D2D2D2;
+    display:block;
+    padding:5px;
+    color: #6C6C6C;
+    font-weight:bold;
+}
+
+/* 3.3.8.3 Plan de trabajo proyecto Gantt */
+#GantWrapper {
+    display: block;
+}
+
+.gSection {
+    float: left;
+    overflow-x: scroll;
+    height: 350px;
+}
+
+#gTask {
+    width: 580px;
+    border-right: 4px solid #D2D2D2;
+    overflow-y: hidden;
+}
+
+#gCalendar {
+    width: 583px;
+    overflow-y: scroll;
+}
+
+#GantWrapper ul.gTable {
+    display: table;
+}
+
+#GantWrapper ul.gTable li ul {
+    display: table-row;
+}
+
+#GantWrapper ul.gTable li ul li {
+    display: table-cell;
+    border-color: #D2D2D2;
+    border-style: solid;
+    border-width: 1px 1px 0px 0px;
+    height: 17px;
+    line-height: 16px;
+}
+
+#GantWrapper li.gheader {
+    background-color: #F1F1F1;
+}
+
+#gTask li.gheader ul li {
+    height: 34px!important;
+    font-weight: bold;
+}
+
+#gTask ul.gTable li ul li {
+    padding: 0px 2px;
+}
+
+#gTask .colInfo {
+    width: 30px;
+}
+
+#gTask .colTarea {
+    width: 260px;
+}
+
+#gTask .colDuracion {
+    width: 65px;
+}
+
+#gTask .colTiempo {
+    width: 100px;
+}
+
+#gTask .gheader .colDuracion, #gTask .gheader .colTiempo {
+    text-align: center;
+}
+
+#gTask .gbody .colDuracion, #gTask .gbody .colTiempo {
+    text-align: right;
+}
+
+#gTask .colInfo img {
+    margin-top: 0px;
+}
+
+#gCalendar ul.semana li {
+    width: 146px;
+    text-align: center;
+}
+
+#gCalendar ul.dia li {
+    width: 20px;
+    text-align: center;
+}
+
+#gCalendar li.gbody ul li {
+    width: 293px;
+}
+/* 3.3.x Formularios */
+/*.formulario input[type="text"], .formulario .textarea, .formulario select {
+    border-color: #D2D2D2;
+    border-style: solid;
+    border-width: 1px;
+}*/
+
+.formulario .elemento {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.formulario .nuevo {
+    font-size:12px;
+}
+
+.formulario .ejemplo {
+    display:none!important;
+}
+
+.bigText {
+    font-size:1.4em!important;
+    padding:3px;
+    margin-bottom:15px;
+    height:auto!important;
+}
+/* UI // No es necesario porque el nuevo fancy trae una opción para desabilitarlo
+.fancybox-close {
+    display:none!important;
+}*/
+.fancybox-outer {
+    background: #FFF!important;
+}

@@ -1,0 +1,46 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 27-Dic-2011
+ * @fechaModificacion: 27-Dic-2011
+ * @version: 1.0
+ * @description: Fontface file TuPlan.net
+ * @media: Screen
+ */
+
+/* ENIGMATIC */
+@font-face {
+    font-family: 'EnigmaticRegular';
+    src: url('../fonts/enigmatic/Enigma__2-webfont.eot');
+    src: url('../fonts/enigmatic/Enigma__2-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/enigmatic/Enigma__2-webfont.woff') format('woff'),
+         url('../fonts/enigmatic/Enigma__2-webfont.ttf') format('truetype'),
+         url('../fonts/enigmatic/Enigma__2-webfont.svg#EnigmaticRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'EnigmaticItalic';
+    src: url('../fonts/enigmatic/Enigma_2i-webfont.eot');
+    src: url('../fonts/enigmatic/Enigma_2i-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/enigmatic/Enigma_2i-webfont.woff') format('woff'),
+         url('../fonts/enigmatic/Enigma_2i-webfont.ttf') format('truetype'),
+         url('../fonts/enigmatic/Enigma_2i-webfont.svg#EnigmaticItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'EnigmaticBold';
+    src: url('../fonts/enigmatic/EnigmaB_2-webfont.eot');
+    src: url('../fonts/enigmatic/EnigmaB_2-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/enigmatic/EnigmaB_2-webfont.woff') format('woff'),
+         url('../fonts/enigmatic/EnigmaB_2-webfont.ttf') format('truetype'),
+         url('../fonts/enigmatic/EnigmaB_2-webfont.svg#EnigmaticBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
