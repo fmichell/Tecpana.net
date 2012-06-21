@@ -40,7 +40,6 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
                             <a href="#">Subir foto</a>
                         </div>
                         <div class="floatLeft">
-                            <input type="text" class="bigText ancho465es" placeholder="Nombre" id="nombre" /><br />
                             <input type="text" class="bigText ancho465es" placeholder="Razón Social" id="razon_social" /><br />
                         </div>
                         <div class="linea5"></div>

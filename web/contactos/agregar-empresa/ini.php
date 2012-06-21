@@ -31,10 +31,9 @@ include '../../../app/inicio.php';
                     <div class="workspaceHeader interior10">
                         <div class="userPic">
                             <img src="/media/imgs/businessContact.jpg" alt="Empresa" id="picEmpresa" />
-                            <a href="#">Subir foto</a>
+                            <a href="#">Subir logotipo</a>
                         </div>
                         <div class="floatLeft">
-                            <input type="text" class="bigText ancho465es" placeholder="Nombre" id="nombre" /><br />
                             <input type="text" class="bigText ancho465es" placeholder="Razón Social" id="razon_social" /><br />
                         </div>
                         <div class="linea5"></div>
@@ -85,23 +84,13 @@ include '../../../app/inicio.php';
                             <dt><label for="email">Email(s)</label></dt>
                             <dd>
                                 <div class="elemento ejemplo">
-                                    <input type="email" name="email[]" class="ancho300es valor" />
-                                    <select name="emailTipo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
-                                    </select>
+                                    <input type="email" name="email[]" class="ancho435es valor" />
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="email" name="email[]" class="ancho300es valor" />
-                                        <select name="emailTipo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
-                                        </select>
+                                        <input type="email" name="email[]" class="ancho435es valor" />
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
                                     </div>
@@ -112,8 +101,8 @@ include '../../../app/inicio.php';
                             <dt><label for="mensajeria">Mensajería</label></dt>
                             <dd>
                                 <div class="elemento ejemplo">
-                                    <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
-                                    <select name="mensajeriaModo[]" style="width:109px">
+                                    <input type="text" name="mensajeria[]" class="ancho300es valor" />
+                                    <select name="mensajeriaModo[]" class="ancho85es">
                                         <option value="1" selected="selected">MSN</option>
                                         <option value="2">Skype</option>
                                         <option value="3">GoogleTalk</option>
@@ -122,19 +111,14 @@ include '../../../app/inicio.php';
                                         <option value="6">ICQ</option>
                                         <option value="7">Jabber</option>
                                     </select>
-                                    <select name="mensajeriaTipo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
-                                    </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
                                 
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
-                                        <select name="mensajeriaModo[]" style="width:109px">
+                                        <input type="text" name="mensajeria[]" class="ancho300es valor" />
+                                        <select name="mensajeriaModo[]" class="ancho85es">
                                             <option value="1" selected="selected">MSN</option>
                                             <option value="2">Skype</option>
                                             <option value="3">GoogleTalk</option>
@@ -142,11 +126,6 @@ include '../../../app/inicio.php';
                                             <option value="5">AIM</option>
                                             <option value="6">ICQ</option>
                                             <option value="7">Jabber</option>
-                                        </select>
-                                        <select name="mensajeriaTipo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -159,23 +138,13 @@ include '../../../app/inicio.php';
                             <dt><label for="web">Sitio(s) web</label></dt>
                             <dd>
                                 <div class="elemento ejemplo">
-                                    <input type="url" name="web[]" class="ancho300es valor" />
-                                    <select name="webTipo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
-                                    </select>
+                                    <input type="url" name="web[]" class="ancho435es valor" />
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="url" name="web[]" class="ancho300es valor" />
-                                        <select name="webTipo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
-                                        </select>
+                                        <input type="url" name="web[]" class="ancho435es valor" />
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
                                     </div>
@@ -186,32 +155,22 @@ include '../../../app/inicio.php';
                             <dt><label for="rsociales">Redes sociales</label></dt>
                             <dd>
                                 <div class="elemento ejemplo">
-                                    <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
-                                    <select name="rsocialesModo[]" style="width:109px">
+                                    <input type="text" name="rsociales[]" class="ancho300es valor" />
+                                    <select name="rsocialesModo[]" class="ancho85es">
                                         <option value="1" selected="selected">Facebook</option>
                                         <option value="2">Twitter</option>
                                         <option value="3">Google+</option>
-                                    </select>
-                                    <select name="rsocialesTipo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
-                                        <select name="rsocialesModo[]" style="width:109px">
+                                        <input type="text" name="rsociales[]" class="ancho300es valor" />
+                                        <select name="rsocialesModo[]" class="ancho85es">
                                             <option value="1" selected="selected">Facebook</option>
                                             <option value="2">Twitter</option>
                                             <option value="3">Google+</option>
-                                        </select>
-                                        <select name="rsocialesTipo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>

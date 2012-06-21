@@ -76,10 +76,11 @@ include 'librerias/Util.php';
 include 'librerias/GestorMySQL.php';
 include 'librerias/GestorCache.php';
 include 'librerias/Tabla.php';
+include 'modelos/Contacto.php';
 
 if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
     //Para conexion local
-    $bd = GestorMySQL::obtenerInstancia('local', array(
+    $bd = GestorMySQL::obtenerInstancia('produccion', array(
         'servidores' => array(
             array(
                 'host' => 'localhost',
@@ -88,7 +89,7 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
         ),
         'usuario' => 'root',
         'contrasena' => '',
-        'basedatos' => 'tuplan',
+        'basedatos' => 'tecpananet',
         'charset' => 'UTF-8',
         'depurar' => false
     ));

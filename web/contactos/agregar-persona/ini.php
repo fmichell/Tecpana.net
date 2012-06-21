@@ -1,5 +1,19 @@
 <?php
 include '../../../app/inicio.php';
+include SISTEMA_RAIZ . '/modelos/Persona.php';
+
+if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
+    // Insertamos contacto
+    $resultado = Persona::agregar(1, $_POST['nombre'], $_POST['apellidos'], $_POST['sexo'], $_POST['titulo'], $_POST['cargo']);
+    
+    if (!$resultado) {
+        die('Ocurrio un error');
+    } else {
+        $contacto_id = @$resultado;
+        echo $contacto_id;
+        // Insertamos info
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,7 +40,8 @@ include '../../../app/inicio.php';
         <section id="Content">
             <!--Workspace begins-->
             <section id="Workspace" class="colum formulario">
-                <form method="post" action="contacto_persona.html" name="frmAgregarContacto" id="frmAgregarContacto" class="frmContacto">
+                <form method="post" action="" name="frmAgregarContacto" id="frmAgregarContacto" class="frmContacto">
+                    <input type="hidden" name="submitForm" value="guardar" />
                     <!--Workspace Header begins-->
                     <div class="workspaceHeader interior10">
                         <div class="userPic">
@@ -35,8 +50,8 @@ include '../../../app/inicio.php';
                             <a href="#">Subir foto</a>
                         </div>
                         <div class="floatLeft">
-                            <input type="text" class="bigText ancho465es" placeholder="Nombres" id="nombres" /><br />
-                            <input type="text" class="bigText ancho465es" placeholder="Apellidos" id="apellidos" /><br />
+                            <input type="text" class="bigText ancho465es" name="nombre" id="nombre" placeholder="Nombres" /><br />
+                            <input type="text" class="bigText ancho465es" name="apellidos" id="apellidos" placeholder="Apellidos" /><br />
                             <select name="sexo" id="sexo" class="ancho85es">
                                 <option value="1" selected="selected">Hombre</option>
                                 <option value="2">Mujer</option>
@@ -277,7 +292,7 @@ include '../../../app/inicio.php';
                             </dd>
                         </dl>
                         <div class="linea10"></div>
-                        <a class="boton_gris floatLeft btnForm" href="#">Agregar Contacto</a>
+                        <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Agregar Contacto</a>
                         <a class="boton_gris floatLeft btnForm" href="#">Cancelar</a>
                         <div class="linea10"></div>
                     </div>
@@ -306,6 +321,9 @@ $(document).on("ready", function() {
             $('#picHombre').hide();
             $('#picMujer').show();
         }
+    });
+    $("#btnSubmit").click(function() {
+         $("#frmAgregarContacto").submit();
     });
 });
 </script>
