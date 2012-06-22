@@ -1,5 +1,24 @@
 <?php
 include '../../../app/inicio.php';
+include SISTEMA_RAIZ . '/modelos/Empresa.php';
+include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';
+
+if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
+    // Insertamos contacto
+    $resultado = Empresa::agregar(CUENTA_ID, $_POST['razon_social'], $_POST['giro']);
+    $infos = Contacto::prepararInfo($_POST);
+
+    if (!$resultado) {
+        die('Ocurrio un error');
+    } else {
+        $contacto_id = &$resultado;
+    }
+
+}
+
+// Obteniendo listas generales
+$campos = CamposContacto::$tiposInfo;
+$paises = CamposContacto::obtenerPaises();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,7 +45,8 @@ include '../../../app/inicio.php';
         <section id="Content">
             <!--Workspace begins-->
             <section id="Workspace" class="colum formulario">
-                <form method="post" action="contacto_persona.html" name="frmAgregarContacto" id="frmAgregarContacto" class="frmContacto">
+                <form method="post" action="" name="frmAgregarContacto" id="frmAgregarContacto" class="frmContacto">
+                    <input type="hidden" name="submitForm" value="guardar" />
                     <!--Workspace Header begins-->
                     <div class="workspaceHeader interior10">
                         <div class="userPic">
@@ -34,7 +54,7 @@ include '../../../app/inicio.php';
                             <a href="#">Subir logotipo</a>
                         </div>
                         <div class="floatLeft">
-                            <input type="text" class="bigText ancho465es" placeholder="Razón Social" id="razon_social" /><br />
+                            <input type="text" name="razon_social" id="razon_social" class="bigText ancho465es" placeholder="Razón Social" /><br />
                         </div>
                         <div class="linea5"></div>
                     </div>
@@ -54,12 +74,10 @@ include '../../../app/inicio.php';
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="tel" name="telefono[]" class="ancho300es valor" />
-                                    <select name="telefonoTipo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Móvil</option>
-                                        <option value="3">Casa</option>
-                                        <option value="4">Trabajo</option>
-                                        <option value="5">Fax</option>
+                                    <select name="telefonoModo[]" class="ancho85es">
+                                        <?php foreach ($campos['telefono_e']['modo'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
@@ -67,12 +85,10 @@ include '../../../app/inicio.php';
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="tel" name="telefono[]" class="ancho300es valor" />
-                                        <select name="telefonoTipo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Móvil</option>
-                                            <option value="3">Casa</option>
-                                            <option value="4">Trabajo</option>
-                                            <option value="5">Fax</option>
+                                        <select name="telefonoModo[]" class="ancho85es">
+                                            <?php foreach ($campos['telefono_e']['modo'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -102,36 +118,26 @@ include '../../../app/inicio.php';
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="text" name="mensajeria[]" class="ancho300es valor" />
-                                    <select name="mensajeriaModo[]" class="ancho85es">
-                                        <option value="1" selected="selected">MSN</option>
-                                        <option value="2">Skype</option>
-                                        <option value="3">GoogleTalk</option>
-                                        <option value="4">Yahoo</option>
-                                        <option value="5">AIM</option>
-                                        <option value="6">ICQ</option>
-                                        <option value="7">Jabber</option>
+                                    <select name="mensajeriaServicios[]" class="ancho85es">
+                                        <?php foreach ($campos['mensajeria_e']['servicios'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
-                                
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="text" name="mensajeria[]" class="ancho300es valor" />
-                                        <select name="mensajeriaModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">MSN</option>
-                                            <option value="2">Skype</option>
-                                            <option value="3">GoogleTalk</option>
-                                            <option value="4">Yahoo</option>
-                                            <option value="5">AIM</option>
-                                            <option value="6">ICQ</option>
-                                            <option value="7">Jabber</option>
+                                        <select name="mensajeriaServicios[]" class="ancho85es">
+                                            <?php foreach ($campos['mensajeria_e']['servicios'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
                                     </div>
                                 </div>
-                                
                                 <div class="clear"><!--vacio--></div>
                                 <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
                             </dd>
@@ -156,10 +162,10 @@ include '../../../app/inicio.php';
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="text" name="rsociales[]" class="ancho300es valor" />
-                                    <select name="rsocialesModo[]" class="ancho85es">
-                                        <option value="1" selected="selected">Facebook</option>
-                                        <option value="2">Twitter</option>
-                                        <option value="3">Google+</option>
+                                    <select name="rsocialesServicios[]" class="ancho85es">
+                                        <?php foreach ($campos['rsociales_e']['servicios'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
@@ -167,10 +173,10 @@ include '../../../app/inicio.php';
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="text" name="rsociales[]" class="ancho300es valor" />
-                                        <select name="rsocialesModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">Facebook</option>
-                                            <option value="2">Twitter</option>
-                                            <option value="3">Google+</option>
+                                        <select name="rsocialesServicios[]" class="ancho85es">
+                                            <?php foreach ($campos['rsociales_e']['servicios'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -182,6 +188,7 @@ include '../../../app/inicio.php';
                             <dt><label for="direccion">Dirección(es)</label></dt>
                             <dd class="elementoDireccion">
                                 <div class="elemento ejemplo">
+                                    <div class="linea10"></div>
                                     <div class="linea">
                                         <input type="text" name="direccion[]" class="ancho465es direccion valor" placeholder="Dirección" />
                                         <div class="clear"><!--vacio--></div>
@@ -191,11 +198,14 @@ include '../../../app/inicio.php';
                                         <div class="clear"><!--vacio--></div>
                                     </div>
                                     <div class="linea">
-                                        <input type="text" name="barrio[]" class="ancho300es barrio" placeholder="Barrio/vecindario" />
-                                        <select name="direccionTipo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
+                                        <input type="text" name="estado[]" class="ancho300es estado" placeholder="Estado/departamento" />
+                                        <div class="clear"><!--vacio--></div>
+                                    </div>
+                                    <div class="linea">
+                                        <select name="pais[]" class="pais" style="width: 435px">
+                                            <?php foreach($paises as $pais) { ?>
+                                            <option value="<?php echo $pais['id'] ?>"><?php echo $pais['pais'] ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -212,11 +222,14 @@ include '../../../app/inicio.php';
                                             <div class="clear"><!--vacio--></div>
                                         </div>
                                         <div class="linea">
-                                            <input type="text" name="barrio[]" class="ancho300es barrio" placeholder="Barrio/vecindario" />
-                                            <select name="direccionTipo[]" class="ancho85es">
-                                                <option value="1" selected="selected">General</option>
-                                                <option value="2">Trabajo</option>
-                                                <option value="3">Personal</option>
+                                            <input type="text" name="estado[]" class="ancho300es estado" placeholder="Estado/departamento" />
+                                            <div class="clear"><!--vacio--></div>
+                                        </div>
+                                        <div class="linea">
+                                            <select name="pais[]" class="pais" style="width: 435px">
+                                                <?php foreach($paises as $pais) { ?>
+                                                <option value="<?php echo $pais['id'] ?>"><?php echo $pais['pais'] ?></option>
+                                                <?php } ?>
                                             </select>
                                             <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                             <div class="clear"><!--vacio--></div>
@@ -228,7 +241,7 @@ include '../../../app/inicio.php';
                             </dd>
                         </dl>
                         <div class="linea10"></div>
-                        <a class="boton_gris floatLeft btnForm" href="#">Agregar Contacto</a>
+                        <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Agregar Contacto</a>
                         <a class="boton_gris floatLeft btnForm" href="#">Cancelar</a>
                         <div class="linea10"></div>
                     </div>
@@ -247,5 +260,12 @@ include '../../../app/inicio.php';
     // Cargamos el pie de pagina
     include '../../includes/pie.php';
     ?>
+<script type="text/javascript">
+    $(document).on("ready", function() {
+        $("#btnSubmit").click(function() {
+            $("#frmAgregarContacto").submit();
+        });
+    });
+</script>
 </body>
 </html>

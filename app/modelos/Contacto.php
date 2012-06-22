@@ -111,6 +111,11 @@ class Contacto
             if (!in_array($llaveCampo, $campos))
                 continue;
 
+            if (!is_array($campo)) {
+                $retorno[$llaveCampo] = $campo;
+                continue;
+            }
+
             foreach ($campo as $llave => $valor) {
                 // Si el valor esta vacio lo omitimos
                 if (empty($valor))

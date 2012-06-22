@@ -1,6 +1,7 @@
 <?php
 include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Persona.php';
+include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';
 
 if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
     // Insertamos contacto
@@ -51,7 +52,8 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
     }
 }
 
-// Obteniendo listado de paises
+// Obteniendo listas generales
+$campos = CamposContacto::$tiposInfo;
 $paises = CamposContacto::obtenerPaises();
 ?>
 <!DOCTYPE html>
@@ -117,11 +119,9 @@ $paises = CamposContacto::obtenerPaises();
                                 <div class="elemento ejemplo">
                                     <input type="tel" name="telefono[]" class="ancho300es valor" />
                                     <select name="telefonoModo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Celular</option>
-                                        <option value="3">Casa</option>
-                                        <option value="4">Trabajo</option>
-                                        <option value="5">Fax</option>
+                                        <?php foreach ($campos['telefono']['modo'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
@@ -130,11 +130,9 @@ $paises = CamposContacto::obtenerPaises();
                                     <div class="elemento">
                                         <input type="tel" name="telefono[]" class="ancho300es valor" />
                                         <select name="telefonoModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Celular</option>
-                                            <option value="3">Casa</option>
-                                            <option value="4">Trabajo</option>
-                                            <option value="5">Fax</option>
+                                            <?php foreach ($campos['telefono']['modo'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -148,9 +146,9 @@ $paises = CamposContacto::obtenerPaises();
                                 <div class="elemento ejemplo">
                                     <input type="email" name="email[]" class="ancho300es valor" />
                                     <select name="emailModo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
+                                        <?php foreach ($campos['email']['modo'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
@@ -159,9 +157,9 @@ $paises = CamposContacto::obtenerPaises();
                                     <div class="elemento">
                                         <input type="email" name="email[]" class="ancho300es valor" />
                                         <select name="emailModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
+                                            <?php foreach ($campos['email']['modo'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -175,18 +173,14 @@ $paises = CamposContacto::obtenerPaises();
                                 <div class="elemento ejemplo">
                                     <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
                                     <select name="mensajeriaServicios[]" style="width:109px">
-                                        <option value="1" selected="selected">MSN</option>
-                                        <option value="2">Skype</option>
-                                        <option value="3">GoogleTalk</option>
-                                        <option value="4">Yahoo</option>
-                                        <option value="5">AIM</option>
-                                        <option value="6">ICQ</option>
-                                        <option value="7">Jabber</option>
+                                        <?php foreach ($campos['mensajeria']['servicios'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <select name="mensajeriaModo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
+                                        <?php foreach ($campos['mensajeria']['modo'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
@@ -196,18 +190,14 @@ $paises = CamposContacto::obtenerPaises();
                                     <div class="elemento">
                                         <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
                                         <select name="mensajeriaServicios[]" style="width:109px">
-                                            <option value="1" selected="selected">MSN</option>
-                                            <option value="2">Skype</option>
-                                            <option value="3">GoogleTalk</option>
-                                            <option value="4">Yahoo</option>
-                                            <option value="5">AIM</option>
-                                            <option value="6">ICQ</option>
-                                            <option value="7">Jabber</option>
+                                            <?php foreach ($campos['mensajeria']['servicios'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <select name="mensajeriaModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
+                                            <?php foreach ($campos['mensajeria']['modo'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -222,9 +212,9 @@ $paises = CamposContacto::obtenerPaises();
                                 <div class="elemento ejemplo">
                                     <input type="url" name="web[]" class="ancho300es valor" />
                                     <select name="webModo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
+                                        <?php foreach ($campos['web']['modo'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
@@ -233,9 +223,9 @@ $paises = CamposContacto::obtenerPaises();
                                     <div class="elemento">
                                         <input type="url" name="web[]" class="ancho300es valor" />
                                         <select name="webModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
+                                            <?php foreach ($campos['web']['modo'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -249,14 +239,14 @@ $paises = CamposContacto::obtenerPaises();
                                 <div class="elemento ejemplo">
                                     <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
                                     <select name="rsocialesServicios[]" style="width:109px">
-                                        <option value="1" selected="selected">Facebook</option>
-                                        <option value="2">Twitter</option>
-                                        <option value="3">Google+</option>
+                                        <?php foreach ($campos['rsociales']['servicios'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <select name="rsocialesModo[]" class="ancho85es">
-                                        <option value="1" selected="selected">General</option>
-                                        <option value="2">Trabajo</option>
-                                        <option value="3">Personal</option>
+                                        <?php foreach ($campos['rsociales']['modo'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
                                     </select>
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
@@ -265,14 +255,14 @@ $paises = CamposContacto::obtenerPaises();
                                     <div class="elemento">
                                         <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
                                         <select name="rsocialesServicios[]" style="width:109px">
-                                            <option value="1" selected="selected">Facebook</option>
-                                            <option value="2">Twitter</option>
-                                            <option value="3">Google+</option>
+                                            <?php foreach ($campos['rsociales']['servicios'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <select name="rsocialesModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
+                                            <?php foreach ($campos['rsociales']['modo'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -304,9 +294,9 @@ $paises = CamposContacto::obtenerPaises();
                                             <?php } ?>
                                         </select>
                                         <select name="direccionModo[]" class="ancho85es">
-                                            <option value="1" selected="selected">General</option>
-                                            <option value="2">Trabajo</option>
-                                            <option value="3">Personal</option>
+                                            <?php foreach ($campos['direccion']['modo'] as $llave => $valor) { ?>
+                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                            <?php } ?>
                                         </select>
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
@@ -333,9 +323,9 @@ $paises = CamposContacto::obtenerPaises();
                                                 <?php } ?>
                                             </select>
                                             <select name="direccionModo[]" class="ancho85es">
-                                                <option value="1" selected="selected">General</option>
-                                                <option value="2">Trabajo</option>
-                                                <option value="3">Personal</option>
+                                                <?php foreach ($campos['direccion']['modo'] as $llave => $valor) { ?>
+                                                <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                                <?php } ?>
                                             </select>
                                             <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                             <div class="clear"><!--vacio--></div>
