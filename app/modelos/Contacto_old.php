@@ -1,5 +1,5 @@
 <?php
-class Contacto
+class Contacto_old
 {
 	public static $arrayTipo = array(1 => 'telefono', 2 => 'email', 3 => 'direccion', 4 => 'mensajeria', 5 => 'sitioweb');
 	public static $arrayModoTelefono = array(1 => 'Celular', 2 => 'Fijo');

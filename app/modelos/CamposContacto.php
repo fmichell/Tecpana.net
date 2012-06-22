@@ -107,4 +107,13 @@ abstract class CamposContacto
                                                         'id' => 13,
                                                         'titulo' => 'Dirección(es)')
                                 );
+
+    static public function obtenerPaises ()
+    {
+        $bd = GestorMySQL::obtenerInstancia();
+
+        $consulta = "SELECT id, pais FROM paises ORDER BY pais";
+
+        return $bd->obtener($consulta, 'id');
+    }
 }

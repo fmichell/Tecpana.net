@@ -83,7 +83,7 @@ class Contacto
                       'valor:texto'             => $valor,
                       'valor_text:texto'        => $valorText,
                       'modo:entero'             => $modo,
-                      'servicios:entero'        => $servicios,
+                      'servicio:entero'        => $servicios,
                       'ciudad:texto'            => $ciudad,
                       'estado:texto'            => $estado,
                       'pais_id:entero'          => $paisId,
@@ -93,6 +93,59 @@ class Contacto
                       
         return $bd->ejecutar();
     }
-    
-    
+
+    /**
+     * Recibe los datos completos del POST, filtra solo los que sean Info y los ordena
+     *
+     * @param array $arrayInfo
+     * @return array
+     */
+    static public function prepararInfo ($arrayInfo)
+    {
+        $campos = array_keys(CamposContacto::$tiposInfo);
+        $retorno = array();
+
+        foreach ($arrayInfo as $llaveCampo => $campo) {
+            // Si el campo no esta definido en el arreglo de campos lo omitimos
+            // Estamos asumiendo que si no esta es porque es un modo, servicio u otro especial
+            if (!in_array($llaveCampo, $campos))
+                continue;
+
+            foreach ($campo as $llave => $valor) {
+                // Si el valor esta vacio lo omitimos
+                if (empty($valor))
+                    continue;
+
+                // Capturando valor general
+                $retorno[$llaveCampo][$llave]['valor'] = $valor;
+
+                // Campurando valores de modo y servicios
+                $llaveModo = $llaveCampo . 'Modo';
+                if (isset($arrayInfo[$llaveModo][$llave]) and !empty($arrayInfo[$llaveModo][$llave]))
+                    $retorno[$llaveCampo][$llave]['modo'] = $arrayInfo[$llaveModo][$llave];
+
+                $llaveServicios = $llaveCampo . 'Servicios';
+                if (isset($arrayInfo[$llaveServicios][$llave]) and !empty($arrayInfo[$llaveServicios][$llave]))
+                    $retorno[$llaveCampo][$llave]['servicios'] = $arrayInfo[$llaveServicios][$llave];
+
+                // Capturando valores para campos especiales
+                // Direccion
+                if ($llaveCampo == 'direccion') {
+                    // Capturamos ciudad
+                    $retorno[$llaveCampo][$llave]['ciudad'] = $arrayInfo['ciudad'][$llave];
+                    // Capturamos estado
+                    $retorno[$llaveCampo][$llave]['estado'] = $arrayInfo['estado'][$llave];
+                    // Capturamos pais
+                    $retorno[$llaveCampo][$llave]['pais'] = $arrayInfo['pais'][$llave];
+                    // Capturamos cpostal
+                    $retorno[$llaveCampo][$llave]['cpostal'] = null;
+                }
+            }
+
+
+        }
+
+        return $retorno;
+    }
+
 }

@@ -4,16 +4,55 @@ include SISTEMA_RAIZ . '/modelos/Persona.php';
 
 if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
     // Insertamos contacto
-    $resultado = Persona::agregar(1, $_POST['nombre'], $_POST['apellidos'], $_POST['sexo'], $_POST['titulo'], $_POST['cargo']);
-    
+    $resultado = Persona::agregar(CUENTA_ID, $_POST['nombre'], $_POST['apellidos'], $_POST['sexo'], $_POST['titulo'], $_POST['cargo']);
+    $infos = Contacto::prepararInfo($_POST);
+
     if (!$resultado) {
         die('Ocurrio un error');
     } else {
-        $contacto_id = @$resultado;
-        echo $contacto_id;
+        $contacto_id = &$resultado;
         // Insertamos info
+        // Insertamos telefono
+        if (isset($infos['telefono'])) {
+            foreach ($infos['telefono'] as $telefono) {
+                Persona::agregarTelefono(CUENTA_ID, $contacto_id, $telefono['valor'], $telefono['modo']);
+            }
+        }
+        // Insertamos email
+        if (isset($infos['email'])) {
+            foreach ($infos['email'] as $email) {
+                Persona::agregarEmail(CUENTA_ID, $contacto_id, $email['valor'], $email['modo']);
+            }
+        }
+        // Insertamos mensajeria
+        if (isset($infos['mensajeria'])) {
+            foreach ($infos['mensajeria'] as $mensajeria) {
+                Persona::agregarMensajeria(CUENTA_ID, $contacto_id, $mensajeria['valor'], $mensajeria['modo'], $mensajeria['servicios']);
+            }
+        }
+        // Insertamos web
+        if (isset($infos['web'])) {
+            foreach ($infos['web'] as $web) {
+                Persona::agregarWeb(CUENTA_ID, $contacto_id, $web['valor'], $web['modo']);
+            }
+        }
+        // Insertamos redes sociales
+        if (isset($infos['rsociales'])) {
+            foreach ($infos['rsociales'] as $rsociales) {
+                Persona::agregarRSociales(CUENTA_ID, $contacto_id, $rsociales['valor'], $rsociales['modo'], $rsociales['servicios']);
+            }
+        }
+        // Insertamos direccion
+        if (isset($infos['direccion'])) {
+            foreach ($infos['direccion'] as $direccion) {
+                Persona::agregarDireccion(CUENTA_ID, $contacto_id, $direccion['valor'], $direccion['ciudad'], $direccion['estado'], $direccion['pais'], $direccion['cpostal'], $direccion['modo']);
+            }
+        }
     }
 }
+
+// Obteniendo listado de paises
+$paises = CamposContacto::obtenerPaises();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -77,9 +116,9 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="tel" name="telefono[]" class="ancho300es valor" />
-                                    <select name="telefonoTipo[]" class="ancho85es">
+                                    <select name="telefonoModo[]" class="ancho85es">
                                         <option value="1" selected="selected">General</option>
-                                        <option value="2">Móvil</option>
+                                        <option value="2">Celular</option>
                                         <option value="3">Casa</option>
                                         <option value="4">Trabajo</option>
                                         <option value="5">Fax</option>
@@ -90,9 +129,9 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="tel" name="telefono[]" class="ancho300es valor" />
-                                        <select name="telefonoTipo[]" class="ancho85es">
+                                        <select name="telefonoModo[]" class="ancho85es">
                                             <option value="1" selected="selected">General</option>
-                                            <option value="2">Móvil</option>
+                                            <option value="2">Celular</option>
                                             <option value="3">Casa</option>
                                             <option value="4">Trabajo</option>
                                             <option value="5">Fax</option>
@@ -108,7 +147,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="email" name="email[]" class="ancho300es valor" />
-                                    <select name="emailTipo[]" class="ancho85es">
+                                    <select name="emailModo[]" class="ancho85es">
                                         <option value="1" selected="selected">General</option>
                                         <option value="2">Trabajo</option>
                                         <option value="3">Personal</option>
@@ -119,7 +158,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="email" name="email[]" class="ancho300es valor" />
-                                        <select name="emailTipo[]" class="ancho85es">
+                                        <select name="emailModo[]" class="ancho85es">
                                             <option value="1" selected="selected">General</option>
                                             <option value="2">Trabajo</option>
                                             <option value="3">Personal</option>
@@ -135,7 +174,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
-                                    <select name="mensajeriaModo[]" style="width:109px">
+                                    <select name="mensajeriaServicios[]" style="width:109px">
                                         <option value="1" selected="selected">MSN</option>
                                         <option value="2">Skype</option>
                                         <option value="3">GoogleTalk</option>
@@ -144,7 +183,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                         <option value="6">ICQ</option>
                                         <option value="7">Jabber</option>
                                     </select>
-                                    <select name="mensajeriaTipo[]" class="ancho85es">
+                                    <select name="mensajeriaModo[]" class="ancho85es">
                                         <option value="1" selected="selected">General</option>
                                         <option value="2">Trabajo</option>
                                         <option value="3">Personal</option>
@@ -156,7 +195,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
-                                        <select name="mensajeriaModo[]" style="width:109px">
+                                        <select name="mensajeriaServicios[]" style="width:109px">
                                             <option value="1" selected="selected">MSN</option>
                                             <option value="2">Skype</option>
                                             <option value="3">GoogleTalk</option>
@@ -165,7 +204,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                             <option value="6">ICQ</option>
                                             <option value="7">Jabber</option>
                                         </select>
-                                        <select name="mensajeriaTipo[]" class="ancho85es">
+                                        <select name="mensajeriaModo[]" class="ancho85es">
                                             <option value="1" selected="selected">General</option>
                                             <option value="2">Trabajo</option>
                                             <option value="3">Personal</option>
@@ -182,7 +221,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="url" name="web[]" class="ancho300es valor" />
-                                    <select name="webTipo[]" class="ancho85es">
+                                    <select name="webModo[]" class="ancho85es">
                                         <option value="1" selected="selected">General</option>
                                         <option value="2">Trabajo</option>
                                         <option value="3">Personal</option>
@@ -193,7 +232,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="url" name="web[]" class="ancho300es valor" />
-                                        <select name="webTipo[]" class="ancho85es">
+                                        <select name="webModo[]" class="ancho85es">
                                             <option value="1" selected="selected">General</option>
                                             <option value="2">Trabajo</option>
                                             <option value="3">Personal</option>
@@ -209,12 +248,12 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                             <dd>
                                 <div class="elemento ejemplo">
                                     <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
-                                    <select name="rsocialesModo[]" style="width:109px">
+                                    <select name="rsocialesServicios[]" style="width:109px">
                                         <option value="1" selected="selected">Facebook</option>
                                         <option value="2">Twitter</option>
                                         <option value="3">Google+</option>
                                     </select>
-                                    <select name="rsocialesTipo[]" class="ancho85es">
+                                    <select name="rsocialesModo[]" class="ancho85es">
                                         <option value="1" selected="selected">General</option>
                                         <option value="2">Trabajo</option>
                                         <option value="3">Personal</option>
@@ -225,12 +264,12 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                 <div class="listado">
                                     <div class="elemento">
                                         <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
-                                        <select name="rsocialesModo[]" style="width:109px">
+                                        <select name="rsocialesServicios[]" style="width:109px">
                                             <option value="1" selected="selected">Facebook</option>
                                             <option value="2">Twitter</option>
                                             <option value="3">Google+</option>
                                         </select>
-                                        <select name="rsocialesTipo[]" class="ancho85es">
+                                        <select name="rsocialesModo[]" class="ancho85es">
                                             <option value="1" selected="selected">General</option>
                                             <option value="2">Trabajo</option>
                                             <option value="3">Personal</option>
@@ -255,8 +294,16 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                         <div class="clear"><!--vacio--></div>
                                     </div>
                                     <div class="linea">
-                                        <input type="text" name="barrio[]" class="ancho300es barrio" placeholder="Barrio/vecindario" />
-                                        <select name="direccionTipo[]" class="ancho85es">
+                                        <input type="text" name="estado[]" class="ancho300es estado" placeholder="Estado/departamento" />
+                                        <div class="clear"><!--vacio--></div>
+                                    </div>
+                                    <div class="linea">
+                                        <select name="pais[]" class="pais" style="width: 334px">
+                                            <?php foreach($paises as $pais) { ?>
+                                            <option value="<?php echo $pais['id'] ?>"><?php echo $pais['pais'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <select name="direccionModo[]" class="ancho85es">
                                             <option value="1" selected="selected">General</option>
                                             <option value="2">Trabajo</option>
                                             <option value="3">Personal</option>
@@ -276,8 +323,16 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
                                             <div class="clear"><!--vacio--></div>
                                         </div>
                                         <div class="linea">
-                                            <input type="text" name="barrio[]" class="ancho300es barrio" placeholder="Barrio/vecindario" />
-                                            <select name="direccionTipo[]" class="ancho85es">
+                                            <input type="text" name="estado[]" class="ancho300es estado" placeholder="Estado/departamento" />
+                                            <div class="clear"><!--vacio--></div>
+                                        </div>
+                                        <div class="linea">
+                                            <select name="pais[]" class="pais" style="width: 334px">
+                                                <?php foreach($paises as $pais) { ?>
+                                                <option value="<?php echo $pais['id'] ?>"><?php echo $pais['pais'] ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <select name="direccionModo[]" class="ancho85es">
                                                 <option value="1" selected="selected">General</option>
                                                 <option value="2">Trabajo</option>
                                                 <option value="3">Personal</option>

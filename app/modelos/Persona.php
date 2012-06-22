@@ -15,34 +15,34 @@ class Persona extends Contacto
         $tipo = CamposContacto::$tiposInfo['telefono']['id'];
         return self::insertarInfo($cuentaId, $contactoId, $tipo, $telefono, null, $modo, null, $principal);
     }
-    
+
     static public function agregarEmail ($cuentaId, $contactoId, $email, $modo, $principal = 0)
     {
         $tipo = CamposContacto::$tiposInfo['email']['id'];
         return self::insertarInfo($cuentaId, $contactoId, $tipo, $email, null, $modo, null, $principal);
     }
-    
-    static public function agregarMensajeria ($cuentaId, $contactoId, $usuario, $servicios, $principal = 0)
+
+    static public function agregarMensajeria ($cuentaId, $contactoId, $usuario, $modo, $servicios, $principal = 0)
     {
         $tipo = CamposContacto::$tiposInfo['mensajeria']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, $usuario, null, null, $servicios, $principal);
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, $usuario, null, $modo, $servicios, $principal);
     }
-    
-    static public function agregarWeb ($cuentaId, $contactoId, $url)
+
+    static public function agregarWeb ($cuentaId, $contactoId, $url, $modo)
     {
         $tipo = CamposContacto::$tiposInfo['web']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, $url, null, null);
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, $url, null, $modo);
     }
-    
-    static public function agregarRSociales ($cuentaId, $contactoId, $valor, $servicios)
+
+    static public function agregarRSociales ($cuentaId, $contactoId, $valor, $modo, $servicios)
     {
         $tipo = CamposContacto::$tiposInfo['rsociales']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, $valor, null, null, $servicios);
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, $valor, null, $modo, $servicios);
     }
-    
-    static public function agregarDireccion ($cuentaId, $contactoId, $direccion, $ciudad, $estado, $pais, $cpostal)
+
+    static public function agregarDireccion ($cuentaId, $contactoId, $direccion, $ciudad, $estado, $pais, $cpostal, $modo)
     {
         $tipo = CamposContacto::$tiposInfo['direccion']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, null, $direccion, null, null, 0, $ciudad, $estado, $pais, $cpostal);
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, null, $direccion, $modo, null, 0, $ciudad, $estado, $pais, $cpostal);
     }
 }

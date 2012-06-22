@@ -15,40 +15,40 @@ class Empresa extends Contacto
         $tipo = CamposContacto::$tiposInfo['productos']['id'];
         return parent::insertarInfo($cuentaId, $contactoId, $tipo, null, $productos);
     }
-    
+
     static public function agregarTelefono ($cuentaId, $contactoId, $telefono, $modo, $principal = 0)
     {
         $tipo = CamposContacto::$tiposInfo['telefono_e']['id'];
         return self::insertarInfo($cuentaId, $contactoId, $tipo, $telefono, null, $modo, null, $principal);
     }
-    
+
     static public function agregarEmail ($cuentaId, $contactoId, $email, $principal = 0)
     {
         $tipo = CamposContacto::$tiposInfo['email_e']['id'];
         return self::insertarInfo($cuentaId, $contactoId, $tipo, $email, null, null, null, $principal);
     }
-    
-    static public function agregarMensajeria ($cuentaId, $contactoId, $usuario, $modo, $servicios, $principal = 0)
+
+    static public function agregarMensajeria ($cuentaId, $contactoId, $usuario, $servicios, $principal = 0)
     {
-        $tipo = CamposContacto::$tiposInfo['mensajeria']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, $usuario, null, $modo, $servicios, $principal);
+        $tipo = CamposContacto::$tiposInfo['mensajeria_e']['id'];
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, $usuario, null, null, $servicios, $principal);
     }
-    
-    static public function agregarWeb ($cuentaId, $contactoId, $url, $modo)
+
+    static public function agregarWeb ($cuentaId, $contactoId, $url)
     {
-        $tipo = CamposContacto::$tiposInfo['web']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, $url, null, $modo);
+        $tipo = CamposContacto::$tiposInfo['web_e']['id'];
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, $url);
     }
-    
-    static public function agregarRSociales ($cuentaId, $contactoId, $valor, $modo, $servicios)
+
+    static public function agregarRSociales ($cuentaId, $contactoId, $valor, $servicios)
     {
-        $tipo = CamposContacto::$tiposInfo['rsociales']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, $valor, null, $modo, $servicios);
+        $tipo = CamposContacto::$tiposInfo['rsociales_e']['id'];
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, $valor, null, null, $servicios);
     }
-    
-    static public function agregarDireccion ($cuentaId, $contactoId, $direccion, $ciudad, $estado, $pais, $cpostal, $modo)
+
+    static public function agregarDireccion ($cuentaId, $contactoId, $direccion, $ciudad, $estado, $pais, $cpostal)
     {
-        $tipo = CamposContacto::$tiposInfo['direccion']['id'];
-        return self::insertarInfo($cuentaId, $contactoId, $tipo, null, $direccion, $modo, null, 0, $ciudad, $estado, $pais, $cpostal);
+        $tipo = CamposContacto::$tiposInfo['direccion_e']['id'];
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, null, $direccion, null, null, 0, $ciudad, $estado, $pais, $cpostal);
     }
 }

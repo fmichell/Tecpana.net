@@ -121,3 +121,7 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
     */
     die('Error de conexion con la BD. Revisar inicio.php.');
 }
+
+// Declaramos Cuenta Id
+$_SESSION['CUENTA_ID'] = 1;
+define('CUENTA_ID', $_SESSION['CUENTA_ID']);
