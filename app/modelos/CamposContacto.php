@@ -5,6 +5,7 @@ abstract class CamposContacto
                                         // Personas
                                         'telefono'      => array(
                                                         'id' => 1,
+                                                        'llave' => 'telefono',
                                                         'titulo' => 'Teléfono(s)',
                                                         'modo' => array(
                                                                     '1' => 'General',
@@ -15,6 +16,7 @@ abstract class CamposContacto
                                                             ),
                                         'email'         => array(
                                                         'id' => 2,
+                                                        'llave' => 'email',
                                                         'titulo' => 'Email(s)',
                                                         'modo' => array(
                                                                     '1' => 'General',
@@ -23,6 +25,7 @@ abstract class CamposContacto
                                                             ),
                                         'mensajeria'    => array(
                                                         'id' => 3,
+                                                        'llave' => 'mensajeria',
                                                         'titulo' => 'Mensajería',
                                                         'modo' => array(
                                                                     '1' => 'General',
@@ -39,6 +42,7 @@ abstract class CamposContacto
                                                             ),
                                         'web'           => array(
                                                         'id' => 4,
+                                                        'llave' => 'web',
                                                         'titulo' => 'Sitio(s) web',
                                                         'modo' => array(
                                                                     '1' => 'General',
@@ -47,6 +51,7 @@ abstract class CamposContacto
                                                             ),
                                         'rsociales'     => array(
                                                         'id' => 5,
+                                                        'llave' => 'rsociales',
                                                         'titulo' => 'Redes sociales',
                                                         'modo' => array(
                                                                     '1' => 'General',
@@ -59,18 +64,21 @@ abstract class CamposContacto
                                                             ),
                                         'direccion'     => array(
                                                         'id' => 6,
+                                                        'llave' => 'direccion',
                                                         'titulo' => 'Dirección(es)',
                                                         'modo' => array(
                                                                     '1' => 'General',
                                                                     '2' => 'Trabajo',
-                                                                    '3' => 'Personal')
+                                                                    '3' => 'Casa')
                                                             ),
                                         // Empresas
                                         'productos'     => array(
                                                         'id' => 7,
+                                                        'llave' => 'productos',
                                                         'titulo' => 'Productos y/o servicios'),
                                         'telefono_e'    => array(
                                                         'id' => 8,
+                                                        'llave' => 'telefono',
                                                         'titulo' => 'Teléfono(s)',
                                                         'modo' => array(
                                                                     '1' => 'General',
@@ -79,9 +87,11 @@ abstract class CamposContacto
                                                             ),
                                         'email_e'       => array(
                                                         'id' => 9,
+                                                        'llave' => 'email',
                                                         'titulo' => 'Email(s)'),
                                         'mensajeria_e'  => array(
                                                         'id' => 10,
+                                                        'llave' => 'mensajeria',
                                                         'titulo' => 'Mensajería',
                                                         'servicios' => array(
                                                                     '1' => 'MSN',
@@ -94,9 +104,11 @@ abstract class CamposContacto
                                                             ),
                                         'web_e'         => array(
                                                         'id' => 11,
+                                                        'llave' => 'web',
                                                         'titulo' => 'Sitio(s) web'),
                                         'rsociales_e'   => array(
                                                         'id' => 12,
+                                                        'llave' => 'rsociales',
                                                         'titulo' => 'Redes sociales',
                                                         'servicios' => array(
                                                                     '1' => 'Facebook',
@@ -105,6 +117,7 @@ abstract class CamposContacto
                                                             ),
                                         'direccion_e'     => array(
                                                         'id' => 13,
+                                                        'llave' => 'direccion',
                                                         'titulo' => 'Dirección(es)')
                                 );
 

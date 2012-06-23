@@ -1,5 +1,9 @@
 <?php
 include '../../app/inicio.php';
+
+// Obtenemos todos los contactos
+$contactos = Contacto::obtenerTodos(CUENTA_ID);
+//util_depurar_var($contactos);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -57,19 +61,7 @@ include '../../app/inicio.php';
                             <a href="javascript:;" class="select_all">Seleccionar todos</a> | <a href="javascript:;" class="undo_select">Deshacer selección</a> 
                         </div>
                     </div>
-                    <article class="wCheckbox">
-                        <div class="contact">
-                            <div class="check colum"><input type="checkbox" class="check_contacto" /></div>
-                            <div class="userThumb colum"><a href="#"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></a></div>
-                            <div class="desc colum">
-                                <div class="nombre"><a href="/contactos/123/info">Federico Michell Vijil</a></div>
-                                <div class="detalle"><a href="#">Email: federicomichell@hotmail.com</a></div>
-                                <div class="detalle">Tel: + (505) 8873 3432</div>
-                            </div>
-                            <div class="info colum">CEO en <a href="#">Plazavip.com</a></div>
-                            <div class="clear"><!--empty--></div>
-                        </div>
-                    </article>
+                    <?php include 'ajax/ajaxListarContactos.php'; ?>
                     <div class="auxiliaryToolbar">
                         <a href="#" class="eliminar">Eliminar el contacto seleccionado</a>
                         <div class="seleccion">

@@ -1,4 +1,6 @@
 <?php
+require_once 'CamposContacto.php';
+
 class Contacto
 {	
     // METODOS ESTATICOS
@@ -6,9 +8,10 @@ class Contacto
     // -->
     
     /**
+     * @static insertarContacto
      * Insertar un nuevo contacto en la BD
      * 
-     * @param string $cuentaId
+     * @param int $cuentaId
      * @param int $tipo [1 Persona | 2 Empresa]
      * @param string $nombre
      * @param string $apellidos
@@ -50,9 +53,10 @@ class Contacto
     }
     
     /**
+     * @static insertarInfo
      * Inserta un nuevo detalle de contacto en la BD
      * 
-     * @param string $cuentaId
+     * @param int $cuentaId
      * @param string $contactoId
      * @param int $tipo
      * @param string $valor
@@ -95,12 +99,13 @@ class Contacto
     }
 
     /**
+     * @static prepararInfo
      * Recibe los datos completos del POST, filtra solo los que sean Info y los ordena
      *
      * @param array $arrayInfo
      * @return array
      */
-    static public function prepararInfo ($arrayInfo)
+    static public function prepararInfo (array $arrayInfo)
     {
         $campos = array_keys(CamposContacto::$tiposInfo);
         $retorno = array();
@@ -111,7 +116,7 @@ class Contacto
             if (!in_array($llaveCampo, $campos))
                 continue;
 
-            if (!is_array($campo)) {
+            if (!is_array($campo) and !empty($campo)) {
                 $retorno[$llaveCampo] = $campo;
                 continue;
             }
@@ -153,4 +158,158 @@ class Contacto
         return $retorno;
     }
 
+    // -->
+
+    /**
+     * @static _cargarContactos
+     * Obtiene el listado de contactos por Cuenta Id, y los filtra por id o por tipo
+     *
+     * @param int $cuentaId
+     * @param [string | array | null] $ids
+     * @param string $filtroTipo [PERSONAS | EMPRESAS]
+     * @param null $ordenar
+     * @return bool|array
+     */
+    static private function _cargarContactos ($cuentaId, $ids = null, $filtroTipo = null, $ordenar = null)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Declaramos arraglo de filtros
+        $filtros = array();
+
+        // Generamos filtro ids
+        if ($ids) {
+            if (is_array($ids)) {
+                // Verificamos que no hayan valores repetidos
+                $ids = array_unique($ids);
+                $tmp = array();
+                foreach ($ids as $id) {
+                    // Limpiamos el valor, lo escapamos y lo guardamos en un arreglo temporal
+                    $id = trim($id);
+                    if (!empty($id)) {
+                        $tmp[] = $bd->escaparValor($id, 'texto');
+                    }
+                }
+                $filtros[] = 'contacto_id IN (' . implode(',', $tmp) . ')';
+            } else {
+                $filtros[] = sprintf('contacto_id = %s', $bd->escaparValor($ids, 'texto'));
+            }
+        }
+
+        // Generamos filtro tipo
+        if ($filtroTipo == 'PERSONAS') {
+            $filtros[] = 'tipo = 1';
+        } elseif ($filtroTipo == 'EMPRESAS') {
+            $filtros[] = 'tipo = 2';
+        }
+
+        // Generamos filtro
+        $filtros = implode(' AND ', $filtros);
+        if ($filtros)
+            $filtros = 'AND ' . $filtros;
+
+        // Generamos consulta
+        $consulta = sprintf("SELECT contacto_id, tipo, CONCAT_WS(' ', nombre, apellidos) AS nombre_completo, nombre, apellidos, sexo, titulo, descripcion, empresa_id
+                             FROM contactos WHERE cuenta_id = %u %s",
+                             $bd->escaparValor($cuentaId, 'entero'),
+                             $filtros);
+
+        return $bd->obtener($consulta, 'contacto_id');
+    }
+
+    static private function _cargarInfos ($cuenta_id, $ids = null)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Declaramos arraglo de filtros
+        $filtros = array();
+
+        // Generamos filtro ids
+        if ($ids) {
+            if (is_array($ids)) {
+                // Verificamos que no hayan valores repetidos
+                $ids = array_unique($ids);
+                $tmp = array();
+                foreach ($ids as $id) {
+                    // Limpiamos el valor, lo escapamos y lo guardamos en un arreglo temporal
+                    $id = trim($id);
+                    if (!empty($id)) {
+                        $tmp[] = $bd->escaparValor($id, 'texto');
+                    }
+                }
+                $filtros[] = 'contacto_id IN (' . implode(',', $tmp) . ')';
+            } else {
+                $filtros[] = sprintf('contacto_id = %s', $bd->escaparValor($ids, 'texto'));
+            }
+        }
+
+        // Generamos filtro
+        $filtros = implode(' AND ', $filtros);
+        if ($filtros)
+            $filtros = 'AND ' . $filtros;
+
+        // Generamos consulta
+        $consulta = sprintf('SELECT contacto_id, info_id, tipo, valor, valor_text, modo, servicio, ciudad, estado, pais_id, cpostal, principal
+                             FROM contactos_info WHERE cuenta_id = %u %s',
+                             $bd->escaparValor($cuenta_id, 'entero'),
+                             $filtros);
+
+        return $bd->obtenerGrupos($consulta, 'contacto_id', 'info_id');
+    }
+
+    static private function _ordenarInfo (array $arrayInfo)
+    {
+        $campos = CamposContacto::$tiposInfo;
+        $retorno = array();
+
+        foreach ($arrayInfo as $id => $info) {
+            $tipoId = $info['tipo'];
+
+            foreach ($campos as $tipo => $campo) {
+                if ($tipoId == $campo['id']) {
+                    if ($info['modo']) {
+                        $info['modo'] = $campo['modo'][$info['modo']];
+                    }
+                    if ($info['servicio']) {
+                        $info['servicio'] = $campo['servicios'][$info['servicio']];
+                    }
+                    $retorno[$campo['llave']][$id] = $info;
+                }
+            }
+
+
+        }
+
+        return $retorno;
+    }
+
+    static private function _cargar ($cuentaId, $ids = null)
+    {
+        $contactos = self::_cargarContactos($cuentaId, $ids);
+        $contactos_infos = self::_cargarInfos($cuentaId, $ids);
+
+        foreach ($contactos_infos as $contacto_id => $infos) {
+            $contactos[$contacto_id] += self::_ordenarInfo($infos);
+        }
+
+        return $contactos;
+    }
+
+    static public function obtener ($cuentaId, $ids)
+    {
+        $contactos = self::_cargar($cuentaId, $ids);
+
+        if (is_array($ids)) {
+            return $contactos;
+        } else {
+            return current($contactos);
+        }
+    }
+
+    static public function obtenerTodos ($cuentaId)
+    {
+        return self::_cargar($cuentaId);
+    }
 }

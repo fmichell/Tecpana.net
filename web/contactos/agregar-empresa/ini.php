@@ -12,6 +12,47 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
         die('Ocurrio un error');
     } else {
         $contacto_id = &$resultado;
+        // Insertamos info
+        // Insertamos productos y/o servicios
+        if (isset($infos['productos'])) {
+            Empresa::agregarProductos(CUENTA_ID, $contacto_id, $infos['productos']);
+        }
+        // Insertamos telefono
+        if (isset($infos['telefono'])) {
+            foreach ($infos['telefono'] as $telefono) {
+                Empresa::agregarTelefono(CUENTA_ID, $contacto_id, $telefono['valor'], $telefono['modo']);
+            }
+        }
+        // Insertamos email
+        if (isset($infos['email'])) {
+            foreach ($infos['email'] as $email) {
+                Empresa::agregarEmail(CUENTA_ID, $contacto_id, $email['valor']);
+            }
+        }
+        // Insertamos mensajeria
+        if (isset($infos['mensajeria'])) {
+            foreach ($infos['mensajeria'] as $mensajeria) {
+                Empresa::agregarMensajeria(CUENTA_ID, $contacto_id, $mensajeria['valor'], $mensajeria['servicios']);
+            }
+        }
+        // Insertamos web
+        if (isset($infos['web'])) {
+            foreach ($infos['web'] as $web) {
+                Empresa::agregarWeb(CUENTA_ID, $contacto_id, $web['valor']);
+            }
+        }
+        // Insertamos redes sociales
+        if (isset($infos['rsociales'])) {
+            foreach ($infos['rsociales'] as $rsociales) {
+                Empresa::agregarRSociales(CUENTA_ID, $contacto_id, $rsociales['valor'], $rsociales['servicios']);
+            }
+        }
+        // Insertamos direccion
+        if (isset($infos['direccion'])) {
+            foreach ($infos['direccion'] as $direccion) {
+                Empresa::agregarDireccion(CUENTA_ID, $contacto_id, $direccion['valor'], $direccion['ciudad'], $direccion['estado'], $direccion['pais'], $direccion['cpostal']);
+            }
+        }
     }
 
 }
