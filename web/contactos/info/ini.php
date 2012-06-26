@@ -1,11 +1,47 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 23-Jun-12
+ * @fechaModificacion: 23-Jun-12
+ * @version: 1.0
+ * @descripcion: Muestra información detallada de un contacto
+ */
 include '../../../app/inicio.php';
 
+// Obtenemos el id del contacto
 if (isset($_GET['id']) and !empty($_GET['id'])) {
     $contacto_id = $_GET['id'];
 } else {
     header ('location: /contactos');
 }
+
+// Cargamos a todos los contactos
+$contactos = Contacto::obtenerTodos(CUENTA_ID);
+// Obtenemos contacto seleccionado
+if (isset($contactos[$contacto_id])) {
+    $contacto = $contactos[$contacto_id];
+} else {
+    header ('location: /contactos');
+}
+
+// Obtenemos foto de perfil
+// TODO: Agregar foto del contacto
+$thumbnail = array('uri' => '/media/imgs/maleContact.jpg', 'alt' => $contacto['nombre_completo']);
+if ($contacto['tipo'] == 1) {
+    // Si es persona
+    if ($contacto['sexo'] == 1) {
+        // Si es hombre
+        $thumbnail['uri'] = '/media/imgs/maleContact.jpg';
+    } else {
+        // Si es mujer
+        $thumbnail['uri'] = '/media/imgs/famaleContact.jpg';
+    }
+} elseif ($contacto['tipo'] == 2) {
+    // Si es empresa
+    $thumbnail['uri'] = '/media/imgs/businessContact.jpg';
+}
+// Cargamos algunos datos varios
+$paises = CamposContacto::obtenerPaises();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -34,9 +70,13 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
                 <!--Workspace Header begins-->
                 <div class="workspaceHeader interior10">
                     <header>
-                        <div class="userPic"><img src="/media/imgs/maleContact.jpg" alt="Hombre" /></div>
+                        <div class="userPic"><img src="<?php echo $thumbnail['uri'] ?>" alt="<?php echo $thumbnail['alt'] ?>" /></div>
                         <div class="floatLeft">
-                            <h1>Federico Michell Vijil</h1>
+                            <h1><?php echo $contacto['nombre_completo'] ?></h1>
+                            <?php if (!empty($contacto['descripcion'])) { ?>
+                            <div class="linea5"></div>
+                            <h2 class="subtitulo"><?php echo $contacto['descripcion'] ?></h2>
+                            <?php } ?>
                             <div class="linea5"></div>
                             <h2 class="subtitulo">Gerente General de <a href="#">tuplan.net</a></h2>
                         </div>
@@ -50,7 +90,9 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
                     <div class="opciones">
                         <ul>
                             <li><a href="/contactos/<?php echo $contacto_id ?>/info" class="activo">Información del contacto</a></li>
+                            <?php if ($contacto['tipo'] == 1) { // Opcion solo disponible para personas ?>
                             <li><a href="/contactos/<?php echo $contacto_id ?>/tareas">Tareas Pendientes</a></li>
+                            <?php } ?>
                             <li><a href="/contactos/<?php echo $contacto_id ?>/comentarios">Comentarios</a></li>
                         </ul>
                     </div>
@@ -60,37 +102,89 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
                 <div class="workspaceArea interior10 contactInfo">
                     <div class="linea10"></div>
                     <dl class="horizontal">
+                    <?php
+                    if (isset($contacto['telefono'])) {
+                        ?>
                         <dt>Teléfono(s):</dt>
                         <dd>
-                            <div class="elemento">+ (505) 2265 7879 <span class="nota">Casa</span></div>
-                            <div class="elemento">+ (505) 8873 3432 <span class="nota">Movil</span></div>
+                            <?php foreach ($contacto['telefono'] as $telefono) { ?>
+                            <div class="elemento"><?php echo $telefono['valor'] ?> <span class="nota"><?php echo $telefono['modo'] ?></span></div>
+                            <?php } ?>
                         </dd>
+                        <?php
+                    }
+                    if (isset($contacto['email'])) {
+                        ?>
                         <dt>Email(s):</dt>
                         <dd>
-                            <div class="elemento"><a href="mailto:federicomichell@gmail.com">federicomichell@gmail.com</a> <span class="nota">Casa</span></div>
-                            <div class="elemento"><a href="mailto:federico.michell@gmail.com">federico.michell@plazavip.com</a> <span class="nota">Trabajo</span></div>
+                            <?php foreach ($contacto['email'] as $email) { ?>
+                            <div class="elemento">
+                                <a href="mailto:<?php echo $email['valor'] ?>"><?php echo $email['valor'] ?></a>
+                                <span class="nota"><?php echo $email['modo'] ?></span>
+                            </div>
+                            <?php } ?>
                         </dd>
+                        <?php
+                    }
+                    if (isset($contacto['mensajeria'])) {
+                        ?>
                         <dt>Mensajeria:</dt>
                         <dd>
-                            <div class="elemento"><a href="#">federico.michell</a> en Skype <span class="nota">Personal</span></div>
-                            <div class="elemento"><a href="#">federico_michell@hotmail.com</a> en MSN <span class="nota">Personal</span></div>
+                            <?php foreach ($contacto['mensajeria'] as $mensajeria) { ?>
+                            <div class="elemento">
+                                <a href="<?php echo $mensajeria['valor'] ?>" target="_blank"><?php echo $mensajeria['valor'] ?></a>
+                                <?php if ($mensajeria['servicio']) echo 'en ' . $mensajeria['servicio']; ?>
+                                <span class="nota"><?php echo $mensajeria['modo'] ?></span>
+                            </div>
+                            <?php } ?>
                         </dd>
+                        <?php
+                    }
+                    if (isset($contacto['web'])) {
+                        ?>
                         <dt>Sitio(s) web:</dt>
                         <dd>
-                            <div class="elemento"><a href="http://federicomichell.com" target="_blank">http://federicomichell.com</a> <span class="nota">Trabajo</span></div>
-                            <div class="elemento"><a href="http://federicomichell.info" target="_blank">http://federicomichell.info</a> <span class="nota">Personal</span></div>
+                            <?php foreach ($contacto['web'] as $web) { ?>
+                            <div class="elemento">
+                                <a href="<?php echo $web['valor'] ?>" target="_blank"><?php echo $web['valor'] ?></a>
+                                <span class="nota"><?php echo $web['modo'] ?></span>
+                            </div>
+                            <?php } ?>
                         </dd>
+                        <?php
+                    }
+                    if (isset($contacto['rsociales'])) {
+                        ?>
+                        <dt>Redes sociales:</dt>
+                        <dd>
+                            <?php foreach ($contacto['rsociales'] as $rsociales) { ?>
+                            <div class="elemento">
+                                <a href="<?php echo $rsociales['valor'] ?>" target="_blank"><?php echo $rsociales['valor'] ?></a>
+                                <?php if ($rsociales['servicio']) echo 'en ' . $rsociales['servicio']; ?>
+                                <span class="nota"><?php echo $rsociales['modo'] ?></span>
+                            </div>
+                            <?php } ?>
+                        </dd>
+                        <?php
+                    }
+                    if (isset($contacto['direccion'])) {
+                        ?>
                         <dt>Dirección(es):</dt>
                         <dd class="direccion">
+                            <?php foreach ($contacto['direccion'] as $direccion) { ?>
                             <div class="elemento">
-                                <span class="nota">Casa</span>
-                                Km 15.5 Carretera Sur. Quinta Marianita.<br />Managua, Nicaragua
+                                <span class="nota"><?php echo $direccion['modo'] ?></span>
+                                <?php
+                                echo $direccion['valor_text'] . '<br />';
+                                $tmp = array($direccion['ciudad'], $direccion['estado'], $paises[$direccion['pais_id']]['pais']);
+                                echo implode(', ', array_filter($tmp));
+                                ?>
                             </div>
-                            <div class="elemento">
-                                <span class="nota">Trabajo</span>
-                                BDF Metrocentro 1/2 cuadra abajo<br />Managua, Nicaragua
-                            </div>
+                            <?php } ?>
                         </dd>
+                        <?php
+                    }
+                    ?>
                     </dl>
                 </div>
                 <!--Workspace Area ends-->

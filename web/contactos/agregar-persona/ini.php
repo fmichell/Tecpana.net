@@ -5,7 +5,7 @@ include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';
 
 if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
     // Insertamos contacto
-    $resultado = Persona::agregar(CUENTA_ID, $_POST['nombre'], $_POST['apellidos'], $_POST['sexo'], $_POST['titulo'], $_POST['cargo']);
+    $resultado = Persona::agregar(CUENTA_ID, $_POST['nombre'], $_POST['apellidos'], $_POST['sexo'], $_POST['titulo'], $_POST['profesion']);
     $infos = Contacto::prepararInfo($_POST);
 
     if (!$resultado) {
@@ -110,8 +110,8 @@ $paises = CamposContacto::obtenerPaises();
                         <dl class="horizontal">
                             <dt><label for="titulo">Título</label></dt>
                             <dd><input type="text" name="titulo" class="ancho75es" /></dd>
-                            <dt><label for="cargo">Cargo</label></dt>
-                            <dd><input type="text" name="cargo" class="ancho465es" /></dd>
+                            <dt><label for="profesion">Profesión</label></dt>
+                            <dd><input type="text" name="profesion" class="ancho465es" /></dd>
                             <dt><label for="empresa">Empresa</label></dt>
                             <dd><input type="text" name="empresa" class="ancho465es" /></dd>
                             <dt><label for="telefono">Teléfono(s)</label></dt>

@@ -4,9 +4,9 @@ require_once 'CamposContacto.php';
 class Persona extends Contacto
 {
 	// Agregar empresa
-    static public function agregar ($cuentaId, $nombre, $apellidos = null, $sexo = null, $titulo = null, $cargo = null, $empresaId = null)
+    static public function agregar ($cuentaId, $nombre, $apellidos = null, $sexo = null, $titulo = null, $profesion = null, $empresaId = null)
     {
-        return parent::insertarContacto($cuentaId, 1, $nombre, $apellidos, $sexo, $titulo, $cargo, $empresaId);
+        return parent::insertarContacto($cuentaId, 1, $nombre, $apellidos, $sexo, $titulo, $profesion, $empresaId);
     }
     
     // Agregar info

@@ -94,7 +94,7 @@ class Contacto
                       'cpostal:texto'           => $cpostal,
                       'fecha_creacion:fecha'    => $ahora,
                       'fecha_modificacion:fecha' => $ahora));
-                      
+
         return $bd->ejecutar();
     }
 
@@ -116,8 +116,9 @@ class Contacto
             if (!in_array($llaveCampo, $campos))
                 continue;
 
-            if (!is_array($campo) and !empty($campo)) {
-                $retorno[$llaveCampo] = $campo;
+            if (!is_array($campo)) {
+                if (!empty($campo))
+                    $retorno[$llaveCampo] = $campo;
                 continue;
             }
 
@@ -151,8 +152,6 @@ class Contacto
                     $retorno[$llaveCampo][$llave]['cpostal'] = null;
                 }
             }
-
-
         }
 
         return $retorno;

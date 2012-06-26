@@ -160,6 +160,9 @@ select.ancho465es {
     height:20px;
 }
 
+.frmContacto textarea {
+    line-height: 1.4em;
+}
 .frmContacto select, .frmContacto textarea {
     font-size:14px;
 }

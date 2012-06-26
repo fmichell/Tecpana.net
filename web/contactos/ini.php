@@ -41,6 +41,12 @@ $contactos = Contacto::obtenerTodos(CUENTA_ID);
                 <!--Workspace Header ends-->
                 <!--Workspace Toolbar begins-->
                 <div class="workspaceToolbar">
+                    <div id="filtrar" class="btnsFiltro">
+                        <div class="first selected" id="fTodos">Todos</div>
+                        <div id="fPersonas">Personas</div>
+                        <div id="fEmpresas">Empresas</div>
+                        <div id="fGrupos" class="last">Grupos</div>
+                    </div>
                     <div class="paginas">
                         <a href="#">&laquo; primera</a>
                         &hellip;
@@ -61,7 +67,9 @@ $contactos = Contacto::obtenerTodos(CUENTA_ID);
                             <a href="javascript:;" class="select_all">Seleccionar todos</a> | <a href="javascript:;" class="undo_select">Deshacer selección</a> 
                         </div>
                     </div>
-                    <?php include 'ajax/ajaxListarContactos.php'; ?>
+                    <div id="contactos">
+                        <!--Lista de contactos-->
+                    </div>
                     <div class="auxiliaryToolbar">
                         <a href="#" class="eliminar">Eliminar el contacto seleccionado</a>
                         <div class="seleccion">
@@ -125,8 +133,22 @@ function actualizarSeleccion() {
         $('.auxiliaryToolbar').fadeOut();
     }
 }
+function cargarContactos(filtro) {
+    $('#contactos').fadeTo('fast', 0.10, function() {
+        $('#contactos').load('/contactos/ajax/ajaxListarContactos.php', {'filtro':filtro}, function(respuesta, estado) {
+            if (estado == 'success') {
+                $('#contactos').fadeTo("fast", 1);
+                ajustarAlturaWorkspace();
+            } else {
+                alert('Ocurrió un error al cargar el listado')
+            }
+        });
+    });
+}
 $(document).on("ready", function() {
-    $('.check_contacto').click(function() {
+    cargarContactos(null);
+
+    $('.check_contacto').live('click', function() {
         actualizarSeleccion();
     });
     
@@ -138,6 +160,13 @@ $(document).on("ready", function() {
     $('.undo_select').click(function() {
         $('.check_contacto').attr('checked', false);
         actualizarSeleccion();
+    });
+
+    $('#filtrar > div').click(function() {
+        var id = $(this).attr('id');
+        cargarContactos(id);
+        $('#filtrar > div').removeClass('selected');
+        $(this).addClass('selected');
     });
 });
 </script>
