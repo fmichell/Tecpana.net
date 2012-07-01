@@ -51,4 +51,10 @@ class Empresa extends Contacto
         $tipo = CamposContacto::$tiposInfo['direccion_e']['id'];
         return self::insertarInfo($cuentaId, $contactoId, $tipo, null, $direccion, null, null, 0, $ciudad, $estado, $pais, $cpostal);
     }
+
+    // Editar empresa
+    static public function editar ($cuentaId, $contactoId, $razonSocial, $giro = null)
+    {
+        return parent::editarContacto($cuentaId, $contactoId, 2, $razonSocial, null, null, null, $giro);
+    }
 }

@@ -45,4 +45,16 @@ class Persona extends Contacto
         $tipo = CamposContacto::$tiposInfo['direccion']['id'];
         return self::insertarInfo($cuentaId, $contactoId, $tipo, null, $direccion, $modo, null, 0, $ciudad, $estado, $pais, $cpostal);
     }
+
+    static public function agregarCargo ($cuentaId, $contactoId, $cargo)
+    {
+        $tipo = CamposContacto::$tiposInfo['cargo']['id'];
+        return self::insertarInfo($cuentaId, $contactoId, $tipo, $cargo);
+    }
+
+    // Editar persona
+    static public function editar ($cuentaId, $contactoId, $nombre, $apellidos = null, $sexo = null, $titulo = null, $profesion = null, $empresaId = null)
+    {
+        return parent::editarContacto($cuentaId, $contactoId, 1, $nombre, $apellidos, $sexo, $titulo, $profesion, $empresaId);
+    }
 }

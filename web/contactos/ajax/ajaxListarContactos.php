@@ -2,34 +2,61 @@
 /**
  * @autor: Federico Michell Vijil
  * @fechaCreacion: 22-Jun-12
- * @fechaModificacion: 23-Jun-12
+ * @fechaModificacion: 27-Jun-12
  * @version: 1.0
  * @descripcion: Carga y filtra el listado de contactos.
  */
 include_once '../../../app/inicio.php';
+// Cargamos a todos los contactos en un arraglo independiente
+// a los resultados de filtros o busquedas para que sirva de helper
+$listaContactos = Contacto::obtenerTodosSinInfo(CUENTA_ID);
 
-// Obtenemos todos los contactos
-$contactos = Contacto::obtenerTodos(CUENTA_ID);
-// Creamos objeto tabla y aplicamos filtros
-$tabla = new Tabla($contactos);
-if (isset($_POST['filtro']) and !empty($_POST['filtro'])) {
-    switch ($_POST['filtro']) {
-        case 'fTodos':
-            break;
-        case 'fPersonas':
-            $tabla->filtrar('{tipo} = 1');
-            break;
-        case 'fEmpresas':
-            $tabla->filtrar('{tipo} = 2');
-            break;
-        case 'fGrupos':
-            break;
-        default:
-            break;
+if (isset($_POST['nombre']) and !empty($_POST['nombre'])) {
+    // Obtenemos los contactos filtrados
+    $contactos = Contacto::buscar(CUENTA_ID, $_POST['nombre']);
+    $tabla = new Tabla($contactos);
+} else {
+    // Obtenemos todos los contactos
+    $contactos = Contacto::obtenerTodos(CUENTA_ID);
+    // Creamos objeto tabla y aplicamos filtros
+    $tabla = new Tabla($contactos);
+    if (isset($_POST['tipo']) and !empty($_POST['tipo'])) {
+        switch ($_POST['tipo']) {
+            case 'todos':
+                break;
+            case 'personas':
+                $tabla->filtrar('{tipo} = 1');
+                break;
+            case 'empresas':
+                $tabla->filtrar('{tipo} = 2');
+                break;
+            case 'grupos':
+                break;
+            default:
+                break;
+        }
     }
 }
 // Obtenemos resultado
 $contactos = $tabla->obtener();
+
+// Paginamos
+$contactosXPagina = 5;
+if (isset($_POST['pagina']) and !empty($_POST['pagina'])) {
+    $pagina = $_POST['pagina'];
+    $posicion =  ($pagina -1) * $contactosXPagina;
+} else {
+    $pagina = 1;
+    $posicion = 0;
+}
+$totalContactos = $tabla->obtenerCantidad();
+// Calculando ultima pagina
+$ultimaPagina = ceil($totalContactos/$contactosXPagina);
+// Limitando resultados
+$tabla->limitar($posicion, $contactosXPagina);
+// Obtenemos resultado
+$contactos = $tabla->obtener();
+
 // Obtenemos el ultimo elemento para luego aplicarle la clase CSS last-child
 $ultimo = end($contactos); $last_child = null;
 
@@ -54,7 +81,11 @@ foreach ($contactos as $contactoId => $contacto) {
             $trabajo['profesion'] = $contacto['descripcion'];
         }
         if ($contacto['empresa_id']) {
-            $trabajo['empresa'] = $contactos[$contacto['empresa_id']]['nombre_completo'];
+            $trabajo['empresa'] = $listaContactos[$contacto['empresa_id']]['nombre_completo'];
+        }
+        if (isset($contacto['cargo'])) {
+            $cargo = current($contacto['cargo']);
+            $trabajo['cargo'] = $cargo['valor'];
         }
     }
 
@@ -107,20 +138,26 @@ foreach ($contactos as $contactoId => $contacto) {
 
         <?php
         // Mostrando info de trabajo (solo personas)
-        if (isset($trabajo['profesion']) and isset($trabajo['empresa'])) {
+        if (isset($trabajo['cargo']) and isset($trabajo['empresa'])) {
             ?>
             <div class="info colum">
-                <?php echo $trabajo['profesion'] ?> en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a>
+                <?php echo $trabajo['cargo'] ?> en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a>
+            </div>
+            <?php
+        } elseif (isset($trabajo['empresa'])) {
+            ?>
+            <div class="info colum">
+                <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a>
             </div>
             <?php
         } elseif (isset($trabajo['profesion'])) {
             ?><div class="info colum"><?php echo $trabajo['profesion'] ?></div><?php
-        } elseif (isset($trabajo['empresa'])) {
-            ?><a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a><?php
         } ?>
         <div class="clear"><!--empty--></div>
     </div>
 </article>
 <?php
+//Si es la ultima pagina se carga este div
+if ($pagina == $ultimaPagina) { ?><div class="ultimaPagina"><!--Ultima pagina--></div><?php }
 }
 ?>

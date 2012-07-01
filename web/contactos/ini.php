@@ -3,7 +3,6 @@ include '../../app/inicio.php';
 
 // Obtenemos todos los contactos
 $contactos = Contacto::obtenerTodos(CUENTA_ID);
-//util_depurar_var($contactos);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -42,20 +41,15 @@ $contactos = Contacto::obtenerTodos(CUENTA_ID);
                 <!--Workspace Toolbar begins-->
                 <div class="workspaceToolbar">
                     <div id="filtrar" class="btnsFiltro">
-                        <div class="first selected" id="fTodos">Todos</div>
-                        <div id="fPersonas">Personas</div>
-                        <div id="fEmpresas">Empresas</div>
-                        <div id="fGrupos" class="last">Grupos</div>
+                        <div class="first selected" id="todos">Todos</div>
+                        <div id="personas">Personas</div>
+                        <div id="empresas">Empresas</div>
+                        <div id="grupos" class="last">Grupos</div>
                     </div>
                     <div class="paginas">
-                        <a href="#">&laquo; primera</a>
-                        &hellip;
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        &hellip;
-                        <a href="#">última &raquo;</a>
+                        <a href="javascript:;" id="firstPage">Primera página</a>
+                        <a href="javascript:;" id="prevPage">Página anterior</a>
+                        <a href="javascript:;" id="nextPage">Página siguiente</a>
                     </div>
                 </div>
                 <!--Workspace Toolbar ends-->
@@ -120,7 +114,17 @@ $contactos = Contacto::obtenerTodos(CUENTA_ID);
     include '../includes/pie.php';
     ?>
 <script type="text/javascript">
-function actualizarSeleccion() {
+var intervalo;
+var tipo = 'todos';
+var pagina = 1;
+var nombreBuscado = '';
+
+function actualizarSeleccion(fade) {
+    if (fade == 'off') {
+        fade = false;
+    } else {
+        fade = true;
+    }
     var seleccionados = $(".check_contacto:checked").length;
     if (seleccionados >= 1) {
         if (seleccionados == 1) {
@@ -128,45 +132,128 @@ function actualizarSeleccion() {
         } else {
             $('.auxiliaryToolbar > .eliminar').text('Eliminar los ' + seleccionados + ' contactos seleccionados');
         }
-        $('.auxiliaryToolbar').fadeIn();
+        if (fade) {
+            $('.auxiliaryToolbar').fadeIn();
+        } else {
+            $('.auxiliaryToolbar').show();
+        }
     } else {
-        $('.auxiliaryToolbar').fadeOut();
+        if (fade) {
+            $('.auxiliaryToolbar').fadeOut();
+        } else {
+            $('.auxiliaryToolbar').hide();
+        }
     }
 }
-function cargarContactos(filtro) {
+function cargarContactos(filtroNombre, filtroTipo, filtroPagina) {
     $('#contactos').fadeTo('fast', 0.10, function() {
-        $('#contactos').load('/contactos/ajax/ajaxListarContactos.php', {'filtro':filtro}, function(respuesta, estado) {
+        $('#contactos').load('/contactos/ajax/ajaxListarContactos.php', {'nombre':filtroNombre, 'tipo':filtroTipo, 'pagina':filtroPagina}, function(respuesta, estado) {
             if (estado == 'success') {
+                //Ocultando seleccion
+                actualizarSeleccion('off');
+                //Mostrando resultados
                 $('#contactos').fadeTo("fast", 1);
-                ajustarAlturaWorkspace();
+                //Calculando altura
+                var alto = $('#contactos').height()+185;
+                $("#Toolbar").css({"height": alto+'px'});
+                //Paginando
+                if ($('.ultimaPagina').length) {
+                    var ultima = true;
+                } else {
+                    var ultima = false;
+                }
+                if (filtroPagina == 1) {
+                    if (ultima) {
+                        $('#firstPage, #prevPage, #nextPage').hide();
+                    } else {
+                        $('#firstPage, #prevPage').hide();
+                        $('#nextPage').show();
+                    }
+                } else if (filtroPagina == 2) {
+                    $('#firstPage').hide();
+                    if (ultima) {
+                        $('#nextPage').hide();
+                        $('#prevPage').show();
+                    } else {
+                        $('#prevPage, #nextPage').show();
+                    }
+                } else if (ultima) {
+                    $('#nextPage').hide();
+                    $('#firstPage, #prevPage').show();
+                } else {
+                    $('#firstPage, #prevPage, #nextPage').show();
+                }
             } else {
                 alert('Ocurrió un error al cargar el listado')
             }
         });
     });
 }
+function paginar(paso)
+{
+    if (paso == 0) {
+        pagina = 1;
+    } else {
+        pagina += paso;
+    }
+    cargarContactos('', tipo, pagina);
+}
+function buscarNombre() {
+    tipo = 'todos'; pagina = 1;
+    var nombre = $('#buscar_contacto').val();
+    if (nombre != '') {
+        cargarContactos(nombre, null, pagina);
+    } else {
+        cargarContactos('', tipo, pagina);
+    }
+    $('#filtrar > div').removeClass('selected');
+    $('#todos').addClass('selected');
+}
 $(document).on("ready", function() {
-    cargarContactos(null);
+    cargarContactos('', 'todos', 1);
 
     $('.check_contacto').live('click', function() {
         actualizarSeleccion();
     });
-    
     $('.select_all').click(function() {
         $('.check_contacto').attr('checked', true);
         actualizarSeleccion();
     });
-    
     $('.undo_select').click(function() {
         $('.check_contacto').attr('checked', false);
         actualizarSeleccion();
     });
 
     $('#filtrar > div').click(function() {
-        var id = $(this).attr('id');
-        cargarContactos(id);
+        tipo = $(this).attr('id');
+        pagina = 1;
+        cargarContactos('', tipo, pagina);
+        $('#buscar_contacto').val('');
         $('#filtrar > div').removeClass('selected');
         $(this).addClass('selected');
+    });
+
+    $('#firstPage').click(function() {
+        paginar(0);
+    });
+    $('#prevPage').click(function() {
+        paginar(-1);
+    });
+    $('#nextPage').click(function() {
+        paginar(1);
+    });
+
+    $('#buscar_contacto').keyup(function(evento) {
+        var nombre = $(this).val();
+        if (nombreBuscado != nombre) {
+            nombreBuscado = nombre;
+            clearTimeout(intervalo);
+            intervalo = setTimeout('buscarNombre()', 600);
+        } else if (evento.which = 13) {
+            clearTimeout(intervalo);
+            buscarNombre();
+        }
+
     });
 });
 </script>

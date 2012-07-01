@@ -71,6 +71,10 @@ abstract class CamposContacto
                                                                     '2' => 'Trabajo',
                                                                     '3' => 'Casa')
                                                             ),
+                                        'cargo'         => array(
+                                                        'id' => 14,
+                                                        'llave' => 'cargo',
+                                                        'titulo' => 'Cargo'),
                                         // Empresas
                                         'productos'     => array(
                                                         'id' => 7,

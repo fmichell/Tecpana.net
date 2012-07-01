@@ -29,12 +29,21 @@ if (isset($contactos[$contacto_id])) {
 $thumbnail = array('uri' => '/media/imgs/maleContact.jpg', 'alt' => $contacto['nombre_completo']);
 if ($contacto['tipo'] == 1) {
     // Si es persona
+    // Definimos thumbnail general segun el sexo
     if ($contacto['sexo'] == 1) {
         // Si es hombre
         $thumbnail['uri'] = '/media/imgs/maleContact.jpg';
     } else {
         // Si es mujer
         $thumbnail['uri'] = '/media/imgs/famaleContact.jpg';
+    }
+    // Obtenemos datos laborales
+    if (!empty($contacto['empresa_id'])) {
+        $trabajo['empresa'] = $contactos[$contacto['empresa_id']]['nombre_completo'];
+        if (isset($contacto['cargo'])) {
+            $cargo = current($contacto['cargo']);
+            $trabajo['cargo'] = $cargo['valor'];
+        }
     }
 } elseif ($contacto['tipo'] == 2) {
     // Si es empresa
@@ -77,10 +86,21 @@ $paises = CamposContacto::obtenerPaises();
                             <div class="linea5"></div>
                             <h2 class="subtitulo"><?php echo $contacto['descripcion'] ?></h2>
                             <?php } ?>
+                            <?php if (isset($trabajo['cargo']) and isset($trabajo['empresa'])) { ?>
                             <div class="linea5"></div>
-                            <h2 class="subtitulo">Gerente General de <a href="#">tuplan.net</a></h2>
+                            <h2 class="subtitulo"><?php echo $trabajo['cargo'] ?> en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a></h2>
+                            <?php } elseif (isset($trabajo['empresa'])) { ?>
+                            <div class="linea5"></div>
+                            <h2 class="subtitulo">Trabaja en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a></h2>
+                            <?php } ?>
                         </div>
-                        <div class="mainBoton"><a href="/contactos/<?php echo $contacto_id ?>/editar-persona" class="botong botong_azul">Editar contacto</a></div>
+                        <div class="mainBoton">
+                            <?php if ($contacto['tipo'] == 1) { ?>
+                            <a href="/contactos/<?php echo $contacto_id ?>/editar-persona" class="botong botong_azul">Editar contacto</a>
+                            <?php } elseif ($contacto['tipo'] == 2) { ?>
+                            <a href="/contactos/<?php echo $contacto_id ?>/editar-empresa" class="botong botong_azul">Editar contacto</a>
+                            <?php } ?>
+                        </div>
                         <div class="linea5"></div>
                     </header>
                 </div>

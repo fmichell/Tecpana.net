@@ -54,7 +54,6 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
             }
         }
     }
-
 }
 
 // Obteniendo listas generales
@@ -108,9 +107,9 @@ $paises = CamposContacto::obtenerPaises();
                         <div class="linea10"></div>
                         <dl class="horizontal">
                             <dt><label for="giro">Giro de la empresa</label></dt>
-                            <dd><textarea type="text" name="giro" cols="10" rows="5" class="ancho465es"></textarea></dd>
+                            <dd><textarea type="text" name="giro" id="giro" cols="10" rows="5" class="ancho465es"></textarea></dd>
                             <dt><label for="productos">Productos y/o servicios</label></dt>
-                            <dd><textarea type="text" name="productos" cols="10" rows="5" class="ancho465es"></textarea></dd>
+                            <dd><textarea type="text" name="productos" id="productos" cols="10" rows="5" class="ancho465es"></textarea></dd>
                             <dt><label for="telefono">Teléfono(s)</label></dt>
                             <dd>
                                 <div class="elemento ejemplo">
@@ -125,7 +124,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="tel" name="telefono[]" class="ancho300es valor" />
+                                        <input type="tel" name="telefono[]" id="telefono" class="ancho300es valor" />
                                         <select name="telefonoModo[]" class="ancho85es">
                                             <?php foreach ($campos['telefono_e']['modo'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -147,7 +146,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="email" name="email[]" class="ancho435es valor" />
+                                        <input type="email" name="email[]" id="email" class="ancho435es valor" />
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
                                     </div>
@@ -169,7 +168,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="text" name="mensajeria[]" class="ancho300es valor" />
+                                        <input type="text" name="mensajeria[]" id="mensajeria" class="ancho300es valor" />
                                         <select name="mensajeriaServicios[]" class="ancho85es">
                                             <?php foreach ($campos['mensajeria_e']['servicios'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -191,7 +190,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="url" name="web[]" class="ancho435es valor" />
+                                        <input type="url" name="web[]" id="web" class="ancho435es valor" />
                                         <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                         <div class="clear"><!--vacio--></div>
                                     </div>
@@ -213,7 +212,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="text" name="rsociales[]" class="ancho300es valor" />
+                                        <input type="text" name="rsociales[]" id="rsociales" class="ancho300es valor" />
                                         <select name="rsocialesServicios[]" class="ancho85es">
                                             <?php foreach ($campos['rsociales_e']['servicios'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -255,7 +254,7 @@ $paises = CamposContacto::obtenerPaises();
                                 <div class="listado">
                                     <div class="elemento">
                                         <div class="linea">
-                                            <input type="text" name="direccion[]" class="ancho465es direccion valor" placeholder="Dirección" />
+                                            <input type="text" name="direccion[]" id="direccion" class="ancho465es direccion valor" placeholder="Dirección" />
                                             <div class="clear"><!--vacio--></div>
                                         </div>
                                         <div class="linea">
@@ -283,7 +282,7 @@ $paises = CamposContacto::obtenerPaises();
                         </dl>
                         <div class="linea10"></div>
                         <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Agregar Contacto</a>
-                        <a class="boton_gris floatLeft btnForm" href="#">Cancelar</a>
+                        <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel">Cancelar</a>
                         <div class="linea10"></div>
                     </div>
                     <!--Workspace Area ends-->
@@ -305,6 +304,14 @@ $paises = CamposContacto::obtenerPaises();
     $(document).on("ready", function() {
         $("#btnSubmit").click(function() {
             $("#frmAgregarContacto").submit();
+        });
+        $("#btnCancel").click(function() {
+            var respuesta = confirm('Está seguro que desea cancelar?');
+            if (respuesta) {
+                window.location.href = '/contactos';
+            } else {
+                return false;
+            }
         });
     });
 </script>

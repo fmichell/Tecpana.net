@@ -767,8 +767,10 @@ span.font_size_10 {
 }
 
 .paginas a {
-    padding:0 2px;
+    padding:0 4px;
     background:none;
+    line-height: 27px;
+    font-size: 11px;
 }
 
 .paginas a:hover {
@@ -959,6 +961,7 @@ dl.horizontal dt {
     margin-right:-170px;
     margin-left:10px;
     width:160px;
+    line-height: 1.3em;
 }
 
 .wCheckbox .contact {

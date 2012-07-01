@@ -1,11 +1,39 @@
 <?php
 include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Persona.php';
+include SISTEMA_RAIZ . '/modelos/Empresa.php';
 include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';
 
 if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
+    // Capturamos empresa
+    if (empty($_POST['empresa'])) {
+        $empresa = false; $empresaId = null;
+    } else {
+        if ($_POST['empresa_id'] == 'nueva') {
+            // Si la empresa es nueva, la creamos
+            $empresaId = Empresa::agregar(CUENTA_ID, $_POST['empresa']);
+        } else {
+            // Si la empresa existe, primero verificamos que asi sea
+            $tmpEmpresa = Contacto::obtener(CUENTA_ID, $_POST['empresa_id']);
+            if ($tmpEmpresa['nombre_completo'] == $_POST['empresa']) {
+                // Si existe la tomamos
+                $empresaId = $tmpEmpresa['contacto_id'];
+            } else {
+                // Si no existe la creamos
+                $empresaId = Empresa::agregar(CUENTA_ID, $_POST['empresa']);
+            }
+        }
+        // Si todo esta correcto, definimos empresa = true
+        if ($empresaId) {
+            $empresa = true;
+        } else {
+            $empresa = false;
+            $empresaId = null;
+        }
+    }
+
     // Insertamos contacto
-    $resultado = Persona::agregar(CUENTA_ID, $_POST['nombre'], $_POST['apellidos'], $_POST['sexo'], $_POST['titulo'], $_POST['profesion']);
+    $resultado = Persona::agregar(CUENTA_ID, $_POST['nombre'], $_POST['apellidos'], $_POST['sexo'], $_POST['titulo'], $_POST['profesion'], $empresaId);
     $infos = Contacto::prepararInfo($_POST);
 
     if (!$resultado) {
@@ -13,6 +41,10 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
     } else {
         $contacto_id = &$resultado;
         // Insertamos info
+        // Insertamos el cargo
+        if (isset($infos['cargo'])) {
+            Persona::agregarCargo(CUENTA_ID, $contacto_id, $infos['cargo']);
+        }
         // Insertamos telefono
         if (isset($infos['telefono'])) {
             foreach ($infos['telefono'] as $telefono) {
@@ -109,11 +141,19 @@ $paises = CamposContacto::obtenerPaises();
                         <div class="linea10"></div>
                         <dl class="horizontal">
                             <dt><label for="titulo">Título</label></dt>
-                            <dd><input type="text" name="titulo" class="ancho75es" /></dd>
+                            <dd><input type="text" name="titulo" id="titulo" class="ancho85es" /></dd>
                             <dt><label for="profesion">Profesión</label></dt>
-                            <dd><input type="text" name="profesion" class="ancho465es" /></dd>
+                            <dd><input type="text" name="profesion" id="profesion" class="ancho465es" /></dd>
                             <dt><label for="empresa">Empresa</label></dt>
-                            <dd><input type="text" name="empresa" class="ancho465es" /></dd>
+                            <dd><input type="text" name="empresa" id="empresa" class="ancho465es" />
+                                <input type="hidden" name="empresa_id" id="empresa_id" value="nueva">
+                            </dd>
+                        </dl>
+                        <dl class="horizontal" id="divCargo" style="display: none">
+                            <dt><label for="cargo">Cargo</label></dt>
+                            <dd><input type="text" name="cargo" id="cargo" class="ancho465es" /></dd>
+                        </dl>
+                        <dl class="horizontal">
                             <dt><label for="telefono">Teléfono(s)</label></dt>
                             <dd>
                                 <div class="elemento ejemplo">
@@ -128,7 +168,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="tel" name="telefono[]" class="ancho300es valor" />
+                                        <input type="tel" name="telefono[]" id="telefono" class="ancho300es valor" />
                                         <select name="telefonoModo[]" class="ancho85es">
                                             <?php foreach ($campos['telefono']['modo'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -155,7 +195,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="email" name="email[]" class="ancho300es valor" />
+                                        <input type="email" name="email[]" id="email" class="ancho300es valor" />
                                         <select name="emailModo[]" class="ancho85es">
                                             <?php foreach ($campos['email']['modo'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -185,10 +225,9 @@ $paises = CamposContacto::obtenerPaises();
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
-                                
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
+                                        <input type="text" name="mensajeria[]" id="mensajeria" style="width:218px;" class="valor" />
                                         <select name="mensajeriaServicios[]" style="width:109px">
                                             <?php foreach ($campos['mensajeria']['servicios'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -221,7 +260,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="url" name="web[]" class="ancho300es valor" />
+                                        <input type="url" name="web[]" id="web" class="ancho300es valor" />
                                         <select name="webModo[]" class="ancho85es">
                                             <?php foreach ($campos['web']['modo'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -253,7 +292,7 @@ $paises = CamposContacto::obtenerPaises();
                                 </div>
                                 <div class="listado">
                                     <div class="elemento">
-                                        <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
+                                        <input type="text" name="rsociales[]" id="rsociales" style="width:218px;" class="valor" />
                                         <select name="rsocialesServicios[]" style="width:109px">
                                             <?php foreach ($campos['rsociales']['servicios'] as $llave => $valor) { ?>
                                             <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -305,7 +344,7 @@ $paises = CamposContacto::obtenerPaises();
                                 <div class="listado">
                                     <div class="elemento">
                                         <div class="linea">
-                                            <input type="text" name="direccion[]" class="ancho465es direccion valor" placeholder="Dirección" />
+                                            <input type="text" name="direccion[]" id="direccion" class="ancho465es direccion valor" placeholder="Dirección" />
                                             <div class="clear"><!--vacio--></div>
                                         </div>
                                         <div class="linea">
@@ -338,7 +377,7 @@ $paises = CamposContacto::obtenerPaises();
                         </dl>
                         <div class="linea10"></div>
                         <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Agregar Contacto</a>
-                        <a class="boton_gris floatLeft btnForm" href="#">Cancelar</a>
+                        <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel">Cancelar</a>
                         <div class="linea10"></div>
                     </div>
                     <!--Workspace Area ends-->
@@ -358,6 +397,7 @@ $paises = CamposContacto::obtenerPaises();
     ?>
 <script type="text/javascript">
 $(document).on("ready", function() {
+    //$('#nombre').focus();
     $('#sexo').change(function() {
         if ($(this).val() == 1) {
             $('#picMujer').hide();
@@ -367,8 +407,38 @@ $(document).on("ready", function() {
             $('#picMujer').show();
         }
     });
+    $("#empresa").keyup(function(evento) {
+        var valor = $(this).val();
+        var long = valor.length;
+        if (long == 0) {
+            $('#divCargo').fadeOut();
+            $('#cargo').val('');
+        } else if (long == 1) {
+            $('#divCargo').fadeIn();
+        } else {
+            return false;
+        }
+    });
+    $( "#empresa" ).autocomplete({
+        source: "/contactos/ajax/ajaxSugerirEmpresa.php",
+        minLength: 2,
+        select: function( event, ui ) {
+            ui.item ? $('#empresa_id').val(ui.item.id) : $('#empresa_id').val('nueva');
+        },
+        change: function( event, ui ) {
+            ui.item ? $('#empresa_id').val(ui.item.id) : $('#empresa_id').val('nueva');
+        }
+    });
     $("#btnSubmit").click(function() {
-         $("#frmAgregarContacto").submit();
+        $("#frmAgregarContacto").submit();
+    });
+    $("#btnCancel").click(function() {
+        var respuesta = confirm('Está seguro que desea cancelar?');
+        if (respuesta) {
+            window.location.href = '/contactos';
+        } else {
+            return false;
+        }
     });
 });
 </script>

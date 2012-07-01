@@ -17,6 +17,51 @@ function ajustarAlturaWorkspace() {
     $("#Content").css({"min-height": alto+'px'});
     $("#Toolbar").css({"height": $("#Content").height()+'px'});
 }
+function cambiarParamUrl(datos, ventana, divisor)
+{
+    var temp, url_nuevo, partes, parametros, base, encontrado, url;
+
+    if (typeof(datos) != "object") return false;
+    if (vacio(ventana)) ventana=window;
+    url = ventana.location.href;
+    if (divisor == undefined) divisor = "?";
+
+    if (url.indexOf(divisor) == -1) {
+        base = url;
+        parametros = [];
+    } else {
+        partes = url.split(divisor);
+        base = partes[0];
+        parametros = partes[1].split("&");
+    }
+
+    for (var n in datos)
+    {
+        encontrado = false;
+        for (var i in parametros){
+            temp = parametros[i];
+            if (temp.indexOf(n+"=") == 0) {
+                encontrado = true;
+                if (datos[n] == "") {
+                    parametros.splice(i, 1);
+                } else {
+                    parametros[i] = n+"="+datos[n];
+                }
+            }
+        }
+        if (!encontrado && datos[n] != "") {
+            parametros.push(n+"="+datos[n]);
+        }
+    }
+
+    if (parametros.length == 0) {
+        url_nuevo = base;
+    } else {
+        url_nuevo = base+divisor+parametros.join("&");
+    }
+    ventana.location.href = url_nuevo;
+}
+function vacio(valor){var llave;if(valor===""||valor===0||valor==="0"||valor===null||valor===false||valor===undefined)return true;if(typeof valor=='object'){for(llave in valor){return false}return true}return false}
 /*function ajustarAnchuraTitulos() {
     var anchoWorkspace = $(".workspaceHeader").width();
     var anchoMainBoton = $(".mainBoton").width();
@@ -133,12 +178,11 @@ $(document).on("ready", function() {
         var listado = $(this).closest('.listado');
         var elemento = $(this).closest('.elemento');
         var n = $('.elemento', listado).length;
-        
+
         if (n > 1) {
             $(this).closest('.elemento').remove();
         } else {
-            $('input .valor', elemento).val('');
-        }       
-        return false;
+            $('input.valor', elemento).val('');
+        }
     });
 });
