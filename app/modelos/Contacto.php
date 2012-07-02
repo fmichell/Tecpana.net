@@ -395,6 +395,13 @@ class Contacto
         return self::_cargar($cuentaId);
     }
 
+    /**
+     * @static obtenerTodosSinInfo
+     * Obtiene la informacion basica de todos los contactos de la cuenta
+     *
+     * @param $cuentaId
+     * @return array|bool
+     */
     static public function obtenerTodosSinInfo ($cuentaId)
     {
         return self::_cargarContactos($cuentaId);
@@ -421,6 +428,15 @@ class Contacto
         return $contactos;
     }
 
+    /**
+     * @static sugerir
+     * Busca contactos por nombre y tipo y retorna informacion basica
+     *
+     * @param int $cuentaId
+     * @param string|null $nombre
+     * @param int $tipo
+     * @return array|null
+     */
     static public function sugerir ($cuentaId, $nombre = null, $tipo = 2)
     {
         // Iniciamos conexion con la BD
@@ -488,6 +504,30 @@ class Contacto
             return $contactoId;
         else
             return $resultado;
+    }
+
+    //-->
+
+    static public function eliminarContacto ($cuentaId, $contactoId)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->eliminar('contacto');
+
+        $bd->donde(array(
+            'cuenta_id:entero'     => $cuentaId,
+            'contacto_id:texto'    => $contactoId));
+
+        $resultado = $bd->ejecutar();
+
+        if (!$resultado) {
+            return false;
+        } else {
+            // Eliminamos info del contacto
+            return $resultado = self::eliminarInfoContacto($cuentaId, $contactoId);
+        }
     }
 
     static public function eliminarInfoContacto ($cuentaId, $contactoId)

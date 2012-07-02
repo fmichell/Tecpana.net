@@ -46,7 +46,6 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'editar')) {
     if (!$resultado) {
         die('Ocurrio un error');
     } else {
-        //$contacto_id = &$resultado;
         // Eliminamos la info existente
         $resultado = Contacto::eliminarInfoContacto(CUENTA_ID, $contacto_id);
         // Insertamos info

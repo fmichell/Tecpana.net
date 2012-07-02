@@ -41,7 +41,7 @@ if (isset($_POST['nombre']) and !empty($_POST['nombre'])) {
 $contactos = $tabla->obtener();
 
 // Paginamos
-$contactosXPagina = 5;
+$contactosXPagina = 15;
 if (isset($_POST['pagina']) and !empty($_POST['pagina'])) {
     $pagina = $_POST['pagina'];
     $posicion =  ($pagina -1) * $contactosXPagina;

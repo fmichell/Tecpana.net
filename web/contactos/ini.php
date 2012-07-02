@@ -56,7 +56,7 @@ $contactos = Contacto::obtenerTodos(CUENTA_ID);
                 <!--Workspace Area begins-->
                 <div class="workspaceArea interior10 registerList">
                     <div class="auxiliaryToolbar">
-                        <a href="#" class="eliminar">Eliminar el contacto seleccionado</a>
+                        <a href="javascript:;" class="eliminar">Eliminar el contacto seleccionado</a>
                         <div class="seleccion">
                             <a href="javascript:;" class="select_all">Seleccionar todos</a> | <a href="javascript:;" class="undo_select">Deshacer selección</a> 
                         </div>
@@ -65,7 +65,7 @@ $contactos = Contacto::obtenerTodos(CUENTA_ID);
                         <!--Lista de contactos-->
                     </div>
                     <div class="auxiliaryToolbar">
-                        <a href="#" class="eliminar">Eliminar el contacto seleccionado</a>
+                        <a href="javascript:;" class="eliminar">Eliminar el contacto seleccionado</a>
                         <div class="seleccion">
                             <a href="javascript:;" class="select_all">Seleccionar todos</a> | <a href="javascript:;" class="undo_select">Deshacer selección</a> 
                         </div>
@@ -254,6 +254,19 @@ $(document).on("ready", function() {
             buscarNombre();
         }
 
+    });
+
+    $('.eliminar').click(function () {
+        var seleccionados = $(".check_contacto:checked").length;
+        if (seleccionados == 1) {
+            var mensaje = 'Está seguro que desea eliminar permanentemente el contacto seleccionado?';
+        } else {
+            var mensaje = 'Está seguro que desea eliminar permanentemente los ' + seleccionados + ' contacto seleccionado?';
+        }
+
+        if (confirm(mensaje)) {
+            console.log('si');
+        }
     });
 });
 </script>
