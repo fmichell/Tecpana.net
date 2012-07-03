@@ -676,6 +676,10 @@ span.font_size_10 {
     background-position:-16px 0;
 }
 
+.icono_grupos {
+    background-position:-80px 0;
+}
+
 .icono_tareas {
     background-position:-32px 0;
 }
@@ -993,6 +997,47 @@ dl.horizontal dt {
     text-decoration:none;
 }
 
+/* 3.3.6.2.1 Lista de contactos condensados */
+
+.contactosIcons .contacto {
+    padding:5px;
+    border:1px solid;
+    border-color:#F1F1F1 #D2D2D2 #D2D2D2 #F1F1F1;
+    background-image: url(../imgs/bg_involucrarContacto.png);
+    background-repeat: repeat-x;
+    background-position: 0 0;
+    width:150px;
+    height:50px;
+    float:left;
+    margin:0 15px 15px 0;
+    font-size:12px;
+    overflow:hidden;
+    color:#3d3d3d;
+    line-height: 1.3em;
+    /*css3*/
+    -moz-box-shadow: 1px 2px 2px #666;
+    -webkit-box-shadow: 1px 2px 2px #666;
+    box-shadow: 1px 2px 2px #666;
+}
+
+.contactosIcons .contacto:hover {
+    text-decoration:none;
+}
+
+.contactosIcons .selected {
+    background-position:0 -60px;
+}
+
+.contactosIcons .contacto .userThumb {
+    margin-right:5px;
+    overflow:hidden;
+}
+
+.workspaceArea .contactosIcons .contacto:hover {
+    -moz-box-shadow: 0px 1px 2px 1px #555;
+    -webkit-box-shadow: 0px 1px 2px 1px #555;
+    box-shadow: 0px 1px 2px 1px #555;
+}
 /* 3.3.6.3 Lista de tareas */
 .task {
     padding-left:60px;

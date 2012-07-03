@@ -96,68 +96,79 @@ $paises = CamposContacto::obtenerPaises();
     <link rel="stylesheet" type="text/css" href="/media/css/form.css" />
 </head>
 <body>
+<?php
+// Cargamos la cabezera de la pagina
+include '../../includes/encabezado.php';
+?>
+
+<div class="mainWrapper">
+<!--MainWrapper begins-->
+<div id="MainWrapper">
     <?php
-    // Cargamos la cabezera de la pagina
-    include '../../includes/encabezado.php';
+    // Cargamos el menu principal
+    include '../../includes/menu-principal.php';
     ?>
 
-    <div class="mainWrapper">
-    <!--MainWrapper begins-->
-    <div id="MainWrapper">
-        <?php
-        // Cargamos el menu principal
-        include '../../includes/menu-principal.php';
-        ?>
-        
-        <!--Content begins-->
-        <section id="Content">
-            <!--Workspace begins-->
-            <section id="Workspace" class="colum formulario">
-                <form method="post" action="" name="frmAgregarContacto" id="frmAgregarContacto" class="frmContacto">
-                    <input type="hidden" name="submitForm" value="guardar" />
-                    <!--Workspace Header begins-->
-                    <div class="workspaceHeader interior10">
-                        <div class="userPic">
-                            <img src="/media/imgs/maleContact.jpg" alt="Hombre" id="picHombre" />
-                            <img src="/media/imgs/famaleContact.jpg" alt="Mujer" id="picMujer" />
-                            <a href="#">Subir foto</a>
-                        </div>
-                        <div class="floatLeft">
-                            <input type="text" class="bigText ancho465es" name="nombre" id="nombre" placeholder="Nombres" /><br />
-                            <input type="text" class="bigText ancho465es" name="apellidos" id="apellidos" placeholder="Apellidos" /><br />
-                            <select name="sexo" id="sexo" class="ancho85es">
-                                <option value="1" selected="selected">Hombre</option>
-                                <option value="2">Mujer</option>
-                            </select>
-                        </div>
-                        <div class="linea5"></div>
+    <!--Content begins-->
+    <section id="Content">
+        <!--Workspace begins-->
+        <section id="Workspace" class="colum formulario">
+            <form method="post" action="" name="frmAgregarContacto" id="frmAgregarContacto" class="frmContacto">
+                <input type="hidden" name="submitForm" value="guardar" />
+                <!--Workspace Header begins-->
+                <div class="workspaceHeader interior10">
+                    <div class="userPic">
+                        <img src="/media/imgs/maleContact.jpg" alt="Hombre" id="picHombre" />
+                        <img src="/media/imgs/famaleContact.jpg" alt="Mujer" id="picMujer" />
+                        <a href="#">Subir foto</a>
                     </div>
-                    <!--Workspace Header ends-->
-                    <!--Workspace Toolbar begins-->
-                    <div class="workspaceToolbar"><!--TODO--></div>
-                    <!--Workspace Toolbar ends-->
-                    <!--Workspace Area begins-->
-                    <div class="workspaceArea interior10">
-                        <div class="linea10"></div>
-                        <dl class="horizontal">
-                            <dt><label for="titulo">Título</label></dt>
-                            <dd><input type="text" name="titulo" id="titulo" class="ancho85es" /></dd>
-                            <dt><label for="profesion">Profesión</label></dt>
-                            <dd><input type="text" name="profesion" id="profesion" class="ancho465es" /></dd>
-                            <dt><label for="empresa">Empresa</label></dt>
-                            <dd><input type="text" name="empresa" id="empresa" class="ancho465es" />
-                                <input type="hidden" name="empresa_id" id="empresa_id" value="nueva">
-                            </dd>
-                        </dl>
-                        <dl class="horizontal" id="divCargo" style="display: none">
-                            <dt><label for="cargo">Cargo</label></dt>
-                            <dd><input type="text" name="cargo" id="cargo" class="ancho465es" /></dd>
-                        </dl>
-                        <dl class="horizontal">
-                            <dt><label for="telefono">Teléfono(s)</label></dt>
-                            <dd>
-                                <div class="elemento ejemplo">
-                                    <input type="tel" name="telefono[]" class="ancho300es valor" />
+                    <div class="floatLeft">
+                        <input type="text" class="bigText ancho465es" name="nombre" id="nombre" placeholder="Nombres" /><br />
+                        <input type="text" class="bigText ancho465es" name="apellidos" id="apellidos" placeholder="Apellidos" /><br />
+                        <select name="sexo" id="sexo" class="ancho85es">
+                            <option value="1" selected="selected">Hombre</option>
+                            <option value="2">Mujer</option>
+                        </select>
+                    </div>
+                    <div class="linea5"></div>
+                </div>
+                <!--Workspace Header ends-->
+                <!--Workspace Toolbar begins-->
+                <div class="workspaceToolbar"><!--TODO--></div>
+                <!--Workspace Toolbar ends-->
+                <!--Workspace Area begins-->
+                <div class="workspaceArea interior10">
+                    <div class="linea10"></div>
+                    <dl class="horizontal">
+                        <dt><label for="titulo">Título</label></dt>
+                        <dd><input type="text" name="titulo" id="titulo" class="ancho85es" /></dd>
+                        <dt><label for="profesion">Profesión</label></dt>
+                        <dd><input type="text" name="profesion" id="profesion" class="ancho465es" /></dd>
+                        <dt><label for="empresa">Empresa</label></dt>
+                        <dd><input type="text" name="empresa" id="empresa" class="ancho465es" />
+                            <input type="hidden" name="empresa_id" id="empresa_id" value="nueva">
+                        </dd>
+                    </dl>
+                    <dl class="horizontal" id="divCargo" style="display: none">
+                        <dt><label for="cargo">Cargo</label></dt>
+                        <dd><input type="text" name="cargo" id="cargo" class="ancho465es" /></dd>
+                    </dl>
+                    <dl class="horizontal">
+                        <dt><label for="telefono">Teléfono(s)</label></dt>
+                        <dd>
+                            <div class="elemento ejemplo">
+                                <input type="tel" name="telefono[]" class="ancho300es valor" />
+                                <select name="telefonoModo[]" class="ancho85es">
+                                    <?php foreach ($campos['telefono']['modo'] as $llave => $valor) { ?>
+                                    <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                    <?php } ?>
+                                </select>
+                                <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
+                                <div class="clear"><!--vacio--></div>
+                            </div>
+                            <div class="listado">
+                                <div class="elemento">
+                                    <input type="tel" name="telefono[]" id="telefono" class="ancho300es valor" />
                                     <select name="telefonoModo[]" class="ancho85es">
                                         <?php foreach ($campos['telefono']['modo'] as $llave => $valor) { ?>
                                         <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -166,25 +177,25 @@ $paises = CamposContacto::obtenerPaises();
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
-                                <div class="listado">
-                                    <div class="elemento">
-                                        <input type="tel" name="telefono[]" id="telefono" class="ancho300es valor" />
-                                        <select name="telefonoModo[]" class="ancho85es">
-                                            <?php foreach ($campos['telefono']['modo'] as $llave => $valor) { ?>
-                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
-                                        <div class="clear"><!--vacio--></div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="clear"><!--vacio--></div>
+                            <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
+                        </dd>
+                        <dt><label for="email">Email(s)</label></dt>
+                        <dd>
+                            <div class="elemento ejemplo">
+                                <input type="email" name="email[]" class="ancho300es valor" />
+                                <select name="emailModo[]" class="ancho85es">
+                                    <?php foreach ($campos['email']['modo'] as $llave => $valor) { ?>
+                                    <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                    <?php } ?>
+                                </select>
+                                <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                 <div class="clear"><!--vacio--></div>
-                                <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
-                            </dd>
-                            <dt><label for="email">Email(s)</label></dt>
-                            <dd>
-                                <div class="elemento ejemplo">
-                                    <input type="email" name="email[]" class="ancho300es valor" />
+                            </div>
+                            <div class="listado">
+                                <div class="elemento">
+                                    <input type="email" name="email[]" id="email" class="ancho300es valor" />
                                     <select name="emailModo[]" class="ancho85es">
                                         <?php foreach ($campos['email']['modo'] as $llave => $valor) { ?>
                                         <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -193,25 +204,30 @@ $paises = CamposContacto::obtenerPaises();
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
-                                <div class="listado">
-                                    <div class="elemento">
-                                        <input type="email" name="email[]" id="email" class="ancho300es valor" />
-                                        <select name="emailModo[]" class="ancho85es">
-                                            <?php foreach ($campos['email']['modo'] as $llave => $valor) { ?>
-                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
-                                        <div class="clear"><!--vacio--></div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="clear"><!--vacio--></div>
+                            <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
+                        </dd>
+                        <dt><label for="mensajeria">Mensajería</label></dt>
+                        <dd>
+                            <div class="elemento ejemplo">
+                                <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
+                                <select name="mensajeriaServicios[]" style="width:109px">
+                                    <?php foreach ($campos['mensajeria']['servicios'] as $llave => $valor) { ?>
+                                    <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                    <?php } ?>
+                                </select>
+                                <select name="mensajeriaModo[]" class="ancho85es">
+                                    <?php foreach ($campos['mensajeria']['modo'] as $llave => $valor) { ?>
+                                    <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                    <?php } ?>
+                                </select>
+                                <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                 <div class="clear"><!--vacio--></div>
-                                <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
-                            </dd>
-                            <dt><label for="mensajeria">Mensajería</label></dt>
-                            <dd>
-                                <div class="elemento ejemplo">
-                                    <input type="text" name="mensajeria[]" style="width:218px;" class="valor" />
+                            </div>
+                            <div class="listado">
+                                <div class="elemento">
+                                    <input type="text" name="mensajeria[]" id="mensajeria" style="width:218px;" class="valor" />
                                     <select name="mensajeriaServicios[]" style="width:109px">
                                         <?php foreach ($campos['mensajeria']['servicios'] as $llave => $valor) { ?>
                                         <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -225,31 +241,26 @@ $paises = CamposContacto::obtenerPaises();
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
-                                <div class="listado">
-                                    <div class="elemento">
-                                        <input type="text" name="mensajeria[]" id="mensajeria" style="width:218px;" class="valor" />
-                                        <select name="mensajeriaServicios[]" style="width:109px">
-                                            <?php foreach ($campos['mensajeria']['servicios'] as $llave => $valor) { ?>
-                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <select name="mensajeriaModo[]" class="ancho85es">
-                                            <?php foreach ($campos['mensajeria']['modo'] as $llave => $valor) { ?>
-                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
-                                        <div class="clear"><!--vacio--></div>
-                                    </div>
-                                </div>
-                                
+                            </div>
+
+                            <div class="clear"><!--vacio--></div>
+                            <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
+                        </dd>
+                        <dt><label for="web">Sitio(s) web</label></dt>
+                        <dd>
+                            <div class="elemento ejemplo">
+                                <input type="url" name="web[]" class="ancho300es valor" />
+                                <select name="webModo[]" class="ancho85es">
+                                    <?php foreach ($campos['web']['modo'] as $llave => $valor) { ?>
+                                    <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                    <?php } ?>
+                                </select>
+                                <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                 <div class="clear"><!--vacio--></div>
-                                <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
-                            </dd>
-                            <dt><label for="web">Sitio(s) web</label></dt>
-                            <dd>
-                                <div class="elemento ejemplo">
-                                    <input type="url" name="web[]" class="ancho300es valor" />
+                            </div>
+                            <div class="listado">
+                                <div class="elemento">
+                                    <input type="url" name="web[]" id="web" class="ancho300es valor" />
                                     <select name="webModo[]" class="ancho85es">
                                         <?php foreach ($campos['web']['modo'] as $llave => $valor) { ?>
                                         <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -258,25 +269,30 @@ $paises = CamposContacto::obtenerPaises();
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
-                                <div class="listado">
-                                    <div class="elemento">
-                                        <input type="url" name="web[]" id="web" class="ancho300es valor" />
-                                        <select name="webModo[]" class="ancho85es">
-                                            <?php foreach ($campos['web']['modo'] as $llave => $valor) { ?>
-                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
-                                        <div class="clear"><!--vacio--></div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="clear"><!--vacio--></div>
+                            <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
+                        </dd>
+                        <dt><label for="rsociales">Redes sociales</label></dt>
+                        <dd>
+                            <div class="elemento ejemplo">
+                                <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
+                                <select name="rsocialesServicios[]" style="width:109px">
+                                    <?php foreach ($campos['rsociales']['servicios'] as $llave => $valor) { ?>
+                                    <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                    <?php } ?>
+                                </select>
+                                <select name="rsocialesModo[]" class="ancho85es">
+                                    <?php foreach ($campos['rsociales']['modo'] as $llave => $valor) { ?>
+                                    <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                    <?php } ?>
+                                </select>
+                                <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                 <div class="clear"><!--vacio--></div>
-                                <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
-                            </dd>
-                            <dt><label for="rsociales">Redes sociales</label></dt>
-                            <dd>
-                                <div class="elemento ejemplo">
-                                    <input type="text" name="rsociales[]" style="width:218px;" class="valor" />
+                            </div>
+                            <div class="listado">
+                                <div class="elemento">
+                                    <input type="text" name="rsociales[]" id="rsociales" style="width:218px;" class="valor" />
                                     <select name="rsocialesServicios[]" style="width:109px">
                                         <?php foreach ($campos['rsociales']['servicios'] as $llave => $valor) { ?>
                                         <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
@@ -290,32 +306,45 @@ $paises = CamposContacto::obtenerPaises();
                                     <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
-                                <div class="listado">
-                                    <div class="elemento">
-                                        <input type="text" name="rsociales[]" id="rsociales" style="width:218px;" class="valor" />
-                                        <select name="rsocialesServicios[]" style="width:109px">
-                                            <?php foreach ($campos['rsociales']['servicios'] as $llave => $valor) { ?>
-                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <select name="rsocialesModo[]" class="ancho85es">
-                                            <?php foreach ($campos['rsociales']['modo'] as $llave => $valor) { ?>
-                                            <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
-                                        <div class="clear"><!--vacio--></div>
-                                    </div>
+                            </div>
+                            <div class="clear"><!--vacio--></div>
+                            <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
+                        </dd>
+                        <dt><label for="direccion">Dirección(es)</label></dt>
+                        <dd class="elementoDireccion">
+                            <div class="elemento ejemplo">
+                                <div class="linea10"></div>
+                                <div class="linea">
+                                    <input type="text" name="direccion[]" class="ancho465es direccion valor" placeholder="Dirección" />
+                                    <div class="clear"><!--vacio--></div>
                                 </div>
-                                <div class="clear"><!--vacio--></div>
-                                <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otro</a></div>
-                            </dd>
-                            <dt><label for="direccion">Dirección(es)</label></dt>
-                            <dd class="elementoDireccion">
-                                <div class="elemento ejemplo">
-                                    <div class="linea10"></div>
+                                <div class="linea">
+                                    <input type="text" name="ciudad[]" class="ancho465es ciudad" placeholder="Ciudad/población" />
+                                    <div class="clear"><!--vacio--></div>
+                                </div>
+                                <div class="linea">
+                                    <input type="text" name="estado[]" class="ancho300es estado" placeholder="Estado/departamento" />
+                                    <div class="clear"><!--vacio--></div>
+                                </div>
+                                <div class="linea">
+                                    <select name="pais[]" class="pais" style="width: 334px">
+                                        <?php foreach($paises as $pais) { ?>
+                                        <option value="<?php echo $pais['id'] ?>"><?php echo $pais['pais'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <select name="direccionModo[]" class="ancho85es">
+                                        <?php foreach ($campos['direccion']['modo'] as $llave => $valor) { ?>
+                                        <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
+                                    <div class="clear"><!--vacio--></div>
+                                </div>
+                            </div>
+                            <div class="listado">
+                                <div class="elemento">
                                     <div class="linea">
-                                        <input type="text" name="direccion[]" class="ancho465es direccion valor" placeholder="Dirección" />
+                                        <input type="text" name="direccion[]" id="direccion" class="ancho465es direccion valor" placeholder="Dirección" />
                                         <div class="clear"><!--vacio--></div>
                                     </div>
                                     <div class="linea">
@@ -341,60 +370,31 @@ $paises = CamposContacto::obtenerPaises();
                                         <div class="clear"><!--vacio--></div>
                                     </div>
                                 </div>
-                                <div class="listado">
-                                    <div class="elemento">
-                                        <div class="linea">
-                                            <input type="text" name="direccion[]" id="direccion" class="ancho465es direccion valor" placeholder="Dirección" />
-                                            <div class="clear"><!--vacio--></div>
-                                        </div>
-                                        <div class="linea">
-                                            <input type="text" name="ciudad[]" class="ancho465es ciudad" placeholder="Ciudad/población" />
-                                            <div class="clear"><!--vacio--></div>
-                                        </div>
-                                        <div class="linea">
-                                            <input type="text" name="estado[]" class="ancho300es estado" placeholder="Estado/departamento" />
-                                            <div class="clear"><!--vacio--></div>
-                                        </div>
-                                        <div class="linea">
-                                            <select name="pais[]" class="pais" style="width: 334px">
-                                                <?php foreach($paises as $pais) { ?>
-                                                <option value="<?php echo $pais['id'] ?>"><?php echo $pais['pais'] ?></option>
-                                                <?php } ?>
-                                            </select>
-                                            <select name="direccionModo[]" class="ancho85es">
-                                                <?php foreach ($campos['direccion']['modo'] as $llave => $valor) { ?>
-                                                <option value="<?php echo $llave ?>"><?php echo $valor ?></option>
-                                                <?php } ?>
-                                            </select>
-                                            <a href="javascript:;" class="botonCerrarGris eliminar"><!--cerrar--></a>
-                                            <div class="clear"><!--vacio--></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clear"><!--vacio--></div>
-                                <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otra</a></div>
-                            </dd>
-                        </dl>
-                        <div class="linea10"></div>
-                        <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Agregar Contacto</a>
-                        <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel">Cancelar</a>
-                        <div class="linea10"></div>
-                    </div>
-                    <!--Workspace Area ends-->
-                </form>
-            </section>
-            <!--Workspace ends-->
-            <div class="clear"><!--empy--></div>
+                            </div>
+                            <div class="clear"><!--vacio--></div>
+                            <div class="nuevo"><a href="javascript:;" class="fondoAzul">Agregar otra</a></div>
+                        </dd>
+                    </dl>
+                    <div class="linea10"></div>
+                    <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Agregar Contacto</a>
+                    <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel">Cancelar</a>
+                    <div class="linea10"></div>
+                </div>
+                <!--Workspace Area ends-->
+            </form>
         </section>
-        <!--Content ends-->
-    </div>
-    <!--MainWrapper ends-->
-    </div>
+        <!--Workspace ends-->
+        <div class="clear"><!--empy--></div>
+    </section>
+    <!--Content ends-->
+</div>
+<!--MainWrapper ends-->
+</div>
 
-    <?php
-    // Cargamos el pie de pagina
-    include '../../includes/pie.php';
-    ?>
+<?php
+// Cargamos el pie de pagina
+include '../../includes/pie.php';
+?>
 <script type="text/javascript">
 $(document).on("ready", function() {
     //$('#nombre').focus();

@@ -419,10 +419,13 @@ class Contacto
     {
         $contactos = self::buscarContactosPorNombre($cuentaId, $nombre);
         $ids = array_keys($contactos);
-        $contactos_infos = self::_cargarInfos($cuentaId, $ids);
 
-        foreach ($contactos_infos as $contacto_id => $infos) {
-            $contactos[$contacto_id] += self::_ordenarInfo($infos);
+        if (!empty($ids)) {
+            $contactos_infos = self::_cargarInfos($cuentaId, $ids);
+
+            foreach ($contactos_infos as $contacto_id => $infos) {
+                $contactos[$contacto_id] += self::_ordenarInfo($infos);
+            }
         }
 
         return $contactos;

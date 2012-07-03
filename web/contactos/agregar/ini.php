@@ -11,33 +11,33 @@ $ventana = true;
     <?php include '../../includes/cabezera.php' ?>
 </head>
 <body class="dialog">
-    <!--Header begins-->
-    <header id="HeaderVentanaGeneral">
-        <h1>Agregar contacto <button class="fuiBotonCerrar" id="cerrar">Cerrar</button></h1>
-    </header>
-    <!--Header ends-->
+<!--Header begins-->
+<header id="HeaderVentanaGeneral">
+    <h1>Agregar contacto <button class="fuiBotonCerrar" id="cerrar">Cerrar</button></h1>
+</header>
+<!--Header ends-->
 
-    <div class="interior5">
-    <!--MainWrapper begins-->
-    <div id="MainWrapperVentana">        
-        <!--Content begins-->
-        <section id="Content">
-            <!--Workspace begins-->
-            <section id="Workspace">
-                <p><span style="float: left; margin-right: .3em;" class="icono_info"></span>Por favor seleccione el tipo de contacto que desea agregar.</p>
-                <div class="linea10 separador"></div>
-                <div class="linea10"></div>
-                <div class="floatRight">
-                    <button class="fuiBoton" id="irPersona">Persona</button>
-                    <button class="fuiBoton" id="irEmpresa">Empresa</button>
-                </div>
-            </section>
-            <!--Workspace ends-->
+<div class="interior5">
+<!--MainWrapper begins-->
+<div id="MainWrapperVentana">
+    <!--Content begins-->
+    <section id="Content">
+        <!--Workspace begins-->
+        <section id="Workspace">
+            <p><span style="float: left; margin-right: .3em;" class="icono_info"></span>Por favor seleccione el tipo de contacto que desea agregar.</p>
+            <div class="linea10 separador"></div>
+            <div class="linea10"></div>
+            <div class="floatRight">
+                <button class="fuiBoton" id="irPersona">Persona</button>
+                <button class="fuiBoton" id="irEmpresa">Empresa</button>
+            </div>
         </section>
-        <!--Content ends-->
-    </div>
-    <!--MainWrapper ends-->
-    </div>
+        <!--Workspace ends-->
+    </section>
+    <!--Content ends-->
+</div>
+<!--MainWrapper ends-->
+</div>
 <script type="text/javascript">
 $(document).ready(function() {
     $('#irPersona').click(function() {
