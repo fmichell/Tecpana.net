@@ -11,6 +11,13 @@ include_once '../../../app/inicio.php';
 // a los resultados de filtros o busquedas para que sirva de helper
 $listaContactos = Contacto::obtenerTodosSinInfo(CUENTA_ID);
 
+// Definimos vista
+if ((isset($_POST['vista'])) and ($_POST['vista'] == 'iconos')) {
+    $vista = 'iconos';
+} else {
+    $vista = 'lista';
+}
+
 if (isset($_POST['nombre']) and !empty($_POST['nombre'])) {
     // Obtenemos los contactos filtrados
     $contactos = Contacto::buscar(CUENTA_ID, $_POST['nombre']);
@@ -41,7 +48,7 @@ if (isset($_POST['nombre']) and !empty($_POST['nombre'])) {
 $contactos = $tabla->obtener();
 
 // Paginamos
-$contactosXPagina = 15;
+$contactosXPagina = ($vista == 'iconos') ? 50 : 15;
 if (isset($_POST['pagina']) and !empty($_POST['pagina'])) {
     $pagina = $_POST['pagina'];
     $posicion =  ($pagina - 1) * $contactosXPagina;
@@ -110,54 +117,67 @@ foreach ($contactos as $contactoId => $contacto) {
     if ($contactoId == $ultimo['contacto_id']) {
         $last_child = 'last-child';
     }
-?>
-<article class="wCheckbox <?php echo $last_child ?>">
-    <div class="contact">
-        <div class="check colum"><input type="checkbox" class="check_contacto" /></div>
-        <div class="userThumb colum">
-            <a href="/contactos/<?php echo $contactoId ?>/info"><img src="<?php echo $thumbnail['uri'] ?>" alt="<?php echo $thumbnail['alt'] ?>" /></a>
-       </div>
-        <div class="desc colum">
-            <div class="nombre"><a href="/contactos/<?php echo $contactoId ?>/info"><?php echo $contacto['nombre_completo'] ?></a></div>
-            <?php
-            $i = 1;
-            foreach ($infos as $tipo => $info) {
-                if ($tipo == 'telefono') {
-                    ?><div class="detalle">Tel: <?php echo $info ?></div><?php
-                } elseif ($tipo == 'email') {
-                    ?><div class="detalle"><a href="mailto:<?php echo $info ?>">Email: <?php echo $info ?></a></div><?php
-                } elseif ($tipo == 'web') {
-                    ?><div class="detalle"><a href="<?php echo $info ?>" target="_blank">Web: <?php echo $info ?></a></div><?php
-                }
 
-                if ($i >= 2) break;
-
-                $i++;
-            } ?>
-        </div>
-
+    // Mostramos a los contactos
+    if ($vista == 'iconos') {
+        ?>
+        <a href="/contactos/<?php echo $contactoId ?>/info" class="contacto">
+            <div class="userThumb floatLeft"><img src="<?php echo $thumbnail['uri'] ?>" alt="<?php echo $thumbnail['alt'] ?>" /></div>
+            <div class="nombre"><?php echo $contacto['nombre_completo'] ?></div>
+        </a>
         <?php
-        // Mostrando info de trabajo (solo personas)
-        if (isset($trabajo['cargo']) and isset($trabajo['empresa'])) {
-            ?>
-            <div class="info colum">
-                <?php echo $trabajo['cargo'] ?> en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a>
+    } elseif ($vista == 'lista') {
+        ?>
+        <article class="wCheckbox <?php echo $last_child ?>">
+            <div class="contact">
+                <div class="check colum"><input type="checkbox" class="check_contacto" /></div>
+                <div class="userThumb colum">
+                    <a href="/contactos/<?php echo $contactoId ?>/info"><img src="<?php echo $thumbnail['uri'] ?>" alt="<?php echo $thumbnail['alt'] ?>" /></a>
+               </div>
+                <div class="desc colum">
+                    <div class="nombre"><a href="/contactos/<?php echo $contactoId ?>/info"><?php echo $contacto['nombre_completo'] ?></a></div>
+                    <?php
+                    $i = 1;
+                    foreach ($infos as $tipo => $info) {
+                        if ($tipo == 'telefono') {
+                            ?><div class="detalle">Tel: <?php echo $info ?></div><?php
+                        } elseif ($tipo == 'email') {
+                            ?><div class="detalle"><a href="mailto:<?php echo $info ?>">Email: <?php echo $info ?></a></div><?php
+                        } elseif ($tipo == 'web') {
+                            ?><div class="detalle"><a href="<?php echo $info ?>" target="_blank">Web: <?php echo $info ?></a></div><?php
+                        }
+
+                        if ($i >= 2) break;
+
+                        $i++;
+                    } ?>
+                </div>
+
+                <?php
+                // Mostrando info de trabajo (solo personas)
+                if (isset($trabajo['cargo']) and isset($trabajo['empresa'])) {
+                    ?>
+                    <div class="info colum">
+                        <?php echo $trabajo['cargo'] ?> en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a>
+                    </div>
+                    <?php
+                } elseif (isset($trabajo['empresa'])) {
+                    ?>
+                    <div class="info colum">
+                        <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a>
+                    </div>
+                    <?php
+                } elseif (isset($trabajo['profesion'])) {
+                    ?><div class="info colum"><?php echo $trabajo['profesion'] ?></div><?php
+                } ?>
+                <div class="clear"><!--empty--></div>
             </div>
-            <?php
-        } elseif (isset($trabajo['empresa'])) {
-            ?>
-            <div class="info colum">
-                <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a>
-            </div>
-            <?php
-        } elseif (isset($trabajo['profesion'])) {
-            ?><div class="info colum"><?php echo $trabajo['profesion'] ?></div><?php
-        } ?>
-        <div class="clear"><!--empty--></div>
-    </div>
-</article>
-<?php
-//Si es la ultima pagina se carga este div
-if ($pagina == $ultimaPagina) { ?><div class="ultimaPagina"><!--Ultima pagina--></div><?php }
+        </article>
+        <?php
+    }
 }
+// Si es una vista de iconos agregamos clear al final de cada pagina
+if ($vista == 'iconos') { ?><div class="clear"><!--empty--></div><?php }
+// Si es la ultima pagina se carga este div
+if ($pagina == $ultimaPagina) { ?><div class="ultimaPagina"><!--Ultima pagina--></div><?php }
 ?>

@@ -54,6 +54,10 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
             }
         }
     }
+
+    // Redireccionamos a info
+    header('location: /contactos/' . $contacto_id . '/info');
+    exit;
 }
 
 // Obteniendo listas generales

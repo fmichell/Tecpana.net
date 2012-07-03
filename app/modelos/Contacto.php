@@ -407,6 +407,27 @@ class Contacto
         return self::_cargarContactos($cuentaId);
     }
 
+    static public function obtenerEmpleados ($cuentaId, $empresaId)
+    {
+        $contactos = self::_cargarContactos($cuentaId, null, 'PERSONAS');
+
+        $tabla = new Tabla($contactos);
+
+        $contactos = $tabla->filtrar("{empresa_id} = '$empresaId'")->obtener();
+
+        $ids = array_keys($contactos);
+
+        if (!empty($ids)) {
+            $contactos_infos = self::_cargarInfos($cuentaId, $ids);
+
+            foreach ($contactos_infos as $contacto_id => $infos) {
+                $contactos[$contacto_id] += self::_ordenarInfo($infos);
+            }
+        }
+
+        return $contactos;
+    }
+
     /**
      * @static buscar
      * Busca contactos por nombre y los retorna ordenados por su info

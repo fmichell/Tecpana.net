@@ -62,6 +62,10 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'editar')) {
             }
         }
     }
+
+    // Redireccionamos a info
+    header('location: /contactos/' . $contacto_id . '/info');
+    exit;
 }
 
 // Obteniendo datos del contacto

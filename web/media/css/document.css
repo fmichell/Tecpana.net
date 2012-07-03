@@ -1003,6 +1003,7 @@ dl.horizontal dt {
     padding:5px;
     border:1px solid;
     border-color:#F1F1F1 #D2D2D2 #D2D2D2 #F1F1F1;
+    border-radius: 3px;
     background-image: url(../imgs/bg_involucrarContacto.png);
     background-repeat: repeat-x;
     background-position: 0 0;
@@ -1033,10 +1034,21 @@ dl.horizontal dt {
     overflow:hidden;
 }
 
+.contactosIcons .contacto .nombre {
+    height: 3.9em;
+    overflow: hidden;
+}
+
 .workspaceArea .contactosIcons .contacto:hover {
     -moz-box-shadow: 0px 1px 2px 1px #555;
     -webkit-box-shadow: 0px 1px 2px 1px #555;
     box-shadow: 0px 1px 2px 1px #555;
+}
+
+/* 3.3.6.2.2 Lista de empleados empresa */
+.empleadosList .userThumb {
+    margin-right: 5px;
+    overflow: hidden;
 }
 /* 3.3.6.3 Lista de tareas */
 .task {

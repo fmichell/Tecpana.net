@@ -86,6 +86,13 @@ include '../includes/encabezado.php';
                     </ul>
                 </div>
                 <div class="recuadro">
+                    <h3>Ver</h3>
+                    <ul>
+                        <li><a href="javascript:;" id="listview">Lista</a></li>
+                        <li><a href="javascript:;" id="iconview">Iconos</a></li>
+                    </ul>
+                </div>
+                <div class="recuadro">
                     <h3>Etiquetas</h3>
                     <ul class="listLabels">
                         <li><span class="letter">A</span>
@@ -118,6 +125,7 @@ var intervalo;
 var tipo = 'todos';
 var pagina = 1;
 var nombreBuscado = '';
+var vista = 'lista';
 
 function actualizarSeleccion(fade) {
     if (fade == 'off') {
@@ -147,7 +155,12 @@ function actualizarSeleccion(fade) {
 }
 function cargarContactos(filtroNombre, filtroTipo, filtroPagina) {
     $('#contactos').fadeTo('fast', 0.10, function() {
-        $('#contactos').load('/contactos/ajax/ajaxListarContactos.php', {'nombre':filtroNombre, 'tipo':filtroTipo, 'pagina':filtroPagina}, function(respuesta, estado) {
+        if (vista == 'iconos') {
+            $(this).addClass('contactosIcons');
+        } else {
+            $(this).removeClass('contactosIcons');
+        }
+        $(this).load('/contactos/ajax/ajaxListarContactos.php', {'nombre':filtroNombre, 'tipo':filtroTipo, 'pagina':filtroPagina, 'vista':vista}, function(respuesta, estado) {
             if (estado == 'success') {
                 //Ocultando seleccion
                 actualizarSeleccion('off');
@@ -276,6 +289,15 @@ $(document).on("ready", function() {
         if (confirm(mensaje)) {
             console.log('si');
         }
+    });
+
+    $('#listview').click(function() {
+        vista = 'lista';
+        cargarContactos('', tipo, pagina);
+    });
+    $('#iconview').click(function() {
+        vista = 'iconos';
+        cargarContactos('', tipo, pagina);
     });
 });
 </script>

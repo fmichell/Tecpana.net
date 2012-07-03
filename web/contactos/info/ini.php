@@ -49,6 +49,17 @@ if ($contacto['tipo'] == 1) {
     // Si es empresa
     $thumbnail['uri'] = '/media/imgs/businessContact.jpg';
 }
+
+// Cargamos empleados de la empresa
+$empleados = Contacto::obtenerEmpleados(CUENTA_ID, $contacto_id);
+// Obtenemos foto del empleado
+foreach ($empleados as $empleado_id => $empleado) {
+    if ($empleado['sexo'] == 1) {
+        $empleados[$empleado_id]['uri'] =  '/media/imgs/maleThumb.jpg';
+    } else {
+        $empleados[$empleado_id]['uri'] =  '/media/imgs/famaleThumb.jpg';
+    }
+}
 // Cargamos algunos datos varios
 $paises = CamposContacto::obtenerPaises();
 ?>
@@ -221,9 +232,27 @@ include '../../includes/encabezado.php';
                         <li><a href="#">Exportar a pdf</a></li>
                     </ul>
                 </div>
-                <div class="recuadro">
+                <?php if (isset($empleados) and !empty($empleados)) { ?>
+                <div class="recuadro empleadosList">
                     <h3>Personas en la empresa</h3>
+                    <ul>
+                        <?php foreach ($empleados as $empleado) { ?>
+                        <li>
+                            <div class="userThumb floatLeft">
+                                <img alt="<?php echo $empleado['nombre_completo'] ?>" src="<?php echo $empleado['uri'] ?>">
+                            </div>
+                            <a href="/contactos/<?php echo $empleado['contacto_id'] ?>/info"><?php echo $empleado['nombre_completo'] ?></a><br />
+                            <?php
+                            if (isset($empleado['cargo'])) {
+                                $cargo = current($empleado['cargo']);
+                                ?><div class="nota"><?php echo $cargo['valor'] ?></div><?php
+                            } ?>
+                            <div class="clear"><!--empy--></div>
+                        </li>
+                        <?php } ?>
+                    </ul>
                 </div>
+                <?php } ?>
             </div>
         </section>
         <!--Toolbar ends-->
