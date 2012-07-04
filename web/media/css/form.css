@@ -163,8 +163,15 @@ select.ancho465es {
 .frmContacto textarea {
     line-height: 1.4em;
 }
+
 .frmContacto select, .frmContacto textarea {
     font-size:14px;
+}
+
+.frmContacto input[type="file"] {
+    height: auto;
+    font-size: 14px;
+    line-height: 1em;
 }
 
 .frmContacto dt {
@@ -179,6 +186,7 @@ select.ancho465es {
     display:block;
     padding-left:138px;
     margin-bottom:20px;
+    margin-left: 0px;
     line-height:1.3em;
 }
 

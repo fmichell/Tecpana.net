@@ -164,6 +164,9 @@ function cargarContactos(filtroNombre, filtroTipo, filtroPagina) {
             if (estado == 'success') {
                 //Ocultando seleccion
                 actualizarSeleccion('off');
+                if (vista == 'iconos') {
+                    calcularAnchoIconosContactos();
+                }
                 //Mostrando resultados
                 $('#contactos').fadeTo("fast", 1);
                 //Calculando altura
@@ -202,8 +205,7 @@ function cargarContactos(filtroNombre, filtroTipo, filtroPagina) {
         });
     });
 }
-function paginar(paso)
-{
+function paginar(paso) {
     if (paso == 0) {
         pagina = 1;
     } else {
@@ -221,6 +223,15 @@ function buscarNombre() {
     }
     $('#filtrar > div').removeClass('selected');
     $('#todos').addClass('selected');
+}
+function calcularAnchoIconosContactos() {
+    var anchoArea = $('.workspaceArea').width();
+    var anchoIcon = 150;
+    var extra = 27; // padding + borde + margen
+    var iconos = Math.floor(anchoArea / (anchoIcon + extra));
+    var anchoIcon = Math.floor((anchoArea / iconos) - extra);
+
+    $('.contacto').css({'width':anchoIcon+'px'});
 }
 $(document).on("ready", function() {
     cargarContactos('', 'todos', 1);

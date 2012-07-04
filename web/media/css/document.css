@@ -1412,10 +1412,24 @@ fieldset.plan_trabajo .titLista {
     margin-bottom:15px;
     height:auto!important;
 }
-/* UI // No es necesario porque el nuevo fancy trae una opción para desabilitarlo
-.fancybox-close {
-    display:none!important;
-}*/
+
 .fancybox-outer {
     background: #FFF!important;
+}
+
+/* Iframe para fotos de contactos */
+.contactPict-iframe {
+    border: 0 none;
+    display: block;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    width: 100%;
+}
+
+body.formIframe {
+    background: #FFF;
+    margin: 0px;
+    padding: 0px;
 }
