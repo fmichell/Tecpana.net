@@ -12,6 +12,7 @@ function getWindowHeight() {
     var windowHeight = $(window).height() - ($("#HeaderWrapper").height()+1) - ($("#FooterWrapper").height()) - 40;
     return windowHeight;
 }
+var mismo = 1;
 function ajustarAlturaWorkspace() {
     var alto = getWindowHeight();
     $("#Content").css({"min-height": alto+'px'});

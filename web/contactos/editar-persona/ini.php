@@ -641,6 +641,7 @@ include '../../includes/pie.php';
 ?>
 <script type="text/javascript">
 $(document).on("ready", function() {
+
     $('#sexo').change(function() {
         if ($(this).val() == 1) {
             $('#picMujer').hide();

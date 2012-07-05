@@ -568,4 +568,63 @@ class Contacto
 
         return $bd->ejecutar();
     }
+
+    static public function subirFotoPerfil ($mediaInput, $usuario_id, $tipo = 'subida')
+    {
+        $tmp_dir = $_SERVER['DOCUMENT_ROOT'] . '/media/profile/tmp/';
+
+        if (move_uploaded_file($mediaInput['tmp_name'], $tmp_dir.$mediaInput['name'])) {
+            $tmpFile = $tmp_dir.$mediaInput['name'];
+        } else {
+            return false;
+        }
+
+        if (!isset($tmpFile)) {
+            return false;
+        }
+
+        // Obteniendo informacion de la foto
+        $tmpFileInfo = getimagesize($tmpFile);
+
+        // Creando foto
+        switch ($tmpFileInfo['mime']) {
+            case 'image/gif':
+                $temp = imagecreatefromgif($tmpFile);
+                break;
+            case 'image/jpeg':
+                $temp = imagecreatefromjpeg($tmpFile);
+                break;
+            case 'image/png':
+                $temp = imagecreatefrompng($tmpFile);
+                break;
+        }
+
+        // Obtengo tamaño de foto original
+        $ancho_original = $tmpFileInfo[0];
+        $alto_original  = $tmpFileInfo[1];
+
+        // Redimencionamos la foto si es necesario
+        if ($ancho_original > 500) {
+            $ancho_nuevo    = 500;
+            $ancho_escala   = $ancho_original / $ancho_nuevo;
+            $alto_nuevo     = round($alto_original / $ancho_escala);
+        } else {
+            $ancho_nuevo    = $ancho_original;
+            $alto_nuevo     = $alto_original;
+        }
+
+        // Creamos foto jpg
+        $jpgFile = $tmp_dir.$usuario_id.'.jpg';
+        $foto_nueva = imagecreatetruecolor($ancho_nuevo, $alto_nuevo);
+        imagecopyresampled($foto_nueva, $temp, 0, 0, 0, 0, $ancho_nuevo, $alto_nuevo, $ancho_original, $alto_original);
+        imagejpeg($foto_nueva, $jpgFile, 80);
+        imagedestroy($temp);
+        imagedestroy($foto_nueva);
+
+        // Eliminamos foto original
+        if (file_exists($tmpFile))
+            unlink($tmpFile);
+
+        return array('uri' => $jpgFile, 'nombre' => $usuario_id.'.jpg');
+    }
 }
