@@ -107,6 +107,8 @@ if (!empty($contacto['empresa_id'])) {
         $trabajo['cargo'] = $cargo['valor'];
     }
 }
+// Obtenemos foto del contacto
+$profilePic = Contacto::obtenerFotos($contacto_id, $contacto['tipo'], $contacto['sexo']);
 
 // Obteniendo listas generales
 $campos = CamposContacto::$tiposInfo;
@@ -142,6 +144,7 @@ include '../../includes/encabezado.php';
                 <!--Workspace Header begins-->
                 <div class="workspaceHeader interior10">
                     <div class="userPic">
+                        <img src="<?php echo $profilePic['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>">
                         <img src="/media/imgs/maleContact.jpg" alt="Hombre" id="picHombre" />
                         <img src="/media/imgs/famaleContact.jpg" alt="Mujer" id="picMujer" />
                         <a href="javascript:;" id="btnLoadPic">Subir foto</a>
@@ -622,7 +625,7 @@ include '../../includes/encabezado.php';
                 <!--Workspace Area Picture begins-->
                 <div class="workspaceArea interior10" id="contactPict" style="display: none;">
                     <div class="linea10"></div>
-                    <iframe class="contactPict-iframe" scrolling="no" frameborder="0" src="/contactos/agregar-foto/" hspace="0">
+                    <iframe class="contactPict-iframe" scrolling="no" frameborder="0" src="/contactos/agregar-foto/?id=<?php echo $contacto_id ?>" hspace="0">
                     </iframe>
                 </div>
                 <!--Workspace Area Picture ends-->

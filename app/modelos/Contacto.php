@@ -412,11 +412,10 @@ class Contacto
         $contactos = self::_cargarContactos($cuentaId, null, 'PERSONAS');
 
         $tabla = new Tabla($contactos);
-
-        $contactos = $tabla->filtrar("{empresa_id} = '$empresaId'")->obtener();
+        $tabla->filtrar("{empresa_id} = '$empresaId'");
+        $contactos = $tabla->obtener();
 
         $ids = array_keys($contactos);
-
         if (!empty($ids)) {
             $contactos_infos = self::_cargarInfos($cuentaId, $ids);
 
@@ -498,6 +497,61 @@ class Contacto
         return $bd->obtener($consulta, 'contacto_id');
     }
 
+    static public function obtenerFotos ($contactoId, $tipo = 1, $sexo = 1)
+    {
+        $path = PROFILE_PICTURES_PATH;
+        $uri  = '/media/profile';
+        $arrayRetorno = array();
+
+        if ($tipo == 1) {
+            // Buscamos foto perfil
+            if (file_exists($path . '/picture/' . $contactoId . '.jpg')) {
+                $arrayRetorno['uriProfile'] = $uri . '/picture/' . $contactoId . '.jpg';
+            } else {
+                // Si no hay foto cargamos fotos por defecto
+                if ($sexo == 1) {
+                    // Si es hombre
+                    $arrayRetorno['uriProfile'] = '/media/imgs/maleContact.jpg';
+                } else {
+                    // Si es mujer
+                    $arrayRetorno['uriProfile'] = '/media/imgs/famaleContact.jpg';
+                }
+            }
+
+            // Buscamos thumbnail
+            if (file_exists($path . '/thumbnail/' . $contactoId . '.jpg')) {
+                $arrayRetorno['uriThumbnail'] = $uri . '/thumbnail/' . $contactoId . '.jpg';
+            } else {
+                // Si no hay foto cargamos fotos por defecto
+                if ($sexo == 1) {
+                    // Si es hombre
+                    $arrayRetorno['uriThumbnail'] = '/media/imgs/maleThumb.jpg';
+                } else {
+                    // Si es mujer
+                    $arrayRetorno['uriThumbnail'] = '/media/imgs/famaleThumb.jpg';
+                }
+            }
+        } else {
+            // Buscamos logo empresa
+            if (file_exists($path . '/picture/' . $contactoId . '.jpg')) {
+                $arrayRetorno['uriProfile'] = $uri . '/picture/' . $contactoId . '.jpg';
+            } else {
+                // Si no hay foto cargamos fotos por defecto
+                $arrayRetorno['uriProfile'] = '/media/imgs/businessContact.jpg';
+            }
+
+            // Buscamos thumbnail
+            if (file_exists($path . '/thumbnail/' . $contactoId . '.jpg')) {
+                $arrayRetorno['uriThumbnail'] = $uri . '/thumbnail/' . $contactoId . '.jpg';
+            } else {
+                // Si no hay foto cargamos fotos por defecto
+                $arrayRetorno['uriThumbnail'] = '/media/imgs/businessThumb.jpg';
+            }
+        }
+
+        return $arrayRetorno;
+    }
+
     //-->
 
     static protected function editarContacto ($cuentaId, $contactoId, $tipo, $nombre = null, $apellidos = null, $sexo = null, $titulo = null, $descripcion = null, $empresaId = null)
@@ -571,7 +625,7 @@ class Contacto
 
     static public function subirFotoPerfil ($mediaInput, $usuario_id, $tipo = 'subida')
     {
-        $tmp_dir = $_SERVER['DOCUMENT_ROOT'] . '/media/profile/tmp/';
+        $tmp_dir = PROFILE_PICTURES_PATH . '/tmp/';
 
         if (move_uploaded_file($mediaInput['tmp_name'], $tmp_dir.$mediaInput['name'])) {
             $tmpFile = $tmp_dir.$mediaInput['name'];
@@ -626,5 +680,53 @@ class Contacto
             unlink($tmpFile);
 
         return array('uri' => $jpgFile, 'nombre' => $usuario_id.'.jpg');
+    }
+
+    static public function cargarFotoPerfil ($mediaInput, $usuario_id)
+    {
+        // Obtenermos la imagen original sin cortar
+        $tmp_file = $mediaInput['uri'];
+
+        // Verificamos que la imagen exista
+        if (!file_exists($tmp_file)) {
+            return false;
+        } else {
+            $tmp_img = imagecreatefromjpeg($tmp_file);
+        }
+
+        // Creamos marco basado en las dimenciones seleccionadas por el usuario
+        $foto_perfil = imagecreatetruecolor($mediaInput['w'], $mediaInput['h']);
+        // Recortamos la imagen basado en las cordenadas seleccionadas por el usuario
+        // y la metemos dentro del cuadro creado
+        imagecopyresampled($foto_perfil, $tmp_img, 0, 0, $mediaInput['x'], $mediaInput['y'], $mediaInput['w'], $mediaInput['h'], $mediaInput['w'], $mediaInput['h']);
+
+        // Obtenemos el tamaño de la nueva foto original
+        $ancho_original = $mediaInput['w'];
+        $alto_original  = $mediaInput['h'];
+
+        // Declaramos dimenciones finales de la imagen
+        $profile = array('w' => 128, 'h' => 128);
+        $thumb   = array('w' => 48, 'h' => 48);
+
+        // Creamos profile pic (la grande)
+        $jpgFile = PROFILE_PICTURES_PATH . '/picture/' . $usuario_id . '.jpg';
+        $profile_pic = imagecreatetruecolor($profile['w'], $profile['h']);
+        imagecopyresampled($profile_pic, $foto_perfil, 0, 0, 0, 0, $profile['w'], $profile['h'], $ancho_original, $alto_original);
+        imagejpeg($profile_pic, $jpgFile, 100);
+
+        // Creamos thumbnail pic (la pequeña)
+        $jpgFile = PROFILE_PICTURES_PATH . '/thumbnail/' . $usuario_id . '.jpg';
+        $thumbnail_pic = imagecreatetruecolor($thumb['w'], $thumb['h']);
+        imagecopyresampled($thumbnail_pic, $foto_perfil, 0, 0, 0, 0, $thumb['w'], $thumb['h'], $ancho_original, $alto_original);
+        imagejpeg($thumbnail_pic, $jpgFile, 100);
+
+        // Destruimos las imagenes temporales almacenadas en memora
+        imagedestroy($tmp_img);
+        imagedestroy($foto_perfil);
+        imagedestroy($profile_pic);
+        imagedestroy($thumbnail_pic);
+        unlink($tmp_file);
+
+        return true;
     }
 }

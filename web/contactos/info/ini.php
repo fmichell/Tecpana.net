@@ -25,40 +25,14 @@ if (isset($contactos[$contacto_id])) {
 }
 
 // Obtenemos foto de perfil
-// TODO: Agregar foto del contacto
-$thumbnail = array('uri' => '/media/imgs/maleContact.jpg', 'alt' => $contacto['nombre_completo']);
-if ($contacto['tipo'] == 1) {
-    // Si es persona
-    // Definimos thumbnail general segun el sexo
-    if ($contacto['sexo'] == 1) {
-        // Si es hombre
-        $thumbnail['uri'] = '/media/imgs/maleContact.jpg';
-    } else {
-        // Si es mujer
-        $thumbnail['uri'] = '/media/imgs/famaleContact.jpg';
-    }
-    // Obtenemos datos laborales
-    if (!empty($contacto['empresa_id'])) {
-        $trabajo['empresa'] = $contactos[$contacto['empresa_id']]['nombre_completo'];
-        if (isset($contacto['cargo'])) {
-            $cargo = current($contacto['cargo']);
-            $trabajo['cargo'] = $cargo['valor'];
-        }
-    }
-} elseif ($contacto['tipo'] == 2) {
-    // Si es empresa
-    $thumbnail['uri'] = '/media/imgs/businessContact.jpg';
-}
+$fotoPerfil = Contacto::obtenerFotos($contacto_id, $contacto['tipo'], $contacto['sexo']);
 
 // Cargamos empleados de la empresa
 $empleados = Contacto::obtenerEmpleados(CUENTA_ID, $contacto_id);
 // Obtenemos foto del empleado
 foreach ($empleados as $empleado_id => $empleado) {
-    if ($empleado['sexo'] == 1) {
-        $empleados[$empleado_id]['uri'] =  '/media/imgs/maleThumb.jpg';
-    } else {
-        $empleados[$empleado_id]['uri'] =  '/media/imgs/famaleThumb.jpg';
-    }
+    $tmpFoto = Contacto::obtenerFotos($empleado_id, 1, $empleado['sexo']);
+    $empleados[$empleado_id]['uri'] = $tmpFoto['uriThumbnail'];
 }
 // Cargamos algunos datos varios
 $paises = CamposContacto::obtenerPaises();
@@ -90,7 +64,7 @@ include '../../includes/encabezado.php';
             <!--Workspace Header begins-->
             <div class="workspaceHeader interior10">
                 <header>
-                    <div class="userPic"><img src="<?php echo $thumbnail['uri'] ?>" alt="<?php echo $thumbnail['alt'] ?>" /></div>
+                    <div class="userPic"><img src="<?php echo $fotoPerfil['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" /></div>
                     <div class="floatLeft">
                         <h1><?php echo $contacto['nombre_completo'] ?></h1>
                         <?php if (!empty($contacto['descripcion'])) { ?>

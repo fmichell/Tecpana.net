@@ -97,21 +97,7 @@ foreach ($contactos as $contactoId => $contacto) {
     }
 
     // Obtenemos foto de perfil
-    // TODO: Agregar foto del contacto
-    $thumbnail = array('uri' => '/media/imgs/maleThumb.jpg', 'alt' => $contacto['nombre_completo']);
-    if ($contacto['tipo'] == 1) {
-        // Si es persona
-        if ($contacto['sexo'] == 1) {
-            // Si es hombre
-            $thumbnail['uri'] = '/media/imgs/maleThumb.jpg';
-        } else {
-            // Si es mujer
-            $thumbnail['uri'] = '/media/imgs/famaleThumb.jpg';
-        }
-    } elseif ($contacto['tipo'] == 2) {
-        // Si es empresa
-        $thumbnail['uri'] = '/media/imgs/businessThumb.jpg';
-    }
+    $fotoPerfil = Contacto::obtenerFotos($contactoId, $contacto['tipo'], $contacto['sexo']);
 
     // Si es el ultimo elemento, agregamos la class CSS last-child al elemento article
     if ($contactoId == $ultimo['contacto_id']) {
@@ -122,7 +108,7 @@ foreach ($contactos as $contactoId => $contacto) {
     if ($vista == 'iconos') {
         ?>
         <a href="/contactos/<?php echo $contactoId ?>/info" class="contacto">
-            <div class="userThumb floatLeft"><img src="<?php echo $thumbnail['uri'] ?>" alt="<?php echo $thumbnail['alt'] ?>" /></div>
+            <div class="userThumb floatLeft"><img src="<?php echo $fotoPerfil['uriThumbnail'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" /></div>
             <div class="nombre"><?php echo $contacto['nombre_completo'] ?></div>
         </a>
         <?php
@@ -132,7 +118,7 @@ foreach ($contactos as $contactoId => $contacto) {
             <div class="contact">
                 <div class="check colum"><input type="checkbox" class="check_contacto" /></div>
                 <div class="userThumb colum">
-                    <a href="/contactos/<?php echo $contactoId ?>/info"><img src="<?php echo $thumbnail['uri'] ?>" alt="<?php echo $thumbnail['alt'] ?>" /></a>
+                    <a href="/contactos/<?php echo $contactoId ?>/info"><img src="<?php echo $fotoPerfil['uriThumbnail'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" /></a>
                </div>
                 <div class="desc colum">
                     <div class="nombre"><a href="/contactos/<?php echo $contactoId ?>/info"><?php echo $contacto['nombre_completo'] ?></a></div>

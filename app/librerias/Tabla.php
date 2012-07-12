@@ -104,7 +104,7 @@ class Tabla
 	{
 		if ( empty($condiciones) ) throw new TablaException('El parametro [condiciones] introducido es incorrecto.');
 		if ( !$this->tabla ) return $this;
-		
+
 		$columnas = array();
 		$condiciones = str_replace(array(' = ', '(', ')', ' OR '), array(' == ', ' ( ', ' ) ', ' || '), $condiciones);
 		$condiciones = explode(' ', trim($condiciones));
@@ -121,21 +121,21 @@ class Tabla
 			}
 		}
 		$condiciones = implode(' ', $temp);
-		
+
 		if (!$columnas) {
 			throw new TablaException('No introdujo columnas en el parametro [condiciones].');
 		} else {
-			$fila_temp = array_shift($this->tabla);
+			//$fila_temp = array_shift($this->tabla);
+            $fila_temp = current($this->tabla);
+
 			foreach ($columnas as $columna) {
 				if ( !array_key_exists($columna, $fila_temp) ) throw new TablaException('No existe la columna {' . $columna . '} dentro de la tabla.');
 			}
-			array_unshift($this->tabla, $fila_temp);
+			//array_unshift($this->tabla, $fila_temp);
 		}
-		//util_depurar_var($condiciones);
-		
+
 		$final = array();
 		foreach ($this->tabla as $llave => $fila) {
-//            die('$cond = ' . $condiciones . ';');
 			eval('$cond = ' . $condiciones . ';');
 			if ( $cond ) $final[$llave] = $fila;
 		}

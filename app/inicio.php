@@ -36,6 +36,7 @@ define('NL', PHP_EOL);
 $url_path = explode('?', $_SERVER["REQUEST_URI"]);
 $url_path = $url_path[0];
 define('SISTEMA_URL_PATH', $url_path);
+define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/media/profile');
 
 // PREPARAMOS CAMINO DE INCLUSION
 

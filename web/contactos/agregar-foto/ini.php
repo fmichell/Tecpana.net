@@ -2,6 +2,7 @@
 include '../../../app/inicio.php';
 
 $ventana = true;
+$contacto_id = $_GET['id'];
 
 if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
     if ($_FILES['foto']['name']) {
@@ -12,9 +13,19 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
             'tmp_name' => $_FILES['foto']['tmp_name']
         );
 
-        $tmpFoto = Contacto::subirFotoPerfil($mediaInput, 'tmp'.time());
+        $tmpFoto = Contacto::subirFotoPerfil($mediaInput, $contacto_id);
         $uriTmpFoto = '/media/profile/tmp/' . $tmpFoto['nombre'];
-        //util_depurar_var($tmpFoto);
+    } else {
+        if (isset($_POST['uriPerfil'])) {
+            $mediaInput = array(
+                'uri' => $_POST['uriPerfil'],
+                'x'   => $_POST['x'],
+                'y'   => $_POST['y'],
+                'w'   => $_POST['w'],
+                'h'   => $_POST['h']
+            );
+            $resultado = Contacto::cargarFotoPerfil($mediaInput, $contacto_id);
+        }
     }
 }
 ?>
@@ -49,7 +60,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
                 
                 <?php if (isset($uriTmpFoto) and !empty($uriTmpFoto)) { ?>
                 <div class="linea"><img src="<?php echo $uriTmpFoto ?>" id="cropbox"></div>
-                <input type="hidden" name="uriPerfil" value="<?php echo $tmpFoto['uri'] ?>">
+                <input type="hidden" name="uriPerfil" id="uriPerfil" value="<?php echo $tmpFoto['uri'] ?>">
                 <?php } ?>
 
                 <!-- Cordenas -->
@@ -71,6 +82,19 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
 <div class="clear"></div>
 <!--MainWrapper ends-->
 <script type="text/javascript">
+    function updateCoords(c)
+    {
+        $('#x').val(c.x);
+        $('#y').val(c.y);
+        $('#w').val(c.w);
+        $('#h').val(c.h);
+    };
+    function checkCoords()
+    {
+        if (parseInt($('#w').val())) return true;
+        alert('Por favor seleccione un area de la imagen');
+        return false;
+    };
     function calcularAlturaIframe() {
         var altura = $('#MainWrapperIframe').height();
         if (altura != 0) {
@@ -87,6 +111,14 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
             $('input').val('');
             parent.$('#contactPict').hide();
             parent.$('#contactInfo').fadeIn();
+        });
+
+        $('#cropbox').Jcrop({
+            aspectRatio: 1,
+            onSelect: updateCoords,
+            minSize: [128, 128],
+            maxSize: [500, 500],
+            setSelect: [ 10, 10, 128, 128 ]
         });
     });
 </script>
