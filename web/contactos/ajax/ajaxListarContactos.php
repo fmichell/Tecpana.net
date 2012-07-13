@@ -97,7 +97,7 @@ foreach ($contactos as $contactoId => $contacto) {
     }
 
     // Obtenemos foto de perfil
-    $fotoPerfil = Contacto::obtenerFotos($contactoId, $contacto['tipo'], $contacto['sexo']);
+    $fotoPerfil = Contacto::obtenerFotos($contacto['foto'], $contacto['tipo'], $contacto['sexo']);
 
     // Si es el ultimo elemento, agregamos la class CSS last-child al elemento article
     if ($contactoId == $ultimo['contacto_id']) {

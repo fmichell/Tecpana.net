@@ -70,6 +70,8 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'editar')) {
 
 // Obteniendo datos del contacto
 $contacto = Contacto::obtener(CUENTA_ID, $contacto_id);
+// Obtenemos foto del contacto
+$profilePic = Contacto::obtenerFotos($contacto['foto'], $contacto['tipo']);
 
 // Obteniendo listas generales
 $campos = CamposContacto::$tiposInfo;
@@ -105,8 +107,13 @@ include '../../includes/encabezado.php';
                 <!--Workspace Header begins-->
                 <div class="workspaceHeader interior10">
                     <div class="userPic">
+                        <img src="<?php echo $profilePic['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" id="picContacto">
                         <img src="/media/imgs/businessContact.jpg" alt="Empresa" id="picEmpresa" />
-                        <a href="#">Subir logotipo</a>
+                        <?php if ($profilePic['hayProfile']) { ?>
+                        <a href="javascript:;" id="btnLoadPic">Cambiar logotipo</a>
+                        <?php } else { ?>
+                        <a href="javascript:;" id="btnLoadPic">Subir logotipo</a>
+                        <?php } ?>
                     </div>
                     <div class="floatLeft">
                         <input type="text" value="<?php echo $contacto['nombre'] ?>" name="razon_social" id="razon_social" class="bigText ancho465es" placeholder="Razón Social" /><br />
@@ -117,8 +124,8 @@ include '../../includes/encabezado.php';
                 <!--Workspace Toolbar begins-->
                 <div class="workspaceToolbar"><!--TODO--></div>
                 <!--Workspace Toolbar ends-->
-                <!--Workspace Area begins-->
-                <div class="workspaceArea interior10">
+                <!--Workspace Area Info begins-->
+                <div class="workspaceArea interior10" id="contactInfo">
                     <div class="linea10"></div>
                     <dl class="horizontal">
                         <dt><label for="giro">Giro de la empresa</label></dt>
@@ -457,7 +464,18 @@ include '../../includes/encabezado.php';
                     <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel">Cancelar</a>
                     <div class="linea10"></div>
                 </div>
-                <!--Workspace Area ends-->
+                <!--Workspace Area Info ends-->
+                <!--Workspace Area Picture begins-->
+                <div class="workspaceArea interior10" id="contactPict" style="display: none;">
+                    <div class="linea10"></div>
+                    <?php
+                    $iframeParam = 'id=' . $contacto_id;
+                    if ($profilePic['hayProfile']) $iframeParam.= '&hayProfile';
+                    ?>
+                    <iframe class="contactPict-iframe" scrolling="no" frameborder="0" src="/contactos/agregar-foto/?<?php echo $iframeParam ?>" hspace="0">
+                    </iframe>
+                </div>
+                <!--Workspace Area Picture ends-->
             </form>
         </section>
         <!--Workspace ends-->
@@ -484,6 +502,11 @@ include '../../includes/pie.php';
             } else {
                 return false;
             }
+        });
+
+        $('#btnLoadPic').click(function() {
+            $('#contactInfo').hide();
+            $('#contactPict').fadeIn();
         });
     });
 </script>

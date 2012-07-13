@@ -108,7 +108,7 @@ if (!empty($contacto['empresa_id'])) {
     }
 }
 // Obtenemos foto del contacto
-$profilePic = Contacto::obtenerFotos($contacto_id, $contacto['tipo'], $contacto['sexo']);
+$profilePic = Contacto::obtenerFotos($contacto['foto'], $contacto['tipo'], $contacto['sexo']);
 
 // Obteniendo listas generales
 $campos = CamposContacto::$tiposInfo;
@@ -144,10 +144,14 @@ include '../../includes/encabezado.php';
                 <!--Workspace Header begins-->
                 <div class="workspaceHeader interior10">
                     <div class="userPic">
-                        <img src="<?php echo $profilePic['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>">
+                        <img src="<?php echo $profilePic['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" id="picContacto">
                         <img src="/media/imgs/maleContact.jpg" alt="Hombre" id="picHombre" />
                         <img src="/media/imgs/famaleContact.jpg" alt="Mujer" id="picMujer" />
+                        <?php if ($profilePic['hayProfile']) { ?>
+                        <a href="javascript:;" id="btnLoadPic">Cambiar foto</a>
+                        <?php } else { ?>
                         <a href="javascript:;" id="btnLoadPic">Subir foto</a>
+                        <?php } ?>
                     </div>
                     <div class="floatLeft">
                         <input type="text" value="<?php echo $contacto['nombre'] ?>" class="bigText ancho465es" name="nombre" id="nombre" placeholder="Nombres" /><br />
@@ -625,7 +629,11 @@ include '../../includes/encabezado.php';
                 <!--Workspace Area Picture begins-->
                 <div class="workspaceArea interior10" id="contactPict" style="display: none;">
                     <div class="linea10"></div>
-                    <iframe class="contactPict-iframe" scrolling="no" frameborder="0" src="/contactos/agregar-foto/?id=<?php echo $contacto_id ?>" hspace="0">
+                    <?php
+                    $iframeParam = 'id=' . $contacto_id;
+                    if ($profilePic['hayProfile']) $iframeParam.= '&hayProfile';
+                    ?>
+                    <iframe class="contactPict-iframe" scrolling="no" frameborder="0" src="/contactos/agregar-foto/?<?php echo $iframeParam ?>" hspace="0">
                     </iframe>
                 </div>
                 <!--Workspace Area Picture ends-->
@@ -646,6 +654,9 @@ include '../../includes/pie.php';
 $(document).on("ready", function() {
 
     $('#sexo').change(function() {
+        <?php if (!$profilePic['hayProfile']) { ?>
+        $('#picContacto').hide();
+        <?php } ?>
         if ($(this).val() == 1) {
             $('#picMujer').hide();
             $('#picHombre').show();

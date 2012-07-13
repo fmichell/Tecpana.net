@@ -25,13 +25,13 @@ if (isset($contactos[$contacto_id])) {
 }
 
 // Obtenemos foto de perfil
-$fotoPerfil = Contacto::obtenerFotos($contacto_id, $contacto['tipo'], $contacto['sexo']);
+$fotoPerfil = Contacto::obtenerFotos($contacto['foto'], $contacto['tipo'], $contacto['sexo']);
 
 // Cargamos empleados de la empresa
 $empleados = Contacto::obtenerEmpleados(CUENTA_ID, $contacto_id);
 // Obtenemos foto del empleado
 foreach ($empleados as $empleado_id => $empleado) {
-    $tmpFoto = Contacto::obtenerFotos($empleado_id, 1, $empleado['sexo']);
+    $tmpFoto = Contacto::obtenerFotos($empleado['foto'], 1, $empleado['sexo']);
     $empleados[$empleado_id]['uri'] = $tmpFoto['uriThumbnail'];
 }
 // Cargamos algunos datos varios

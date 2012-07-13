@@ -210,7 +210,7 @@ class Contacto
         $filtros = implode(' AND ', $filtros);
 
         // Generamos consulta
-        $consulta = sprintf("SELECT contacto_id, tipo, CONCAT_WS(' ', nombre, apellidos) AS nombre_completo, nombre, apellidos, sexo, titulo, descripcion, empresa_id
+        $consulta = sprintf("SELECT contacto_id, tipo, CONCAT_WS(' ', nombre, apellidos) AS nombre_completo, nombre, apellidos, sexo, titulo, descripcion, foto, empresa_id
                              FROM contactos WHERE %s",
                              $filtros);
 
@@ -303,7 +303,7 @@ class Contacto
         $filtros = implode(' AND ', $filtros);
 
         // Generamos consulta
-        $consulta = sprintf("SELECT contacto_id, tipo, CONCAT_WS(' ', nombre, apellidos) AS nombre_completo, nombre, apellidos, sexo, titulo, descripcion, empresa_id
+        $consulta = sprintf("SELECT contacto_id, tipo, CONCAT_WS(' ', nombre, apellidos) AS nombre_completo, nombre, apellidos, sexo, titulo, descripcion, foto, empresa_id
                              FROM contactos WHERE %s",
                              $filtros);
 
@@ -497,16 +497,17 @@ class Contacto
         return $bd->obtener($consulta, 'contacto_id');
     }
 
-    static public function obtenerFotos ($contactoId, $tipo = 1, $sexo = 1)
+    static public function obtenerFotos ($foto, $tipo = 1, $sexo = 1)
     {
         $path = PROFILE_PICTURES_PATH;
         $uri  = '/media/profile';
-        $arrayRetorno = array();
+        $arrayRetorno = array('hayProfile' => false, 'hayThumbnail' => false);
 
         if ($tipo == 1) {
             // Buscamos foto perfil
-            if (file_exists($path . '/picture/' . $contactoId . '.jpg')) {
-                $arrayRetorno['uriProfile'] = $uri . '/picture/' . $contactoId . '.jpg';
+            if (($foto) and file_exists($path . '/picture/' . $foto)) {
+                $arrayRetorno['hayProfile'] = true;
+                $arrayRetorno['uriProfile'] = $uri . '/picture/' . $foto;
             } else {
                 // Si no hay foto cargamos fotos por defecto
                 if ($sexo == 1) {
@@ -519,8 +520,9 @@ class Contacto
             }
 
             // Buscamos thumbnail
-            if (file_exists($path . '/thumbnail/' . $contactoId . '.jpg')) {
-                $arrayRetorno['uriThumbnail'] = $uri . '/thumbnail/' . $contactoId . '.jpg';
+            if (($foto) and file_exists($path . '/thumbnail/' . $foto)) {
+                $arrayRetorno['hayThumbnail'] = true;
+                $arrayRetorno['uriThumbnail'] = $uri . '/thumbnail/' . $foto;
             } else {
                 // Si no hay foto cargamos fotos por defecto
                 if ($sexo == 1) {
@@ -533,16 +535,18 @@ class Contacto
             }
         } else {
             // Buscamos logo empresa
-            if (file_exists($path . '/picture/' . $contactoId . '.jpg')) {
-                $arrayRetorno['uriProfile'] = $uri . '/picture/' . $contactoId . '.jpg';
+            if (($foto) and file_exists($path . '/picture/' . $foto)) {
+                $arrayRetorno['hayProfile'] = true;
+                $arrayRetorno['uriProfile'] = $uri . '/picture/' . $foto;
             } else {
                 // Si no hay foto cargamos fotos por defecto
                 $arrayRetorno['uriProfile'] = '/media/imgs/businessContact.jpg';
             }
 
             // Buscamos thumbnail
-            if (file_exists($path . '/thumbnail/' . $contactoId . '.jpg')) {
-                $arrayRetorno['uriThumbnail'] = $uri . '/thumbnail/' . $contactoId . '.jpg';
+            if (($foto) and file_exists($path . '/thumbnail/' . $foto)) {
+                $arrayRetorno['hayThumbnail'] = true;
+                $arrayRetorno['uriThumbnail'] = $uri . '/thumbnail/' . $foto;
             } else {
                 // Si no hay foto cargamos fotos por defecto
                 $arrayRetorno['uriThumbnail'] = '/media/imgs/businessThumb.jpg';
@@ -584,6 +588,57 @@ class Contacto
             return $resultado;
     }
 
+    static private function _actualizarFoto ($cuentaId, $contactoId, $profilePicture)
+    {
+        // Definimos variables generales
+        $ahora = date('Y-m-d H:i:s');
+
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->actualizar('contactos', array(
+            'foto:texto'               => $profilePicture,
+            'fecha_modificacion:fecha' => $ahora));
+        $bd->donde(array(
+            'cuenta_id:entero'     => $cuentaId,
+            'contacto_id:texto'    => $contactoId));
+
+        return $bd->ejecutar();
+    }
+
+    static public function eliminarFoto ($cuentaId, $contactoId, $limpiarCampo = false)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Inicializamos consulta
+        $bd->seleccionar('foto', 'contactos');
+        $bd->donde(array(
+            'cuenta_id:entero'     => $cuentaId,
+            'contacto_id:texto'    => $contactoId));
+
+        $resultado = $bd->obtenerFila();
+        if ($resultado['foto']) {
+            if (file_exists(PROFILE_PICTURES_PATH . '/picture/' . $resultado['foto']))
+                unlink(PROFILE_PICTURES_PATH . '/picture/' . $resultado['foto']);
+            if (file_exists(PROFILE_PICTURES_PATH . '/thumbnail/' . $resultado['foto']))
+                unlink(PROFILE_PICTURES_PATH . '/thumbnail/' . $resultado['foto']);
+
+            if ($limpiarCampo) {
+                $bd->actualizar('contactos', array(
+                    'foto:texto'           => ''
+                ));
+                $bd->donde(array(
+                    'cuenta_id:entero'     => $cuentaId,
+                    'contacto_id:texto'    => $contactoId))->ejecutar();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //-->
 
     static public function eliminarContacto ($cuentaId, $contactoId)
@@ -623,7 +678,7 @@ class Contacto
         return $bd->ejecutar();
     }
 
-    static public function subirFotoPerfil ($mediaInput, $usuario_id, $tipo = 'subida')
+    static public function subirFotoPerfil ($mediaInput, $contactoId, $tipo = 'subida')
     {
         $tmp_dir = PROFILE_PICTURES_PATH . '/tmp/';
 
@@ -668,7 +723,7 @@ class Contacto
         }
 
         // Creamos foto jpg
-        $jpgFile = $tmp_dir.$usuario_id.'.jpg';
+        $jpgFile = $tmp_dir.$contactoId.'.jpg';
         $foto_nueva = imagecreatetruecolor($ancho_nuevo, $alto_nuevo);
         imagecopyresampled($foto_nueva, $temp, 0, 0, 0, 0, $ancho_nuevo, $alto_nuevo, $ancho_original, $alto_original);
         imagejpeg($foto_nueva, $jpgFile, 80);
@@ -679,11 +734,16 @@ class Contacto
         if (file_exists($tmpFile))
             unlink($tmpFile);
 
-        return array('uri' => $jpgFile, 'nombre' => $usuario_id.'.jpg');
+        return array('uri' => $jpgFile, 'nombre' => $contactoId.'.jpg');
     }
 
-    static public function cargarFotoPerfil ($mediaInput, $usuario_id)
+    static public function cargarFotoPerfil ($mediaInput, $contactoId)
     {
+        // Globales
+        $path = PROFILE_PICTURES_PATH;
+        $name = $contactoId . '_' . time() . '.jpg';
+        $uri  = '/media/profile';
+
         // Obtenermos la imagen original sin cortar
         $tmp_file = $mediaInput['uri'];
 
@@ -709,16 +769,18 @@ class Contacto
         $thumb   = array('w' => 48, 'h' => 48);
 
         // Creamos profile pic (la grande)
-        $jpgFile = PROFILE_PICTURES_PATH . '/picture/' . $usuario_id . '.jpg';
+        $jpgFile = $path . '/picture/' . $name;
         $profile_pic = imagecreatetruecolor($profile['w'], $profile['h']);
         imagecopyresampled($profile_pic, $foto_perfil, 0, 0, 0, 0, $profile['w'], $profile['h'], $ancho_original, $alto_original);
         imagejpeg($profile_pic, $jpgFile, 100);
+        $arrayArchivos['profile'] = $uri . '/picture/' . $name;
 
         // Creamos thumbnail pic (la pequeña)
-        $jpgFile = PROFILE_PICTURES_PATH . '/thumbnail/' . $usuario_id . '.jpg';
+        $jpgFile = $path . '/thumbnail/' . $name;
         $thumbnail_pic = imagecreatetruecolor($thumb['w'], $thumb['h']);
         imagecopyresampled($thumbnail_pic, $foto_perfil, 0, 0, 0, 0, $thumb['w'], $thumb['h'], $ancho_original, $alto_original);
         imagejpeg($thumbnail_pic, $jpgFile, 100);
+        $arrayArchivos['thumbnail'] = $uri . '/thumbnail/' . $name;
 
         // Destruimos las imagenes temporales almacenadas en memora
         imagedestroy($tmp_img);
@@ -727,6 +789,13 @@ class Contacto
         imagedestroy($thumbnail_pic);
         unlink($tmp_file);
 
-        return true;
+        // Eliminamos el archivo anterior si lo hay
+        self::eliminarFoto(CUENTA_ID, $contactoId);
+
+        // Guardamos los path's en la base de datos
+        self::_actualizarFoto(CUENTA_ID, $contactoId, $name);
+
+        // Retornamos resultado
+        return array('estado' => true, 'url' => $arrayArchivos);
     }
 }

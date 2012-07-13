@@ -56,8 +56,12 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
                 <dl class="horizontal">
                     <dt><label for="foto">Seleccionar foto</label></dt>
                     <dd><input type="file" name="foto" id="foto"></dd>
+                    <?php if (isset($_GET['hayProfile'])) { ?>
+                    <dt>&nbsp</dt>
+                    <dd>ó <a href="javascript:;" class="rojo negrita" id="eliFoto">Eliminar la foto actual</a>.</dd>
+                    <?php } ?>
                 </dl>
-                
+
                 <?php if (isset($uriTmpFoto) and !empty($uriTmpFoto)) { ?>
                 <div class="linea"><img src="<?php echo $uriTmpFoto ?>" id="cropbox"></div>
                 <input type="hidden" name="uriPerfil" id="uriPerfil" value="<?php echo $tmpFoto['uri'] ?>">
@@ -101,6 +105,7 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
             parent.$('iframe').css('height', altura+'px');
         }
     };
+
     $(document).ready(function() {
         calcularAlturaIframe();
 
@@ -110,7 +115,9 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
         $('#btnCancelar').click(function() {
             $('input').val('');
             parent.$('#contactPict').hide();
-            parent.$('#contactInfo').fadeIn();
+            parent.$('#contactInfo').fadeIn('fast', function() {
+                window.location.href = window.location.href;
+            });
         });
 
         $('#cropbox').Jcrop({
@@ -120,6 +127,27 @@ if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'cargar')) {
             maxSize: [500, 500],
             setSelect: [ 10, 10, 128, 128 ]
         });
+
+        $('#eliFoto').click(function() {
+            var confirmar = confirm('Está seguro que desea eliminar permanentemente la foto de perfil?');
+            if (confirmar) {
+                var contacto_id = '<?php echo $contacto_id ?>';
+                $.get('/contactos/ajax/ajaxEliminarFoto.php', {'contactoId':contacto_id}, function(respuesta) {
+                    if (respuesta == 0) {
+                        alert('Ocurrio un error al eliminar la foto');
+                    } else {
+                        parent.$('#picContacto').attr('src', respuesta);
+                    }
+                });
+            }
+        });
+
+        <?php if (isset($resultado) and ($resultado['estado'] == true)) { ?>
+        (function(url) {
+            parent.$('#picContacto').attr('src', url);
+            $('#btnCancelar').click();
+        })('<?php echo $resultado['url']['profile'] ?>');
+        <?php } ?>
     });
 </script>
 </body>
