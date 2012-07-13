@@ -40,7 +40,7 @@ $paises = CamposContacto::obtenerPaises();
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Detalle de contacto - <?php echo SISTEMA_NOMBRE ?></title>
+    <title><?php echo $contacto['nombre_completo'] ?> - <?php echo SISTEMA_NOMBRE ?></title>
     <?php include '../../includes/cabezera.php' ?>
 </head>
 <body>

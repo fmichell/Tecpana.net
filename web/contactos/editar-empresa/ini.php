@@ -80,7 +80,7 @@ $paises = CamposContacto::obtenerPaises();
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Editar empresa - <?php echo SISTEMA_NOMBRE ?></title>
+    <title>Editar <?php echo $contacto['nombre_completo'] ?> - <?php echo SISTEMA_NOMBRE ?></title>
     <?php include '../../includes/cabezera.php' ?>
     <link rel="stylesheet" type="text/css" href="/media/css/form.css" />
 </head>
