@@ -63,9 +63,9 @@ include '../../includes/encabezado.php';
         <section id="Workspace" class="colum">
             <!--Workspace Header begins-->
             <div class="workspaceHeader interior10">
-                <header>
+                <header class="infoHeader">
                     <div class="userPic"><img src="<?php echo $fotoPerfil['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" /></div>
-                    <div class="floatLeft">
+                    <div class="floatLeft infoContacto">
                         <h1><?php echo $contacto['nombre_completo'] ?></h1>
                         <?php if (!empty($contacto['descripcion'])) { ?>
                         <div class="linea5"></div>
@@ -78,6 +78,15 @@ include '../../includes/encabezado.php';
                         <div class="linea5"></div>
                         <h2 class="subtitulo">Trabaja en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a></h2>
                         <?php } ?>
+
+                        <!--Etiquetas-->
+                        <div class="etiquetasContacto">
+                            <ul>
+                                <li><a href="#">Analista de Sistemas</a>, </li>
+                                <li><a href="#">CEO Tecpana.net</a>, </li>
+                                <li><a href="#" class="gris">Editar etiquetas</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="mainBoton">
                         <?php if ($contacto['tipo'] == 1) { ?>

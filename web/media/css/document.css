@@ -98,6 +98,7 @@ h2.subtitulo {
     color:#6C6C6C;
     letter-spacing:0.1em;
     font-weight:normal;
+    line-height: 1.2em;
 }
 
 h2.subtitulo a {
@@ -1180,6 +1181,37 @@ dl.horizontal dt {
 /* 3.3.7 Seccion Contacto */
 
 /* 3.3.7.1 Detalle de contacto */
+.infoHeader {
+    margin: 0 117px 0 140px;
+}
+
+.infoHeader .userPic {
+    margin-left: -140px;
+}
+
+.infoHeader .infoContacto {
+    width: 100%;
+}
+
+.infoHeader .mainBoton {
+    float: left;
+    margin-right: -117px;
+}
+
+.etiquetasContacto {
+    display: block;
+    margin-top: 10px;
+}
+
+.etiquetasContacto ul {
+    background: url("../imgs/label_16x16.gif") no-repeat left;
+    padding-left: 22px;
+}
+.etiquetasContacto ul li {
+    display: inline;
+    line-height: 16px;
+}
+
 .contactInfo dt {
     width:100px;
     text-align:right;
