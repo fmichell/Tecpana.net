@@ -1212,6 +1212,37 @@ dl.horizontal dt {
     line-height: 16px;
 }
 
+.editState ul a {
+    border: 1px solid #D2D2D2;
+    border-radius: 3px;
+    background-image: url("../imgs/square-blue-delete.png");
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-color: #F1F1F1;
+    padding: 0 18px 0 2px;
+}
+
+.editState ul a:hover {
+    text-decoration: none;
+    background-color: #E3E3E3;
+}
+
+.agregarEtiqueta {
+    margin-top: 10px;
+    margin-left: 22px;
+}
+
+.agregarEtiqueta label {
+    display: block;
+    font-size: 11px;
+}
+
+.agregarEtiqueta .boton_gris {
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+}
+
 .contactInfo dt {
     width:100px;
     text-align:right;

@@ -84,8 +84,14 @@ include '../../includes/encabezado.php';
                             <ul>
                                 <li><a href="#">Analista de Sistemas</a>, </li>
                                 <li><a href="#">CEO Tecpana.net</a>, </li>
-                                <li><a href="#" class="gris">Editar etiquetas</a></li>
+                                <li><a href="javascript:;" class="gris" id="editarEtiquetas">Editar etiquetas</a></li>
                             </ul>
+                            <div class="agregarEtiqueta" style="display: none">
+                                <label for="addLabel">Agregar una nueva etiqueta:</label>
+                                <input type="text" name="addLabel" id="addLabel" />
+                                <a href="#" class="boton_gris" id="addEtiqueta">Agregar etiqueta</a>
+                                <a href="javascript:;" class="boton_gris" id="cancelEtiquetas">Cancelar</a>
+                            </div>
                         </div>
                     </div>
                     <div class="mainBoton">
@@ -250,5 +256,25 @@ include '../../includes/encabezado.php';
 // Cargamos el pie de pagina
 include '../../includes/pie.php';
 ?>
+<script type="text/javascript">
+    $(document).on("ready", function() {
+        $("#editarEtiquetas").click(function() {
+            var etiquetas = $(this).closest(".etiquetasContacto");
+            var agregar = $(etiquetas).find(".agregarEtiqueta");
+
+            $(this).hide();
+            $(etiquetas).addClass("editState");
+            $(agregar).show();
+        });
+        $("#cancelEtiquetas").click(function() {
+            var etiquetas = $(this).closest(".etiquetasContacto");
+            var agregar = $(etiquetas).find(".agregarEtiqueta");
+
+            $(etiquetas).removeClass("editState");
+            $(agregar).hide();
+            $("#editarEtiquetas").show();
+        });
+    });
+</script>
 </body>
 </html>
