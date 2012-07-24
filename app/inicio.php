@@ -36,7 +36,11 @@ define('NL', PHP_EOL);
 $url_path = explode('?', $_SERVER["REQUEST_URI"]);
 $url_path = $url_path[0];
 define('SISTEMA_URL_PATH', $url_path);
-define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/media/profile');
+if ($produccion or $desarrollo) {
+    define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/tecpana.net/web/media/profile');
+} else {
+    define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/media/profile');
+}
 
 // PREPARAMOS CAMINO DE INCLUSION
 
@@ -104,23 +108,22 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
             array('10.0.0.16', 11213),
             array('10.0.0.17', 11213),
         )
-    ));
+    ));*/
     $bd = GestorMySQL::obtenerInstancia('produccion', array(
         'servidores' => array(
             array(
-                'host' => '10.0.0.50', // alt01.plazavip
+                'host' => 'tecpananet.db.4175629.hostedresource.com', // alt01.plazavip
                 'peso' => 1
             )
         ),
-        'usuario' => 'sitio_latinshare',
-        'contrasena' => 'ej60BOX1hYAF0LWuZFEN',
-        'basedatos' => 'latinshare',
+        'usuario' => 'tecpananet',
+        'contrasena' => 'rEbrkvRVh2Q4cL',
+        'basedatos' => 'tecpananet',
         'charset' => 'UTF-8',
         'depurar' => false
     ));
-    $bd->gestor_cache = &$cache;
-    */
-    die('Error de conexion con la BD. Revisar inicio.php.');
+    /*$bd->gestor_cache = &$cache;
+    die('Error de conexion con la BD. Revisar inicio.php.');*/
 }
 
 // Declaramos Cuenta Id

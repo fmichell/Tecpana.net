@@ -7,6 +7,7 @@
  * @descripcion: Muestra información detallada de un contacto
  */
 include '../../../app/inicio.php';
+include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 
 // Obtenemos el id del contacto
 if (isset($_GET['id']) and !empty($_GET['id'])) {
@@ -34,6 +35,8 @@ foreach ($empleados as $empleado_id => $empleado) {
     $tmpFoto = Contacto::obtenerFotos($empleado['foto'], 1, $empleado['sexo']);
     $empleados[$empleado_id]['uri'] = $tmpFoto['uriThumbnail'];
 }
+// Cargamos etiquetas del contacto
+$etiquetas = Etiqueta::obtenerEtiquetasContactoFull(CUENTA_ID, $contacto_id);
 // Cargamos algunos datos varios
 $paises = CamposContacto::obtenerPaises();
 ?>
@@ -82,15 +85,22 @@ include '../../includes/encabezado.php';
                         <!--Etiquetas-->
                         <div class="etiquetasContacto">
                             <ul>
-                                <li><a href="#">Analista de Sistemas</a>, </li>
-                                <li><a href="#">CEO Tecpana.net</a>, </li>
-                                <li><a href="javascript:;" class="gris" id="editarEtiquetas">Editar etiquetas</a></li>
+                                <?php
+                                if (!empty($etiquetas)) {
+                                    foreach ($etiquetas as $etiquetaId => $etiqueta) {
+                                        ?><li><a href="#"><?php echo $etiqueta['etiqueta'] ?></a>, </li><?php
+                                    }
+                                } ?>
+                                <li><a href="javascript:;" class="gris" id="editarEtiquetas">
+                                    <?php echo (empty($etiquetas)) ? 'Agregar etiquetas' : 'Editar etiquetas'; ?>
+                                    </a>
+                                </li>
                             </ul>
                             <div class="agregarEtiqueta" style="display: none">
-                                <label for="addLabel">Agregar una nueva etiqueta:</label>
-                                <input type="text" name="addLabel" id="addLabel" />
-                                <a href="#" class="boton_gris" id="addEtiqueta">Agregar etiqueta</a>
-                                <a href="javascript:;" class="boton_gris" id="cancelEtiquetas">Cancelar</a>
+                                <label for="valEtiqueta">Agregar una nueva etiqueta:</label>
+                                <input type="text" name="valEtiqueta" id="valEtiqueta" />
+                                <a href="javascript:;" class="boton_gris" id="addEtiqueta" rel="<?php echo $contacto_id ?>">Agregar etiqueta</a>
+                                <a href="javascript:;" class="boton_gris" id="cancelEtiquetas">Cerrar</a>
                             </div>
                         </div>
                     </div>
@@ -265,6 +275,24 @@ include '../../includes/pie.php';
             $(this).hide();
             $(etiquetas).addClass("editState");
             $(agregar).show();
+        });
+        $("#addEtiqueta").click(function() {
+            var etiqueta = $("#valEtiqueta").val();
+            var contacto = $(this).attr('rel');
+
+            $.get('/contactos/ajax/ajaxAgregarEtiqueta.php', {'etiqueta':etiqueta, 'contacto':contacto}, function(respuesta) {
+                if (respuesta == '1') {
+                    $("#valEtiqueta").val('');
+                    $("<li><a href='#'>"+etiqueta+"</a>, </li>").insertBefore("#editarEtiquetas");
+                } else {
+                    alert('Ocurrió un error al agregar la etiqueta');
+                }
+            });
+        });
+        $("#valEtiqueta").keyup(function(event) {
+            if (event.keyCode == 13) {
+                $("#addEtiqueta").click();
+            }
         });
         $("#cancelEtiquetas").click(function() {
             var etiquetas = $(this).closest(".etiquetasContacto");
