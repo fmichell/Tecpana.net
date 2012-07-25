@@ -45,7 +45,9 @@ class Etiqueta
                             $bd->escaparValor($cuentaId, 'entro'),
                             $bd->escaparValor($contactoId, 'texto'),
                             $bd->escaparValor($etiquetaId, 'entero'));
-        return $bd->ejecutar($consulta);
+        $bd->ejecutar($consulta);
+
+        return $bd->obtenerAfectados();
     }
 
     static public function obtenerEtiquetasContactoFull ($cuentaId, $contactoId)
@@ -86,5 +88,53 @@ class Etiqueta
         $bd->seleccionar('etiqueta_id, etiqueta_seo, etiqueta', 'etiquetas')->donde(array('cuenta_id:entero' => $cuentaId));
 
         return $bd->obtener(null, 'etiqueta_id');
+    }
+
+    static public function obtenerEtiquetaSeo ($cuentaId, $etiquetaSeo)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->seleccionar('etiqueta_id', 'etiquetas')->donde(array(
+                                                            'cuenta_id:entero' => $cuentaId,
+                                                            'etiqueta_seo:texto' => $etiquetaSeo));
+        return $bd->obtenerFila();
+    }
+
+    static public function sugerir ($cuentaId, $etiqueta = null)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Declaramos arraglo de filtros
+        $filtros = array();
+
+        // Generamos filtro cuenta_id y tipo
+        $filtros[] = 'cuenta_id = ' . $bd->escaparValor($cuentaId, 'entero');
+
+        // Filtramos por nombre
+        if (empty($etiqueta)) {
+            return null;
+        } else {
+            $etiqueta = trim($etiqueta);
+            $narray = explode(' ', $etiqueta);
+            foreach ($narray as $indice => $valor) {
+                $narray[$indice] = '+' . $bd->escaparValor($valor) . '*';
+            }
+            $etiquetaFormatiada = implode(' ', $narray);
+            $filtros[] = sprintf('MATCH (etiqueta) AGAINST (%s IN BOOLEAN MODE)',
+                $bd->escaparValor($etiquetaFormatiada, 'texto'));
+        }
+
+        // Generamos filtro
+        $filtros = implode(' AND ', $filtros);
+
+        // Generamos consulta
+        $consulta = sprintf("SELECT etiqueta_id AS id, etiqueta AS label, etiqueta AS value
+                             FROM etiquetas WHERE %s",
+            $filtros);
+
+        return $bd->obtener($consulta, 'etiqueta_id');
     }
 }

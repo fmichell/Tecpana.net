@@ -88,7 +88,11 @@ include '../../includes/encabezado.php';
                                 <?php
                                 if (!empty($etiquetas)) {
                                     foreach ($etiquetas as $etiquetaId => $etiqueta) {
-                                        ?><li><a href="#"><?php echo $etiqueta['etiqueta'] ?></a>, </li><?php
+                                        ?>
+                                        <li><a href="/contactos/etiquetas/<?php echo $etiqueta['etiqueta_seo'] ?>" rel="<?php echo $etiqueta['etiqueta_id'] ?>">
+                                            <?php echo $etiqueta['etiqueta'] ?>
+                                            </a>,
+                                        </li><?php
                                     }
                                 } ?>
                                 <li><a href="javascript:;" class="gris" id="editarEtiquetas">
@@ -99,6 +103,7 @@ include '../../includes/encabezado.php';
                             <div class="agregarEtiqueta" style="display: none">
                                 <label for="valEtiqueta">Agregar una nueva etiqueta:</label>
                                 <input type="text" name="valEtiqueta" id="valEtiqueta" />
+                                <input type="hidden" name="etiqueta_id" id="etiqueta_id" value="nueva">
                                 <a href="javascript:;" class="boton_gris" id="addEtiqueta" rel="<?php echo $contacto_id ?>">Agregar etiqueta</a>
                                 <a href="javascript:;" class="boton_gris" id="cancelEtiquetas">Cerrar</a>
                             </div>
@@ -284,10 +289,23 @@ include '../../includes/pie.php';
                 if (respuesta == '1') {
                     $("#valEtiqueta").val('');
                     $("<li><a href='#'>"+etiqueta+"</a>, </li>").insertBefore("#editarEtiquetas");
+                } else if (respuesta == '2') {
+                    $("#valEtiqueta").val('');
                 } else {
                     alert('Ocurrió un error al agregar la etiqueta');
                 }
+                return false;
             });
+        });
+        $( "#valEtiqueta" ).autocomplete({
+            source: "/contactos/ajax/ajaxSugerirEtiqueta.php",
+            minLength: 2,
+            select: function( event, ui ) {
+                ui.item ? $('#etiqueta_id').val(ui.item.id) : $('#etiqueta_id').val('nueva');
+            },
+            change: function( event, ui ) {
+                ui.item ? $('#etiqueta_id').val(ui.item.id) : $('#etiqueta_id').val('nueva');
+            }
         });
         $("#valEtiqueta").keyup(function(event) {
             if (event.keyCode == 13) {

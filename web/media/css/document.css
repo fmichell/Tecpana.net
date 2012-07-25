@@ -1204,12 +1204,13 @@ dl.horizontal dt {
 }
 
 .etiquetasContacto ul {
-    background: url("../imgs/label_16x16.gif") no-repeat left;
+    background: url("../imgs/label_16x16.gif") no-repeat left top;
     padding-left: 22px;
 }
 .etiquetasContacto ul li {
-    display: inline;
+    display: inline-block;
     line-height: 16px;
+    margin: 0 3px 0.5em 0;
 }
 
 .editState ul a {

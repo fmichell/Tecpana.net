@@ -12,12 +12,24 @@ include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 if (isset($_GET['etiqueta']) and !empty($_GET['etiqueta']) and
     isset($_GET['contacto']) and !empty($_GET['contacto'])) {
 
-    $etiquetaId = Etiqueta::crearEtiqueta(CUENTA_ID, $_GET['etiqueta']);
+    // Generamos etiqueta seo
+    $etiquetaSeo = util_preparar_var($_GET['etiqueta'], 'seo');
+    // Verificamos si la etiqueta existe
+    $etiquetaId = Etiqueta::obtenerEtiquetaSeo(CUENTA_ID, $etiquetaSeo);
+
+    // Si la etiqueta no existe la creamos
+    if (!$etiquetaId) {
+        $etiquetaId = Etiqueta::crearEtiqueta(CUENTA_ID, $_GET['etiqueta']);
+    } else {
+        $etiquetaId = $etiquetaId['etiqueta_id'];
+    }
 
     $resultado = Etiqueta::agregarEtiqueta(CUENTA_ID, $_GET['contacto'], $etiquetaId);
 
     if ($resultado)
         die('1');
+    elseif ($resultado === 0)
+        die('2');
     else
         die('0');
 }

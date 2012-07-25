@@ -40,7 +40,7 @@ body {
 }
 
 .mainWrapper {
-    min-width:900px;
+    /*min-width:1025px;*/
     display:block;
     width:100%;
 }
