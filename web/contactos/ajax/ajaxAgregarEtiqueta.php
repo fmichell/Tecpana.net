@@ -24,7 +24,7 @@ if (isset($_GET['etiqueta']) and !empty($_GET['etiqueta']) and
         $etiquetaId = $etiquetaId['etiqueta_id'];
     }
 
-    $resultado = Etiqueta::agregarEtiqueta(CUENTA_ID, $_GET['contacto'], $etiquetaId);
+    $resultado = Contacto::agregarEtiqueta(CUENTA_ID, $_GET['contacto'], $etiquetaId);
 
     if ($resultado)
         die('1');

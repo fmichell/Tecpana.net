@@ -13,7 +13,7 @@ if (isset($_GET['etiqueta']) and !empty($_GET['etiqueta']) and
     isset($_GET['contacto']) and !empty($_GET['contacto'])) {
 
     // Eliminamos la etiqueta del contacto
-    $resultado = Etiqueta::eliminarEtiquetaContacto(CUENTA_ID, $_GET['contacto'], $_GET['etiqueta']);
+    $resultado = Contacto::eliminarEtiqueta(CUENTA_ID, $_GET['contacto'], $_GET['etiqueta']);
 
     if ($resultado)
         die('1');

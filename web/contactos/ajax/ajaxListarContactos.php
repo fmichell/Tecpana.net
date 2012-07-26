@@ -22,11 +22,35 @@ if (isset($_POST['nombre']) and !empty($_POST['nombre'])) {
     // Obtenemos los contactos filtrados
     $contactos = Contacto::buscar(CUENTA_ID, $_POST['nombre']);
     $tabla = new Tabla($contactos);
+
+    // Filtramos por etiqueta
+    if (isset($_POST['etiqueta']) and !empty($_POST['etiqueta'])) {
+        $contactosEtiquetados = Contacto::obtenerPorEtiqueta(CUENTA_ID, $_POST['etiqueta']);
+        $tmpFiltro = array();
+        foreach ($contactosEtiquetados as $contacto) {
+            $tmpFiltro[] = "{contacto_id} = '" . $contacto['contacto_id'] . "'";
+        }
+        $tmpFiltro = implode(' OR ', $tmpFiltro);
+        $tabla->filtrar($tmpFiltro);
+    }
 } else {
     // Obtenemos todos los contactos
     $contactos = Contacto::obtenerTodos(CUENTA_ID);
     // Creamos objeto tabla y aplicamos filtros
     $tabla = new Tabla($contactos);
+
+    // Filtramos por etiqueta
+    if (isset($_POST['etiqueta']) and !empty($_POST['etiqueta'])) {
+        $contactosEtiquetados = Contacto::obtenerPorEtiqueta(CUENTA_ID, $_POST['etiqueta']);
+        $tmpFiltro = array();
+        foreach ($contactosEtiquetados as $contacto) {
+            $tmpFiltro[] = "{contacto_id} = '" . $contacto['contacto_id'] . "'";
+        }
+        $tmpFiltro = implode(' OR ', $tmpFiltro);
+        $tabla->filtrar($tmpFiltro);
+    }
+
+    // Filtramos por tipo
     if (isset($_POST['tipo']) and !empty($_POST['tipo'])) {
         switch ($_POST['tipo']) {
             case 'todos':
@@ -162,8 +186,13 @@ foreach ($contactos as $contactoId => $contacto) {
         <?php
     }
 }
+if (empty($contactos)) {
+    ?>
+    <div class="alertMessage info">No se encontraron más contactos</div>
+    <?php
+}
 // Si es una vista de iconos agregamos clear al final de cada pagina
 if ($vista == 'iconos') { ?><div class="clear"><!--empty--></div><?php }
 // Si es la ultima pagina se carga este div
-if ($pagina == $ultimaPagina) { ?><div class="ultimaPagina"><!--Ultima pagina--></div><?php }
+if ( ($pagina == $ultimaPagina) or (empty($contactos)) ) { ?><div class="ultimaPagina"><!--Ultima pagina--></div><?php }
 ?>

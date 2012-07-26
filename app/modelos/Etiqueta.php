@@ -35,50 +35,6 @@ class Etiqueta
             return $resultado;
     }
 
-    static public function agregarEtiqueta ($cuentaId, $contactoId, $etiquetaId)
-    {
-        // Iniciamos conexion con la BD
-        $bd = GestorMySQL::obtenerInstancia();
-
-        // Iniciamos consulta
-        $consulta = sprintf('INSERT IGNORE INTO contactos_etiquetas (cuenta_id, contacto_id, etiqueta_id) VALUES (%u, %s, %u)',
-                            $bd->escaparValor($cuentaId, 'entro'),
-                            $bd->escaparValor($contactoId, 'texto'),
-                            $bd->escaparValor($etiquetaId, 'entero'));
-        $bd->ejecutar($consulta);
-
-        return $bd->obtenerAfectados();
-    }
-
-    static public function obtenerEtiquetasContactoFull ($cuentaId, $contactoId)
-    {
-        // Iniciamos conexion con la BD
-        $bd = GestorMySQL::obtenerInstancia();
-
-        // Iniciamos consulta
-        $consulta = sprintf('SELECT etiquetas.etiqueta_id, etiquetas.etiqueta_seo, etiquetas.etiqueta
-                             FROM contactos_etiquetas USE INDEX (POR_CONTACTO) INNER JOIN etiquetas ON contactos_etiquetas.etiqueta_id = etiquetas.etiqueta_id
-                             WHERE contactos_etiquetas.cuenta_id = %u AND contactos_etiquetas.contacto_id = %s',
-                            $bd->escaparValor($cuentaId, 'entero'),
-                            $bd->escaparValor($contactoId, 'texto'));
-
-        return $bd->obtener($consulta, 'etiqueta_id');
-    }
-
-    static public function obtenerEtiquetasContacto ($cuentaId, $contactoId)
-    {
-        // Iniciamos conexion con la BD
-        $bd = GestorMySQL::obtenerInstancia();
-
-        // Iniciamos consulta
-        $consulta = sprintf('SELECT etiqueta_id FROM contactos_etiquetas USE INDEX (POR_CONTACTO) WHERE cuenta_id = %u AND contacto_id = %s',
-                            $bd->escaparValor($cuentaId, 'entero'),
-                            $bd->escaparValor($contactoId, 'texto'));
-
-
-        return $bd->obtener($consulta, 'etiqueta_id');
-    }
-
     static public function obtenerEtiquetas ($cuentaId)
     {
         // Iniciamos conexion con la BD
@@ -96,7 +52,7 @@ class Etiqueta
         $bd = GestorMySQL::obtenerInstancia();
 
         // Iniciamos consulta
-        $bd->seleccionar('etiqueta_id', 'etiquetas')->donde(array(
+        $bd->seleccionar('etiqueta_id, etiqueta', 'etiquetas')->donde(array(
                                                             'cuenta_id:entero' => $cuentaId,
                                                             'etiqueta_seo:texto' => $etiquetaSeo));
         return $bd->obtenerFila();
@@ -138,16 +94,32 @@ class Etiqueta
         return $bd->obtener($consulta, 'etiqueta_id');
     }
 
-    static public function eliminarEtiquetaContacto ($cuentaId, $contactoId, $etiquetaId)
+    static public function obtenerPorLetras ($cuentaId)
     {
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
 
         // Iniciamos consulta
-        $bd->eliminar('contactos_etiquetas')->donde(array(
-                                                    'cuenta_id:entero' => $cuentaId,
-                                                    'contacto_id:texto' => $contactoId,
-                                                    'etiqueta_id:entero' => $etiquetaId));
-        return $bd->ejecutar();
+        $consulta = sprintf('SELECT etiquetas.etiqueta_id, etiquetas.etiqueta_seo, etiquetas.etiqueta
+                             FROM etiquetas INNER JOIN contactos_etiquetas ON etiquetas.etiqueta_id = contactos_etiquetas.etiqueta_id
+                             WHERE etiquetas.cuenta_id = %u AND contactos_etiquetas.cuenta_id = %u
+                             GROUP BY etiqueta_id, etiqueta_seo, etiqueta
+                             ORDER BY etiqueta',
+                            $bd->escaparValor($cuentaId, 'entero'),
+                            $bd->escaparValor($cuentaId, 'entero'));
+
+        $etiquetas = $bd->obtener($consulta, 'etiqueta_id');
+
+        // Agrupamos las etiquetas por la letra inicial
+        $retorno = array();
+        foreach ($etiquetas as $etiqueta) {
+            $letraInicio = substr($etiqueta['etiqueta'], 0, 1);
+            $letraInicio = strtoupper($letraInicio);
+
+            $retorno[$letraInicio][] = $etiqueta;
+        }
+
+        return $retorno;
     }
+
 }

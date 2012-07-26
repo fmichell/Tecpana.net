@@ -36,7 +36,7 @@ foreach ($empleados as $empleado_id => $empleado) {
     $empleados[$empleado_id]['uri'] = $tmpFoto['uriThumbnail'];
 }
 // Cargamos etiquetas del contacto
-$etiquetas = Etiqueta::obtenerEtiquetasContactoFull(CUENTA_ID, $contacto_id);
+$etiquetas = Contacto::obtenerEtiquetas(CUENTA_ID, $contacto_id);
 // Cargamos algunos datos varios
 $paises = CamposContacto::obtenerPaises();
 ?>
@@ -282,6 +282,7 @@ include '../../includes/pie.php';
             $(this).hide();
             $(etiquetas).addClass("editState");
             $(agregar).show();
+            $("#valEtiqueta").focus();
         });
         $("#addEtiqueta").click(function() {
             var etiqueta = $("#valEtiqueta").val();

@@ -473,6 +473,33 @@ span.font_size_10 {
     color:#000;
 }
 
+/* 1.9 Mensajes */
+.alertMessage {
+    background-color:#FFF9D5;
+    border:1px solid #E46F61;
+    border-radius: 3px;
+    padding:5px;
+    font-weight: bold;
+}
+
+.alertMessage.warning, .alertMessage.info, .alertMessage.error {
+    padding-left: 26px;
+    background-repeat: no-repeat;
+    background-position: 5px 3px;
+}
+
+.alertMessage.warning {
+    background-image: url("../imgs/alert16x16.png");
+}
+
+.alertMessage.info {
+    background-image: url("../imgs/info16x16.png");
+}
+
+.alertMessage.error {
+    background-image: url("../imgs/close16x16.png");
+}
+
 /* 2. DOCUMENT */
 
 /* 2.1 Header */
@@ -744,6 +771,11 @@ span.font_size_10 {
     cursor: pointer;
 }
 
+.btnsFiltro div.back {
+    border-width: 1px;
+    border-radius: 3px;
+}
+
 .btnsFiltro div.first {
     border-left-width: 1px;
     border-radius: 3px 0px 0px 3px;
@@ -950,7 +982,7 @@ dl.horizontal dt {
 /* 3.3.6.2 Lista de contactos */
 .contact {
     padding-left:60px;
-    padding-right:170px;
+    padding-right:220px;
 }
 
 .contact .userThumb {
@@ -963,9 +995,9 @@ dl.horizontal dt {
 }
 
 .contact .info {
-    margin-right:-170px;
+    margin-right:-220px;
     margin-left:10px;
-    width:160px;
+    width:210px;
     line-height: 1.3em;
 }
 
@@ -1206,6 +1238,7 @@ dl.horizontal dt {
 .etiquetasContacto ul {
     background: url("../imgs/label_16x16.gif") no-repeat left top;
     padding-left: 22px;
+    min-height: 16px;
 }
 .etiquetasContacto ul li {
     display: inline-block;

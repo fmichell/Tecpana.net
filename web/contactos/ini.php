@@ -1,8 +1,19 @@
 <?php
 include '../../app/inicio.php';
+include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 
-// Obtenemos todos los contactos
-$contactos = Contacto::obtenerTodos(CUENTA_ID);
+// Obtenemos etiqueta si la hay
+$label = null;
+if (isset($_GET['etiqueta'])) {
+    if (!empty($_GET['etiqueta']))
+        $label = Etiqueta::obtenerEtiquetaSeo(CUENTA_ID, $_GET['etiqueta']);
+    else {
+        header('location: /contactos');
+        exit;
+    }
+}
+// Obtenemos listado de etiquetas
+$etiquetasOrdenadas = Etiqueta::obtenerPorLetras(CUENTA_ID);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -31,7 +42,14 @@ include '../includes/encabezado.php';
             <!--Workspace Header begins-->
             <div class="workspaceHeader interior10">
                 <header>
-                    <h1 class="floatLeft" id="tituloSeccion">Contactos</h1>
+                    <h1 class="floatLeft" id="tituloSeccion">
+                        <?php
+                        if ($label) {
+                            echo "Contactos &raquo; " . $label['etiqueta'];
+                        } else
+                            echo "Contactos";
+                        ?>
+                    </h1>
                     <div class="mainBoton"><a href="/contactos/agregar" class="botong botong_azul abrirDialog">Agregar contacto</a></div>
                     <div class="linea20"></div>
                     <div class="buscar"><input type="search" name="buscar_contacto" id="buscar_contacto" placeholder="Buscar empresa o contacto" class="bigText" /></div>
@@ -40,6 +58,11 @@ include '../includes/encabezado.php';
             <!--Workspace Header ends-->
             <!--Workspace Toolbar begins-->
             <div class="workspaceToolbar">
+                <?php if ($label) { ?>
+                <div class="btnsFiltro">
+                    <div class="back" id="back" title="Desactivar etiqueta">&laquo;</div>
+                </div>
+                <?php } ?>
                 <div id="filtrar" class="btnsFiltro">
                     <div class="first selected" id="todos">Todos</div>
                     <div id="personas">Personas</div>
@@ -51,6 +74,7 @@ include '../includes/encabezado.php';
                     <a href="javascript:;" id="prevPage">Página anterior</a>
                     <a href="javascript:;" id="nextPage">Página siguiente</a>
                 </div>
+                <div class="clear"><!--vacio--></div>
             </div>
             <!--Workspace Toolbar ends-->
             <!--Workspace Area begins-->
@@ -92,20 +116,27 @@ include '../includes/encabezado.php';
                         <li><a href="javascript:;" id="iconview">Iconos</a></li>
                     </ul>
                 </div>
+                <?php if (!empty($etiquetasOrdenadas)) { ?>
                 <div class="recuadro">
                     <h3>Etiquetas</h3>
                     <ul class="listLabels">
-                        <li><span class="letter">A</span>
-                            <div class="labels"><a href="#">Animales</a>, <a href="#">Amor</a>, <a href="#">Anfetaminas</a>, <a href="#">Arena</a>, <a href="#">Agua</a></div>
+                        <?php foreach ($etiquetasOrdenadas as $letra => $etiquetas) { ?>
+                        <li><span class="letter"><?php echo $letra ?></span>
+                            <div class="labels">
+                                <?php
+                                $tmp = array();
+                                foreach ($etiquetas as $etiqueta) {
+                                    $tmp[] = sprintf('<a href="/contactos/etiqueta/%s">%s</a>', $etiqueta['etiqueta_seo'], $etiqueta['etiqueta']);
+                                }
+
+                                echo implode(', ', $tmp);
+                                ?>
+                            </div>
                         </li>
-                        <li><span class="letter">E</span>
-                            <div class="labels"><a href="#">Entregas</a>, <a href="#">Elechos</a>, <a href="#">Estado</a>, <a href="#">Estereos</a>, <a href="#">Esquina</a></div>
-                        </li>
-                        <li><span class="letter">P</span>
-                            <div class="labels"><a href="#">Putas</a>, <a href="#">Playos</a>, <a href="#">Proxenetas</a>, <a href="#">Pedales</a>, <a href="#">Pantuflas</a>, <a href="#">Pavos</a>, <a href="#">Paquetería</a></div>
-                        </li>
+                        <?php } ?>
                     </ul>
                 </div>
+                <?php } ?>
             </div>
         </section>
         <!--Toolbar ends-->
@@ -126,6 +157,7 @@ var tipo = 'todos';
 var pagina = 1;
 var nombreBuscado = '';
 var vista = 'lista';
+var etiqueta = '<?php echo ($label) ? $label['etiqueta_id'] : $label ?>';
 
 function actualizarSeleccion(fade) {
     if (fade == 'off') {
@@ -153,14 +185,14 @@ function actualizarSeleccion(fade) {
         }
     }
 }
-function cargarContactos(filtroNombre, filtroTipo, filtroPagina) {
+function cargarContactos(filtroNombre, filtroTipo, filtroPagina, filtroEtiqueta) {
     $('#contactos').fadeTo('fast', 0.10, function() {
         if (vista == 'iconos') {
             $(this).addClass('contactosIcons');
         } else {
             $(this).removeClass('contactosIcons');
         }
-        $(this).load('/contactos/ajax/ajaxListarContactos.php', {'nombre':filtroNombre, 'tipo':filtroTipo, 'pagina':filtroPagina, 'vista':vista}, function(respuesta, estado) {
+        $(this).load('/contactos/ajax/ajaxListarContactos.php', {'nombre':filtroNombre, 'tipo':filtroTipo, 'pagina':filtroPagina, 'etiqueta':filtroEtiqueta, 'vista':vista}, function(respuesta, estado) {
             if (estado == 'success') {
                 //Ocultando seleccion
                 actualizarSeleccion('off');
@@ -211,15 +243,15 @@ function paginar(paso) {
     } else {
         pagina += paso;
     }
-    cargarContactos('', tipo, pagina);
+    cargarContactos('', tipo, pagina, etiqueta);
 }
 function buscarNombre() {
     tipo = 'todos'; pagina = 1;
     var nombre = $('#buscar_contacto').val();
     if (nombre != '') {
-        cargarContactos(nombre, null, pagina);
+        cargarContactos(nombre, null, pagina, etiqueta);
     } else {
-        cargarContactos('', tipo, pagina);
+        cargarContactos('', tipo, pagina, etiqueta);
     }
     $('#filtrar > div').removeClass('selected');
     $('#todos').addClass('selected');
@@ -234,7 +266,7 @@ function calcularAnchoIconosContactos() {
     $('.contacto').css({'width':anchoIcon+'px'});
 }
 $(document).on("ready", function() {
-    cargarContactos('', 'todos', 1);
+    cargarContactos('', 'todos', 1, etiqueta);
 
     $('.check_contacto').live('click', function() {
         actualizarSeleccion();
@@ -251,19 +283,25 @@ $(document).on("ready", function() {
     $('#filtrar > div').click(function() {
         tipo = $(this).attr('id');
         pagina = 1;
-        if (tipo == 'personas') {
-            $("#tituloSeccion").html("Contactos &raquo; Personas");
-        } else if (tipo == 'empresas') {
-            $("#tituloSeccion").html("Contactos &raquo; Empresas");
-        } else if (tipo == 'grupos') {
-            $("#tituloSeccion").html("Contactos &raquo; Grupos");
-        } else {
-            $("#tituloSeccion").text("Contactos");
+        if (vacio(etiqueta)) {
+            if (tipo == 'personas') {
+                $("#tituloSeccion").html("Contactos &raquo; Personas");
+            } else if (tipo == 'empresas') {
+                $("#tituloSeccion").html("Contactos &raquo; Empresas");
+            } else if (tipo == 'grupos') {
+                $("#tituloSeccion").html("Contactos &raquo; Grupos");
+            } else {
+                $("#tituloSeccion").text("Contactos");
+            }
         }
-        cargarContactos('', tipo, pagina);
+        cargarContactos('', tipo, pagina, etiqueta);
         $('#buscar_contacto').val('');
         $('#filtrar > div').removeClass('selected');
         $(this).addClass('selected');
+    });
+    $('#back').click(function() {
+        window.location.href = '/contactos';
+        return false;
     });
 
     $('#firstPage').click(function() {
@@ -286,10 +324,9 @@ $(document).on("ready", function() {
             clearTimeout(intervalo);
             buscarNombre();
         }
-
     });
 
-    $('.eliminar').click(function () {
+    $('.eliminar').click(function() {
         var seleccionados = $(".check_contacto:checked").length;
         if (seleccionados == 1) {
             var mensaje = 'Está seguro que desea eliminar permanentemente el contacto seleccionado?';
@@ -304,11 +341,11 @@ $(document).on("ready", function() {
 
     $('#listview').click(function() {
         vista = 'lista';
-        cargarContactos('', tipo, pagina);
+        cargarContactos('', tipo, pagina, etiqueta);
     });
     $('#iconview').click(function() {
         vista = 'iconos';
-        cargarContactos('', tipo, pagina);
+        cargarContactos('', tipo, pagina, etiqueta);
     });
 });
 </script>
