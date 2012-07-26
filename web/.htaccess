@@ -8,3 +8,8 @@ Rewriterule ^contactos/etiqueta/([a-zA-Z0-9-]+)*/?$ contactos/ini.php?etiqueta=$
 Rewriterule ^([a-zA-Z-]+)/([a-zA-Z0-9,]+)/([a-zA-Z0-9-]+)/?$ $1/$3/ini.php?id=$2 [NC,QSA,L]
 Rewriterule ^([a-zA-Z-]+)/?$ $1/ini.php [L]
 DirectoryIndex ini.php index.php ini.html index.html
+# Autenticacion
+#AuthType Basic
+#AuthName "Area Protegida"
+#AuthUserFile /home/content/q/u/i/quinchobar/html/tecpana.net/web/.htpasswd
+#Require valid-user

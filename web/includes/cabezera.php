@@ -13,3 +13,4 @@
     <script type="text/javascript" src="/media/js/jquery-plugins.js"></script>
     <script type="text/javascript" src="/media/js/ready.js"></script>
     <script type="text/javascript" src="/media/js/modernizr.js"></script>
+    <meta name="robots" content="noindex, nofollow" />
