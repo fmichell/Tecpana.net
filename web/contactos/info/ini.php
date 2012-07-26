@@ -89,7 +89,9 @@ include '../../includes/encabezado.php';
                                 if (!empty($etiquetas)) {
                                     foreach ($etiquetas as $etiquetaId => $etiqueta) {
                                         ?>
-                                        <li><a href="/contactos/etiquetas/<?php echo $etiqueta['etiqueta_seo'] ?>" rel="<?php echo $etiqueta['etiqueta_id'] ?>">
+                                        <li><a href="/contactos/etiquetas/<?php echo $etiqueta['etiqueta_seo'] ?>"
+                                               data-etiqueta="<?php echo $etiqueta['etiqueta_id'] ?>"
+                                               data-contacto="<?php echo $contacto_id ?>">
                                             <?php echo $etiqueta['etiqueta'] ?>
                                             </a>,
                                         </li><?php
@@ -294,10 +296,9 @@ include '../../includes/pie.php';
                 } else {
                     alert('Ocurrió un error al agregar la etiqueta');
                 }
-                return false;
             });
         });
-        $( "#valEtiqueta" ).autocomplete({
+        $("#valEtiqueta").autocomplete({
             source: "/contactos/ajax/ajaxSugerirEtiqueta.php",
             minLength: 2,
             select: function( event, ui ) {
@@ -312,6 +313,23 @@ include '../../includes/pie.php';
                 $("#addEtiqueta").click();
             }
         });
+
+        $(document).on('click', '.editState ul a:not(#editarEtiquetas)',function(event) {
+            event.preventDefault();
+            var etiqueta = $(this).data("etiqueta");
+            var contacto = $(this).data("contacto");
+            var elemento = $(this).parent();
+
+            $.get('/contactos/ajax/ajaxEliminarEtiqueta.php', {'etiqueta':etiqueta, 'contacto':contacto}, function(respuesta) {
+                if (respuesta == '1') {
+                    $(elemento).remove();
+                } else {
+                    alert('Ocurrió un error al eliminar la etiqueta');
+                }
+            });
+
+        });
+
         $("#cancelEtiquetas").click(function() {
             var etiquetas = $(this).closest(".etiquetasContacto");
             var agregar = $(etiquetas).find(".agregarEtiqueta");

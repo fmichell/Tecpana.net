@@ -137,4 +137,17 @@ class Etiqueta
 
         return $bd->obtener($consulta, 'etiqueta_id');
     }
+
+    static public function eliminarEtiquetaContacto ($cuentaId, $contactoId, $etiquetaId)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->eliminar('contactos_etiquetas')->donde(array(
+                                                    'cuenta_id:entero' => $cuentaId,
+                                                    'contacto_id:texto' => $contactoId,
+                                                    'etiqueta_id:entero' => $etiquetaId));
+        return $bd->ejecutar();
+    }
 }
