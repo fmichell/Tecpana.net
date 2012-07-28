@@ -10,5 +10,7 @@ include_once '../../../app/inicio.php';
 
 if (isset($_GET['term']) and !empty($_GET['term'])) {
     $contactos = Contacto::sugerir(CUENTA_ID, $_GET['term']);
-    echo json_encode($contactos);
+    $resultado = json_encode($contactos);
+    die($resultado);
 }
+die();

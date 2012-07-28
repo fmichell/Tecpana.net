@@ -16,10 +16,10 @@ if (isset($_GET['contactoId']) and !empty($_GET['contactoId'])) {
         if ($tmpFoto) {
             die($tmpFoto['uriProfile']);
         } else {
-            die(0);
+            die('0');
         }
     } else {
-        die(0);
+        die('0');
     }
 }
-die(0);
+die('0');

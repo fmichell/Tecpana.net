@@ -195,4 +195,5 @@ if (empty($contactos)) {
 if ($vista == 'iconos') { ?><div class="clear"><!--empty--></div><?php }
 // Si es la ultima pagina se carga este div
 if ( ($pagina == $ultimaPagina) or (empty($contactos)) ) { ?><div class="ultimaPagina"><!--Ultima pagina--></div><?php }
+die();
 ?>

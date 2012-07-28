@@ -4,7 +4,8 @@
  * @fechaCreacion: 07-26-12
  * @fechaModificacion: 07-26-12
  * @version: 1.0
- * @descripcion:
+ * @descripcion: Elimina una etiqueta a un contacto.
+ *               Ejecutado por ajax desde detalle de contacto (info)
  */
 include_once '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Etiqueta.php';

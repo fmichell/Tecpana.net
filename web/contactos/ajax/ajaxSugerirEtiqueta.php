@@ -11,5 +11,7 @@ include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 
 if (isset($_GET['term']) and !empty($_GET['term'])) {
     $etiquetas = Etiqueta::sugerir(CUENTA_ID, $_GET['term']);
-    echo json_encode($etiquetas);
+    $resultado = json_encode($etiquetas);
+    die($resultado);
 }
+die();
