@@ -1,4 +1,11 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil (@fmichell)
+ * @fechaCreacion: alrededor del 23-06-2012
+ * @fechaModificacion: 28-07-2012
+ * @version: 1.0
+ * @descripcion: Formulario para crear empresa
+ */
 include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Empresa.php';
 include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';
@@ -234,7 +241,7 @@ include '../../includes/encabezado.php';
                             <div class="elemento ejemplo">
                                 <div class="linea10"></div>
                                 <div class="linea">
-                                    <input type="text" name="direccion[]" class="ancho465es direccion valor" placeholder="Dirección" />
+                                    <textarea name="direcccion[]" class="ancho465es direccion valor" cols="60" rows="2" placeholder="Dirección"></textarea>
                                     <div class="clear"><!--vacio--></div>
                                 </div>
                                 <div class="linea">
@@ -258,7 +265,7 @@ include '../../includes/encabezado.php';
                             <div class="listado">
                                 <div class="elemento">
                                     <div class="linea">
-                                        <input type="text" name="direccion[]" id="direccion" class="ancho465es direccion valor" placeholder="Dirección" />
+                                        <textarea name="direcccion[]" id="direccion" class="ancho465es direccion valor" cols="60" rows="2" placeholder="Dirección"></textarea>
                                         <div class="clear"><!--vacio--></div>
                                     </div>
                                     <div class="linea">

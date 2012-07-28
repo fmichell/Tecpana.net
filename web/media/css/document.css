@@ -22,7 +22,6 @@ body {
     font-size:13px;
     font-style:normal;
     text-align:left;
-    
 }
 
 a {
@@ -57,11 +56,10 @@ em {
 
 input[type="text"], input[type="search"], input[type="tel"], input[type="url"], input[type="email"], input[type="date"], select, textarea {
     font-family:Arial, Helvetica, sans-serif;
-    font-size:13px;
+    font-size: 1em; /* <= Preparando para mobile */
+    line-height: 1em;
     font-weight:normal;
-    /*color:#3D3D3D;*/
     color:#333;
-    line-height:13px;
 }
 
 ::-webkit-input-placeholder {
@@ -95,10 +93,10 @@ h2 {
 
 h2.subtitulo {
     font-size:1.2em;
+    line-height: 1.2em;
+    font-weight:normal;
     color:#6C6C6C;
     letter-spacing:0.1em;
-    font-weight:normal;
-    line-height: 1.2em;
 }
 
 h2.subtitulo a {
@@ -147,7 +145,7 @@ span.vendana {
 }
 
 span.font_size_10 {
-    font-size:10px;
+    font-size: 0.769em; /* <= Preparando para mobile (eq 10px) */
 }
 
 .justificado {
@@ -195,7 +193,7 @@ span.font_size_10 {
 }
 
 .nota {
-    font-size:11px;
+    font-size: 0.846em; /* <= Preparando para mobile (eq 11px) */
     color:#6C6C6C;
 }
 
@@ -351,7 +349,6 @@ span.font_size_10 {
 .botong_azul:hover {
     border-color:#2F5BB7;
     background:url(../imgs/bg_botonesg.png) repeat-x 0 0;
-    
 }
 
 .botong_verde {
@@ -362,7 +359,6 @@ span.font_size_10 {
 .botong_verde:hover {
     border-color:#2D6200;
     background:url(../imgs/bg_botonesg.png) repeat-x 0 -60px;
-    
 }
 
 .botong_naranja {
@@ -373,7 +369,6 @@ span.font_size_10 {
 .botong_naranja:hover {
     border-color:#F5A51F;
     background:url(../imgs/bg_botonesg.png) repeat-x 0 -120px;
-    
 }
 
 .boton_gris {
@@ -430,7 +425,7 @@ span.font_size_10 {
 }
 
 .fuiBotonSelect .ui-button-text {
-    line-height:1;
+    line-height:1em;
     text-align:left;
 }
 
@@ -443,7 +438,7 @@ span.font_size_10 {
 }
 
 .fuiBotonCerrar .ui-button-text {
-    line-height:1;
+    line-height:1em;
 }
 
 .comboOpciones {
@@ -636,8 +631,8 @@ span.font_size_10 {
 /* 2.3 Footer */
 #FooterWrapper {
     color:#666;
+    font-size: 0.846em; /* <= Preparando para mobile (eq 11px) */
     line-height:1.3em;
-    font-size:11px;
 }
 
 #FooterWrapper a {
@@ -653,8 +648,8 @@ span.font_size_10 {
 }
 
 #MainMenu li {
-    line-height:16px;
-    font-size:16px;
+    font-size: 1.231em; /* <= Preparando para mobile (eq 16px) */
+    line-height: 1em;
     margin-bottom:1em;
 }
 
@@ -730,18 +725,10 @@ span.font_size_10 {
 
 .workspaceHeader .buscar, .comentArea {
     display:block;
-    /*border:1px solid;
-    border-color:#D2D2D2;
-    border-top-color:#999;
-    padding:5px;*/
 }
 
 .workspaceHeader .buscar input {
-    /*border:none;*/
     width:99%;
-    /*color:#999;*/
-    /*font-size:1.2em;
-    font-weight:lighter;*/
 }
 
 /* 3.2 Workspace Toolbar, Filtro, Paginador, Opciones */
@@ -758,6 +745,7 @@ span.font_size_10 {
 .btnsFiltro {
     display: inline-block;
 }
+
 .btnsFiltro div {
     float: left;
     line-height: 27px;
@@ -806,8 +794,8 @@ span.font_size_10 {
 .paginas a {
     padding:0 4px;
     background:none;
+    font-size: 0.846em; /* <= Preparando para mobile (eq 11px) */
     line-height: 27px;
-    font-size: 11px;
 }
 
 .paginas a:hover {
@@ -846,6 +834,11 @@ span.font_size_10 {
 /* 3.3 Workspace Area */
 
 /* 3.3.1 Toolbar */
+#Toolbar .mainBoton {
+    /* El botón del Toolbar no se mostrará cuando la resolución sea mayor a 1024 */
+    display: none;
+}
+
 #Toolbar .recuadro {
     margin-bottom:35px;
 }
@@ -1020,7 +1013,7 @@ dl.horizontal dt {
 .contact .nombre a {
     color:#3D3D3D;
     font-weight:bold;
-    font-size:14px;
+    font-size: 1.1em; /* <= Preparando para mobile (eq 14px) */
     display:block;
     margin-bottom:3px;
 }
@@ -1127,7 +1120,7 @@ dl.horizontal dt {
 .task .info {
     margin:10px 0 0 10px;
     color:#0054FF;
-    line-height:16px;
+    line-height: 1.231em; /* <= Preparando para mobile (eq 16px) */
 }
 
 /* 3.3.6.4 Lista de proyectos */
@@ -1167,7 +1160,8 @@ dl.horizontal dt {
 .proyect .nombre {
     color:#3D3D3D;
     font-weight:bold;
-    font-size:14px;
+    /*font-size:14px;*/
+    font-size: 1.1em; /* <= Preparando para mobile (eq 14px) */
 }
 
 .proyect .nombre:hover {
@@ -1202,7 +1196,8 @@ dl.horizontal dt {
 .coment .nombre {
     color:#3D3D3D;
     font-weight:bold;
-    font-size:14px;
+    /*font-size:14px;*/
+    font-size: 1.1em; /* <= Preparando para mobile (eq 14px) */
 }
 
 .coment .nombre:hover {
@@ -1240,9 +1235,10 @@ dl.horizontal dt {
     padding-left: 22px;
     min-height: 16px;
 }
+
 .etiquetasContacto ul li {
     display: inline-block;
-    line-height: 16px;
+    line-height: 1.231em; /* <= Preparando para mobile (eq 16px) */
     margin: 0 3px 0.5em 0;
 }
 
@@ -1268,7 +1264,8 @@ dl.horizontal dt {
 
 .agregarEtiqueta label {
     display: block;
-    font-size: 11px;
+    /*font-size: 11px;*/
+    font-size: 0.846em; /* <= Preparando para mobile (eq 11px) */
 }
 
 .agregarEtiqueta .boton_gris {
@@ -1278,16 +1275,16 @@ dl.horizontal dt {
 }
 
 .contactInfo dt {
-    width:100px;
+    width:120px;
     text-align:right;
-    font-size:14px;
     color:#6C6C6C;
     line-height:1.3em;
+    white-space: nowrap;
 }
 
 .contactInfo dd {
     display:block;
-    padding-left:110px;
+    padding-left:130px;
     margin-bottom:20px;
     line-height:1.3em;
 }
@@ -1426,7 +1423,7 @@ fieldset.plan_trabajo .titLista {
     border-style: solid;
     border-width: 1px 1px 0px 0px;
     height: 17px;
-    line-height: 16px;
+    line-height: 1.231em; /* <= Preparando para mobile (eq 16px) */
 }
 
 #GantWrapper li.gheader {
@@ -1483,20 +1480,15 @@ fieldset.plan_trabajo .titLista {
 #gCalendar li.gbody ul li {
     width: 293px;
 }
-/* 3.3.x Formularios */
-/*.formulario input[type="text"], .formulario .textarea, .formulario select {
-    border-color: #D2D2D2;
-    border-style: solid;
-    border-width: 1px;
-}*/
 
+/* 3.3.x Formularios */
 .formulario .elemento {
     display: block;
     margin-bottom: 5px;
 }
 
 .formulario .nuevo {
-    font-size:12px;
+    font-size: 0.95em; /* <= Preparando para mobile (eq 12px) */
 }
 
 .formulario .ejemplo {

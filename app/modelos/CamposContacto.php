@@ -1,6 +1,14 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil (@fmichell)
+ * @fechaCreacion: alrededor del 23-06-2012
+ * @fechaModificacion: 28-07-2012
+ * @version: 1.0
+ * @descripcion: Clase abastracta para manejar el catálogo de Info contacto.
+ */
 abstract class CamposContacto
 {
+    // Arraglo catálogo con la info contacto
     static public $tiposInfo = array(
                                         // Personas
                                         'telefono'      => array(
@@ -125,6 +133,7 @@ abstract class CamposContacto
                                                         'titulo' => 'Dirección(es)')
                                 );
 
+    // Obtiene los paises desde la base de datos
     static public function obtenerPaises ()
     {
         $bd = GestorMySQL::obtenerInstancia();

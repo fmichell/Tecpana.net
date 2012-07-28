@@ -1,4 +1,11 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil (@fmichell)
+ * @fechaCreacion: alrededor del 23-06-2012
+ * @fechaModificacion: 28-07-2012
+ * @version: 1.0
+ * @descripcion: Métodos espécificos para las Personas. Hereda desde Contactos.
+ */
 require_once 'CamposContacto.php';
 
 class Persona extends Contacto

@@ -1,6 +1,6 @@
 <?php
 /**
- * @autor: Federico Michell Vijil
+ * @autor: Federico Michell Vijil (@fmichell)
  * @fechaCreacion: 23-Jun-12
  * @fechaModificacion: 23-Jun-12
  * @version: 1.0
@@ -230,6 +230,16 @@ include '../../includes/encabezado.php';
         <!--Toolbar begins-->
         <section id="Toolbar" class="colum">
             <div class="interior10">
+                <!-- Solo visible en pantallas menores de 1024 -->
+                <div class="mainBoton">
+                    <?php if ($contacto['tipo'] == 1) { ?>
+                    <a href="/contactos/<?php echo $contacto_id ?>/editar-persona" class="botong botong_azul">Editar contacto</a>
+                    <?php } elseif ($contacto['tipo'] == 2) { ?>
+                    <a href="/contactos/<?php echo $contacto_id ?>/editar-empresa" class="botong botong_azul">Editar contacto</a>
+                    <?php } ?>
+                </div>
+                <!-- Fin -->
+
                 <div class="recuadro">
                     <h3>Herramientas</h3>
                     <ul>

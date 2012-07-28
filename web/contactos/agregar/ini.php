@@ -1,4 +1,11 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil (@fmichell)
+ * @fechaCreacion: alrededor del 23-06-2012
+ * @fechaModificacion: 28-07-2012
+ * @version: 1.0
+ * @descripcion: Cuadro de dialogo para seleccionar el tipo de contacto que se desea crear [Persona | Empresa]
+ */
 include '../../../app/inicio.php';
 
 // Declaramos ventana

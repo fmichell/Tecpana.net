@@ -1,10 +1,10 @@
 <?php
 /**
- * @autor: Federico
+ * @autor: Federico Michell Vijil (@fmichell)
  * @fechaCreacion: 07-23-12
  * @fechaModificacion: 07-23-12
  * @version: 1.0
- * @descripcion:
+ * @descripcion: Clase etiquetas
  */
 class Etiqueta
 {
@@ -121,5 +121,4 @@ class Etiqueta
 
         return $retorno;
     }
-
 }

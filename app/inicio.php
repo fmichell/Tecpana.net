@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Federico Michell
- * @copyright Federico Michell
+ * @author Federico Michell Vijil (@fmichell)
+ * @copyright Federico Michell Vijil (@fmichell)
  **/
 // INICIAMOS RELOJ
 $tInicial = microtime(true);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @autor: Federico Michell Vijil
+ * @autor: Federico Michell Vijil (@fmichell)
  * @fechaCreacion: 02-Jul-12
  * @fechaModificacion: 02-Jul-12
  * @version: 1.0

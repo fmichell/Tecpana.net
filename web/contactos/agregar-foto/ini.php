@@ -1,4 +1,11 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil (@fmichell)
+ * @fechaCreacion: alrededor del 23-06-2012
+ * @fechaModificacion: 28-07-2012
+ * @version: 1.0
+ * @descripcion: Iframe para cargar foto del contacto
+ */
 include '../../../app/inicio.php';
 
 $ventana = true;

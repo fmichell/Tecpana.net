@@ -1,4 +1,11 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil (@fmichell)
+ * @fechaCreacion: alrededor del 23-06-2012
+ * @fechaModificacion: 28-07-2012
+ * @version: 1.0
+ * @descripcion: Formulario para editar empresa
+ */
 include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Empresa.php';
 include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';

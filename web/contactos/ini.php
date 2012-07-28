@@ -1,4 +1,11 @@
 <?php
+/**
+ * @autor: Federico Michell Vijil (@fmichell)
+ * @fechaCreacion: antes del 23-06-2012
+ * @fechaModificacion: 28-07-2012
+ * @version: 1.0
+ * @descripcion: Página principal de contactos. Muestra el listado de contactos existentes.
+ */
 include '../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 
@@ -101,6 +108,10 @@ include '../includes/encabezado.php';
         <!--Toolbar begins-->
         <section id="Toolbar" class="colum">
             <div class="interior10">
+                <!-- Solo visible en pantallas menores de 1024 -->
+                <div class="mainBoton"><a href="/contactos/agregar" class="botong botong_azul abrirDialog">Agregar contacto</a></div>
+                <!-- Fin -->
+
                 <div class="recuadro">
                     <h3>Herramientas</h3>
                     <ul>

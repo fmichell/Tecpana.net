@@ -1,4 +1,21 @@
+@charset "utf-8";
+/*
+ * CSS Document
+ * @autor: Federico Michell Vijil
+ * @fechaCreacion: 26-Jul-2012
+ * @version: 1.0
+ * @description: Resoluciones excepcionales
+ * @media: Screen
+ */
+
+/*
+ * Resoluciones de 1024 o menores
+ * Cuando la resolución es menor o igual a 1024px se reajusta el layout de la siguiente manera
+ */
 @media screen and (max-width: 1024px) {
+    /*body {
+        font-size: 0.9em;
+    }*/
     #HeaderWrapper {
         margin-bottom: 0px;
         border: none;
@@ -30,5 +47,33 @@
     }
     #FooterWrapper {
         display: none;
+    }
+    .workspaceHeader .mainBoton {
+        display: none;
+    }
+    .infoHeader {
+        margin: 0 0 0 140px;
+    }
+    #Toolbar .mainBoton {
+        margin-bottom: 35px;
+    }
+    #Toolbar .mainBoton, #Toolbar .botong {
+        display: block;
+    }
+}
+
+/*
+ * Resoluciones de 999 o menores
+ * Solo aplicables para dispositivos móbiles (iPad) con resoluciones menores a 999px
+ */
+@media screen and (max-width: 999px) {
+    body {
+        font-size: 0.9em;
+    }
+    .paginas a {
+        font-size: 1em;
+    }
+    .contactInfo dt {
+        text-align: left;
     }
 }
