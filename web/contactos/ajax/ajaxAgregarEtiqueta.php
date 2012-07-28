@@ -27,10 +27,15 @@ if (isset($_GET['etiqueta']) and !empty($_GET['etiqueta']) and
     $resultado = Contacto::agregarEtiqueta(CUENTA_ID, $_GET['contacto'], $etiquetaId);
 
     if ($resultado)
-        die('1');
+        $resultado = 1;
     elseif ($resultado === 0)
-        die('2');
+        $resultado = 2;
     else
-        die('0');
+        $resultado = 0;
+
+    $retorno = array('resultado' => $resultado, 'id' => $etiquetaId, 'seo' => $etiquetaSeo, 'contacto' => $_GET['contacto']);
+    $retorno = json_encode($retorno);
+
+    die($retorno);
 }
 die('0');

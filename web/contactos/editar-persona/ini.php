@@ -622,7 +622,7 @@ include '../../includes/encabezado.php';
                     </dl>
                     <div class="linea10"></div>
                     <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Guardar cambios</a>
-                    <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancelar">Cancelar</a>
+                    <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel" data-contacto="<?php echo $contacto_id ?>">Cancelar</a>
                     <div class="linea10"></div>
                 </div>
                 <!--Workspace Area Info ends-->
@@ -691,9 +691,11 @@ $(document).on("ready", function() {
         $("#frmEditarContacto").submit();
     });
     $("#btnCancel").click(function() {
+        var contacto = $(this).data("contacto");
+
         var respuesta = confirm('Está seguro que desea cancelar?');
         if (respuesta) {
-            window.location.href = '/contactos';
+            window.location.href = '/contactos/' + contacto + '/info';
         } else {
             return false;
         }

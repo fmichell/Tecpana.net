@@ -89,7 +89,7 @@ include '../../includes/encabezado.php';
                                 if (!empty($etiquetas)) {
                                     foreach ($etiquetas as $etiquetaId => $etiqueta) {
                                         ?>
-                                        <li><a href="/contactos/etiquetas/<?php echo $etiqueta['etiqueta_seo'] ?>"
+                                        <li><a href="/contactos/etiqueta/<?php echo $etiqueta['etiqueta_seo'] ?>"
                                                data-etiqueta="<?php echo $etiqueta['etiqueta_id'] ?>"
                                                data-contacto="<?php echo $contacto_id ?>">
                                             <?php echo $etiqueta['etiqueta'] ?>
@@ -288,11 +288,13 @@ include '../../includes/pie.php';
             var etiqueta = $("#valEtiqueta").val();
             var contacto = $(this).attr('rel');
 
-            $.get('/contactos/ajax/ajaxAgregarEtiqueta.php', {'etiqueta':etiqueta, 'contacto':contacto}, function(respuesta) {
-                if (respuesta == '1') {
+            $.getJSON('/contactos/ajax/ajaxAgregarEtiqueta.php', {'etiqueta':etiqueta, 'contacto':contacto}, function(data) {
+                if (data['resultado'] == '1') {
+                    var newEtiqueta = "<li><a href='/contactos/etiqueta/" + data['seo'] + "' data-etiqueta='" + data['id'] + "' data-contacto='" + data['contacto'] + "'>"+etiqueta+"</a>, </li>";
+
                     $("#valEtiqueta").val('');
-                    $("<li><a href='#'>"+etiqueta+"</a>, </li>").insertBefore("#editarEtiquetas");
-                } else if (respuesta == '2') {
+                    $(newEtiqueta).insertBefore("#editarEtiquetas");
+                } else if (data['resultado'] == '2') {
                     $("#valEtiqueta").val('');
                 } else {
                     alert('Ocurrió un error al agregar la etiqueta');
@@ -328,16 +330,22 @@ include '../../includes/pie.php';
                     alert('Ocurrió un error al eliminar la etiqueta');
                 }
             });
-
         });
 
         $("#cancelEtiquetas").click(function() {
             var etiquetas = $(this).closest(".etiquetasContacto");
             var agregar = $(etiquetas).find(".agregarEtiqueta");
 
+            var cantidad = $('li', '.editState').length;
+            if (cantidad == 1) {
+                var labelText = 'Agregar etiquetas';
+            } else {
+                var labelText = 'Editar etiquetas';
+            }
+
             $(etiquetas).removeClass("editState");
             $(agregar).hide();
-            $("#editarEtiquetas").show();
+            $("#editarEtiquetas").text(labelText).show();
         });
     });
 </script>
