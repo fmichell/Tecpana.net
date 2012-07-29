@@ -64,4 +64,10 @@ class Empresa extends Contacto
     {
         return parent::editarContacto($cuentaId, $contactoId, 2, $razonSocial, null, null, null, $giro);
     }
+
+    // Obtener
+    static public function obtenerEmpresas ($cuentaId)
+    {
+        return parent::_cargar(CUENTA_ID, null, 'EMPRESAS');
+    }
 }

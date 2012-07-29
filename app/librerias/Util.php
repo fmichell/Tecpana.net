@@ -763,3 +763,70 @@ function preparar_enlace($enlace)
     }
     return implode('', $temp2);
 }
+
+// FUNCIONES DE FECHA Y HORA
+function mostrar_fecha($fecha_sql, $tipof=1, $sinUTC=false) {
+    $marca = sacar_fecha_sql($fecha_sql, $sinUTC);
+    $dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sabado");
+    $meses = array("","Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+
+    $hora=date("h",$marca);
+    $minutos=date("i",$marca);
+    $segundos=date("s",$marca);
+    $mes=date("m",$marca);
+    $mes_nombre=$meses[intval(date("m",$marca))];
+    $dia=date("d",$marca);
+    $dia_nombre=$dias[intval(date("w",$marca))];
+    $ano=date("Y",$marca);
+    $pm=date("A",$marca);
+    $mismodia = $dia==date("d");
+    $mismomes = $mes==date("m");
+    $mismoano = $ano==date("Y");
+    if ($tipof==1) return $dia_nombre." ".$dia." de ".$mes_nombre;								// Lunes 12 de Enero
+    if ($tipof==2) return $dia."/".$mes_nombre."/".$ano;										// 12/Enero/2010
+    if ($tipof==3) {																			// Enero 12[, 2010]
+        if ($mismoano) return $mes_nombre." ".$dia;
+        else return $mes_nombre." ".$dia.", ".$ano;
+    }
+    if ($tipof==4) return $dia."/".$mes_nombre."/".$ano." ".$hora.":".$minutos." ".$pm;			// 12/Enero/2010 01:45 PM
+    if ($tipof==5) {																			// Ene 12[, 2010]
+        if ($mismoano) return substr($mes_nombre,0,3)." ".$dia;
+        else return substr($mes_nombre,0,3)." ".$dia.", ".$ano;
+    }
+    if ($tipof==6) {																			// [Ene 12, ][2010 ]01:45 PM
+        $temp = "";
+        if (!$mismodia) $temp .= substr($mes_nombre,0,3)." ".$dia.", ";
+        if (!$mismoano) $temp .= $ano." ";
+        $temp .= $hora.":".$minutos." ".$pm;
+        return $temp;
+    }
+    if ($tipof==7) {																			// 01:45 PM
+        return $hora.":".$minutos." ".$pm;
+    }
+    if ($tipof==8) {																			// Dom 01:45 PM
+        return substr($dia_nombre,0,3)." ".$hora.":".$minutos." ".$pm;
+    }
+    if ($tipof==9) return $dia." de ".$mes_nombre." ".$ano;                                     // 12 de Enero 2010
+    if ($tipof==10) return $dia." de ".$mes_nombre." ".$ano." ".$hora.":".$minutos." ".$pm;
+}
+
+function sacar_fecha_sql($fecha_sql, $sinUTC=false)
+{
+    $hora=0; $minuto=0; $segundo=0; $mes=0; $dia=0; $ano=0;
+    $temp = explode(' ', strval($fecha_sql));
+    $fecha = $temp[0];
+    if( isset($temp[1]) ) $tiempo = $temp[1];
+    //list($fecha, $tiempo) = explode(' ', strval($fecha_sql));
+    if ( ! empty($fecha) ) list($ano, $mes, $dia) = explode('-', $fecha);
+    if ( ! empty($tiempo) ) list($hora, $minuto, $segundo) = explode(':', $tiempo);
+    if ( $sinUTC ) return mktime($hora,$minuto,$segundo,$mes,$dia,$ano);
+    else return gmmktime($hora,$minuto,$segundo,$mes,$dia,$ano);
+}
+
+function meter_fecha_sql($fecha, $sinUTC=false) {
+    if ($sinUTC) {
+        return date("Y-m-d H:i:s", $fecha);
+    } else {
+        return gmdate("Y-m-d H:i:s", $fecha);
+    }
+}

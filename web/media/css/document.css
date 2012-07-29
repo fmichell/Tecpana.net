@@ -1024,6 +1024,13 @@ dl.horizontal dt {
 }
 
 /* 3.3.6.2.1 Lista de contactos condensados */
+#users .contact {
+    padding-right: 300px;
+}
+#users .contact .info {
+    margin-right: -300px;
+    width: 290px;
+}
 
 .contactosIcons .contacto {
     padding:5px;
@@ -1076,6 +1083,10 @@ dl.horizontal dt {
     margin-right: 5px;
     overflow: hidden;
 }
+
+/* 3.3.6.2.3 Lista de usuarios (hereda casi to-do de contactos) */
+
+
 /* 3.3.6.3 Lista de tareas */
 .task {
     padding-left:60px;

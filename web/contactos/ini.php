@@ -51,9 +51,9 @@ include '../includes/encabezado.php';
                 <header>
                     <h1 class="floatLeft" id="tituloSeccion">
                         <?php
-                        if ($label) {
+                        if ($label)
                             echo "Contactos &raquo; " . $label['etiqueta'];
-                        } else
+                        else
                             echo "Contactos";
                         ?>
                     </h1>

@@ -143,7 +143,7 @@ foreach ($contactos as $contactoId => $contacto) {
                 <div class="check colum"><input type="checkbox" class="check_contacto" /></div>
                 <div class="userThumb colum">
                     <a href="/contactos/<?php echo $contactoId ?>/info"><img src="<?php echo $fotoPerfil['uriThumbnail'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" /></a>
-               </div>
+                </div>
                 <div class="desc colum">
                     <div class="nombre"><a href="/contactos/<?php echo $contactoId ?>/info"><?php echo $contacto['nombre_completo'] ?></a></div>
                     <?php

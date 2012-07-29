@@ -64,4 +64,10 @@ class Persona extends Contacto
     {
         return parent::editarContacto($cuentaId, $contactoId, 1, $nombre, $apellidos, $sexo, $titulo, $profesion, $empresaId);
     }
+
+    // Obtener
+    static public function obtenerPersonas ($cuentaId)
+    {
+        return parent::_cargar(CUENTA_ID, null, 'PERSONAS');
+    }
 }

@@ -10,6 +10,7 @@
                     <div id="SettingsMenu" class="interior10">
                         <ul>
                             <li><a href="#">Mi Perfil</a></li>
+                            <li><a href="/tareas" target="_blank">Usuarios</a></li>
                             <li><a href="#">Configuración</a></li>
                             <li class="separador" style="margin: 3px 0"><!--separador--></li>
                             <li><a href="#">Salir</a></li>

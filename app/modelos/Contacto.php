@@ -359,13 +359,15 @@ class Contacto
      * @param [null | string | array] $ids
      * @return array|bool
      */
-    static private function _cargar ($cuentaId, $ids = null)
+    static protected function _cargar ($cuentaId, $ids = null, $tipo = null)
     {
-        $contactos = self::_cargarContactos($cuentaId, $ids);
+        $contactos = self::_cargarContactos($cuentaId, $ids, $tipo);
         $contactos_infos = self::_cargarInfos($cuentaId, $ids);
 
         foreach ($contactos_infos as $contacto_id => $infos) {
-            $contactos[$contacto_id] += self::_ordenarInfo($infos);
+            if (isset($contactos[$contacto_id])) {
+                $contactos[$contacto_id] += self::_ordenarInfo($infos);
+            }
         }
 
         return $contactos;
