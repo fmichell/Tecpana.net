@@ -118,7 +118,7 @@ foreach ($contactos as $contactoId => $contacto) {
                 }
                 ?>
             </div>
-            <div class="info colum">
+            <div class="info colum" data-usuario="<?php echo $contactoId ?>">
                 <?php
                 if ($vista == 'personas') {
                     if ($usuario) {
@@ -130,10 +130,14 @@ foreach ($contactos as $contactoId => $contacto) {
                     ?>
                     <div class="linea20">Usuario desde <?php echo mostrar_fecha($usuario['fecha_creacion'], 4, true); ?></div>
                     <div class="linea opcionesUsuario">
-                        <a href="/usuarios/<?php echo $contactoId ?>/editar-perfil" data-tipo="editar">Editar perfil</a>,
-                        <span class="rojo">
-                            <a href="/usuarios/<?php echo $contactoId ?>/desactivar" class="rojo" data-tipo="desactivar">Desactivar usuario</a> ó
-                            <a href="/usuarios/<?php echo $contactoId ?>/eliminar" class="rojo" data-tipo="eliminar">Eliminar usuario</a>
+                        <a href="/usuarios/<?php echo $contactoId ?>/editar-perfil" class="editar-perfil">Editar perfil</a>,
+                        <?php if ($usuario['estado'] == 1) { ?>
+                        <a href="/usuarios/<?php echo $contactoId ?>/desactivar" class="rojo editar-estado" data-optn="desactivar">Desactivar usuario</a>
+                        <?php } elseif ($usuario['estado'] == 2) { ?>
+                        <a href="/usuarios/<?php echo $contactoId ?>/activar" class="editar-estado" data-optn="activar">Activar usuario</a>
+                        <?php } ?>
+                        <span class="rojo"> ó
+                            <a href="/usuarios/<?php echo $contactoId ?>/eliminar" class="rojo editar-estado" data-optn="eliminar">Eliminar usuario</a>
                         </span>
                     </div>
                     <div class="linea perfiles">
@@ -145,7 +149,8 @@ foreach ($contactos as $contactoId => $contacto) {
                             }
                             ?>
                         </select>
-                        <img src="/media/imgs/check16x16.png" alt="Exito">
+                        <img src="/media/imgs/check16x16.png" alt="Exito" class="icono-exito" style="display: none;">
+                        <img src="/media/imgs/close16x16.png" alt="Cancelar" class="icono-cancelar" title="Cerrar">
                     </div>
                     <?php
                 }

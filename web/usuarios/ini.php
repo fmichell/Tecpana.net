@@ -141,7 +141,6 @@ include '../includes/pie.php';
         $('#filtrar > div').removeClass('selected');
         $('#todos').addClass('selected');
     }
-
     $(document).on("ready", function() {
         cargarContactos('', 'usuarios', 1);
 
@@ -180,15 +179,71 @@ include '../includes/pie.php';
                 buscarNombre();
             }
         });
-    }).on('click', '.opcionesUsuario a', function(event) {
+    }).on('click', '.opcionesUsuario a.editar-perfil', function(event) {
         event.preventDefault();
-        var opcion = $(this).data("tipo");
         var info = $(this).closest('.info');
+        var usid = $(info).data("usuario");
 
-            if (opcion == 'editar') {
-                $(info).find('.opcionesUsuario').hide();
-                $(info).find('.perfiles').fadeIn();
-            }
+        $(info).find('.opcionesUsuario').hide();
+        $(info).find('.perfiles').fadeIn();
+
+        $(info).on('change', '.selectorPerfil', function() {
+            var perfil = $(this).val();
+
+            $.getJSON('/usuarios/ajax/ajaxOpcionesUsuarios.php', {'op':1, 'us':usid, 'pf':perfil}, function(respuesta, estado) {
+                if (respuesta["estado"] == '0') {
+                    alert('error');
+                } else {
+                    $('.icono-cancelar', info).hide();
+                    $('.icono-exito', info).fadeIn('slow');
+                    setTimeout(function() {
+                        $(info).find('.perfiles').hide();
+                        $(info).find('.opcionesUsuario').fadeIn();
+                        cargarContactos('', 'usuarios', 1);
+                    }, 1600);
+                }
+            });
+        }).on('click', '.icono-cancelar', function() {
+            $(info).find('.perfiles').hide();
+            $(info).find('.opcionesUsuario').fadeIn();
+        });
+    }).on('click', '.opcionesUsuario a.editar-estado', function(event) {
+        event.preventDefault();
+        var optn = $(this).data("optn");
+        var cont = $(this).closest('article');
+        var info = $(this).closest('.info');
+        var usid = $(info).data("usuario");
+
+        if (optn == 'activar') {
+            var opcion = 2;
+            var msjConfirmacion = 'Está seguro que desea activar este usuario?';
+        } else if (optn == 'desactivar') {
+            var opcion = 3;
+            var msjConfirmacion = 'Está seguro que desea desactivar este usuario?';
+        } else if (optn == 'eliminar') {
+            var opcion = 4;
+            var msjConfirmacion = 'Está seguro que desea eliminar este usuario?';
+        } else {
+            alert('Lo sentimos, ocurrió un error inesperado');
+            return false;
+        }
+
+        var confirmacion = confirm(msjConfirmacion);
+
+        if (!confirmacion) {
+            return false;
+        } else {
+            $.get('/usuarios/ajax/ajaxOpcionesUsuarios.php', {'op':opcion, 'us':usid}, function(respuesta) {
+                if (respuesta == '0') {
+                    alert('error');
+                } else {
+                    setTimeout(function() {
+                        $(cont).fadeOut().remove();
+                        cargarContactos('', 'usuarios', 1);
+                    }, 1200);
+                }
+            });
+        }
     });
 </script>
 </body>

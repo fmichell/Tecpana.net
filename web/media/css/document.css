@@ -1104,10 +1104,9 @@ dl.horizontal dt {
     margin-right: 10px;
 }
 
-#users .perfiles img {
-    display: none;
+#users .perfiles .icono-cancelar {
+    cursor: pointer;
 }
-
 /* 3.3.6.3 Lista de tareas */
 .task {
     padding-left:60px;
