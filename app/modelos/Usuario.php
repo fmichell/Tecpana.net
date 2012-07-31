@@ -8,6 +8,12 @@
  */
 class Usuario
 {
+    // Arreglo catálogo de perfiles
+    static public $arrayPerfiles = array(   1 => 'Responsable de cuenta',
+                                            2 => 'Administador',
+                                            3 => 'Usuario',
+                                            4 => 'Usuario externo');
+
     static public function obtenerTodos ($cuentaId)
     {
         // Iniciamos conexion con la BD
@@ -19,4 +25,6 @@ class Usuario
 
         return $bd->obtener(null, 'contacto_id');
     }
+
+
 }

@@ -121,7 +121,11 @@ span.negrita, a.negrita {
 }
 
 span.rojo, a.rojo {
-    color:#DD4B39;
+    color:#DD4B39!important;
+}
+
+span.azul {
+    color:#0054FF!important;
 }
 
 span.sub_rayado {
@@ -1024,14 +1028,6 @@ dl.horizontal dt {
 }
 
 /* 3.3.6.2.1 Lista de contactos condensados */
-#users .contact {
-    padding-right: 300px;
-}
-#users .contact .info {
-    margin-right: -300px;
-    width: 290px;
-}
-
 .contactosIcons .contacto {
     padding:5px;
     border:1px solid;
@@ -1085,7 +1081,32 @@ dl.horizontal dt {
 }
 
 /* 3.3.6.2.3 Lista de usuarios (hereda casi to-do de contactos) */
+#users .contact {
+    padding-right: 320px;
+}
 
+#users .contact .info {
+    margin-right: -320px;
+    width: 310px;
+}
+
+#users .contact .info a {
+    color: #0054FF;
+}
+
+#users .perfiles {
+    display: none;
+}
+
+#users .perfiles .selectorPerfil {
+    width: 200px;
+    float: left;
+    margin-right: 10px;
+}
+
+#users .perfiles img {
+    display: none;
+}
 
 /* 3.3.6.3 Lista de tareas */
 .task {

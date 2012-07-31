@@ -58,20 +58,8 @@ include '../includes/encabezado.php';
                 <!--Workspace Toolbar ends-->
                 <!--Workspace Area begins-->
                 <div class="workspaceArea interior10 registerList">
-                    <div class="auxiliaryToolbar">
-                        <a href="javascript:;" class="eliminar">Eliminar el contacto seleccionado</a>
-                        <div class="seleccion">
-                            <a href="javascript:;" class="select_all">Seleccionar todos</a> | <a href="javascript:;" class="undo_select">Deshacer selección</a>
-                        </div>
-                    </div>
                     <div id="users">
                         <!--Lista de contactos-->
-                    </div>
-                    <div class="auxiliaryToolbar">
-                        <a href="javascript:;" class="eliminar">Eliminar el contacto seleccionado</a>
-                        <div class="seleccion">
-                            <a href="javascript:;" class="select_all">Seleccionar todos</a> | <a href="javascript:;" class="undo_select">Deshacer selección</a>
-                        </div>
                     </div>
                 </div>
                 <!--Workspace Area ends-->
@@ -94,39 +82,11 @@ include '../includes/pie.php';
     var pagina = 1;
     var nombreBuscado = '';
 
-    function actualizarSeleccion(fade) {
-        if (fade == 'off') {
-            fade = false;
-        } else {
-            fade = true;
-        }
-        var seleccionados = $(".check_contacto:checked").length;
-        if (seleccionados >= 1) {
-            if (seleccionados == 1) {
-                $('.auxiliaryToolbar > .eliminar').text('Eliminar el contacto seleccionado');
-            } else {
-                $('.auxiliaryToolbar > .eliminar').text('Eliminar los ' + seleccionados + ' contactos seleccionados');
-            }
-            if (fade) {
-                $('.auxiliaryToolbar').fadeIn();
-            } else {
-                $('.auxiliaryToolbar').show();
-            }
-        } else {
-            if (fade) {
-                $('.auxiliaryToolbar').fadeOut();
-            } else {
-                $('.auxiliaryToolbar').hide();
-            }
-        }
-    }
     function cargarContactos(filtroNombre, filtroTipo, filtroPagina) {
         $('#users').fadeTo('fast', 0.10, function() {
 
             $(this).load('/usuarios/ajax/ajaxListarContactos.php', {'nombre':filtroNombre, 'tipo':filtroTipo, 'pagina':filtroPagina}, function(respuesta, estado) {
                 if (estado == 'success') {
-                    //Ocultando seleccion
-                    actualizarSeleccion('off');
                     //Mostrando resultados
                     $('#users').fadeTo("fast", 1);
                     //Paginando
@@ -185,18 +145,6 @@ include '../includes/pie.php';
     $(document).on("ready", function() {
         cargarContactos('', 'usuarios', 1);
 
-        $('.check_contacto').live('click', function() {
-            actualizarSeleccion();
-        });
-        $('.select_all').click(function() {
-            $('.check_contacto').attr('checked', true);
-            actualizarSeleccion();
-        });
-        $('.undo_select').click(function() {
-            $('.check_contacto').attr('checked', false);
-            actualizarSeleccion();
-        });
-
         $('#filtrar > div').click(function() {
             tipo = $(this).attr('id');
             pagina = 1;
@@ -232,19 +180,15 @@ include '../includes/pie.php';
                 buscarNombre();
             }
         });
+    }).on('click', '.opcionesUsuario a', function(event) {
+        event.preventDefault();
+        var opcion = $(this).data("tipo");
+        var info = $(this).closest('.info');
 
-        $('.eliminar').click(function() {
-            var seleccionados = $(".check_contacto:checked").length;
-            if (seleccionados == 1) {
-                var mensaje = 'Está seguro que desea eliminar permanentemente el contacto seleccionado?';
-            } else {
-                var mensaje = 'Está seguro que desea eliminar permanentemente los ' + seleccionados + ' contacto seleccionado?';
+            if (opcion == 'editar') {
+                $(info).find('.opcionesUsuario').hide();
+                $(info).find('.perfiles').fadeIn();
             }
-
-            if (confirm(mensaje)) {
-                console.log('si');
-            }
-        });
     });
 </script>
 </body>

@@ -109,7 +109,14 @@ foreach ($contactos as $contactoId => $contacto) {
                     <?php
                 } elseif (isset($trabajo['profesion'])) {
                     ?><div class="detalle"><?php echo $trabajo['profesion'] ?></div><?php
-                } ?>
+                }
+                // Mostrando el perfil del usuario
+                if ($vista == 'usuarios') {
+                    ?>
+                    <div class="detalle"><strong>Perfil:</strong> <span class="azul"><?php echo Usuario::$arrayPerfiles[$usuario['perfil_id']] ?></span></div>
+                    <?php
+                }
+                ?>
             </div>
             <div class="info colum">
                 <?php
@@ -119,6 +126,28 @@ foreach ($contactos as $contactoId => $contacto) {
                     } else {
                         ?><a href="javascript:;" class="boton_gris">Convertir en usuario</a><?php
                     }
+                } else {
+                    ?>
+                    <div class="linea20">Usuario desde <?php echo mostrar_fecha($usuario['fecha_creacion'], 4, true); ?></div>
+                    <div class="linea opcionesUsuario">
+                        <a href="/usuarios/<?php echo $contactoId ?>/editar-perfil" data-tipo="editar">Editar perfil</a>,
+                        <span class="rojo">
+                            <a href="/usuarios/<?php echo $contactoId ?>/desactivar" class="rojo" data-tipo="desactivar">Desactivar usuario</a> ó
+                            <a href="/usuarios/<?php echo $contactoId ?>/eliminar" class="rojo" data-tipo="eliminar">Eliminar usuario</a>
+                        </span>
+                    </div>
+                    <div class="linea perfiles">
+                        <select class="selectorPerfil">
+                            <?php
+                            foreach(Usuario::$arrayPerfiles as $id => $perfil) {
+                                $selected = ($id == $usuario['perfil_id']) ? 'selected="selected"' : '';
+                                ?><option value="<?php echo $id ?>" <?php echo $selected ?>><?php echo $perfil ?></option><?php
+                            }
+                            ?>
+                        </select>
+                        <img src="/media/imgs/check16x16.png" alt="Exito">
+                    </div>
+                    <?php
                 }
                 ?>
             </div>
