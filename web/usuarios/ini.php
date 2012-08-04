@@ -192,7 +192,7 @@ include '../includes/pie.php';
 
             $.getJSON('/usuarios/ajax/ajaxOpcionesUsuarios.php', {'op':1, 'us':usid, 'pf':perfil}, function(respuesta, estado) {
                 if (respuesta["estado"] == '0') {
-                    alert('error');
+                    alert(respuesta["error"]);
                 } else {
                     $('.icono-cancelar', info).hide();
                     $('.icono-exito', info).fadeIn('slow');
@@ -244,6 +244,34 @@ include '../includes/pie.php';
                 }
             });
         }
+    }).on('click', '.convertir-contacto', function(event) {
+        event.preventDefault();
+        var info = $(this).closest('.info');
+        var usid = $(info).data("usuario");
+
+        $(this).hide();
+        $(info).find('.perfiles').fadeIn();
+
+        $(info).on('change', '.selectorPerfil', function() {
+            var perfil = $(this).val();
+
+            $.getJSON('/usuarios/ajax/ajaxOpcionesUsuarios.php', {'op':5, 'us':usid, 'pf':perfil}, function(respuesta, estado) {
+                if (respuesta["estado"] == '0') {
+                    alert(respuesta["error"]);
+                } else {
+                    $('.icono-cancelar', info).hide();
+                    $('.icono-exito', info).fadeIn('slow');
+                    setTimeout(function() {
+                        $(info).find('.perfiles').hide();
+                        alert(respuesta["mensaje"]);
+                        cargarContactos('', 'usuarios', 1);
+                    }, 1600);
+                }
+            });
+        }).on('click', '.icono-cancelar', function() {
+            $(info).find('.perfiles').hide();
+            $(info).find('.convertir-contacto').fadeIn();
+        });
     });
 </script>
 </body>

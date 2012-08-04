@@ -30,7 +30,7 @@ if (isset($_GET['op']) and !empty($_GET['op']) and isset($_GET['us']) and !empty
         if ($resultado) {
             $arrayRespuesta = array('estado' => 1, 'perfil' => Usuario::$arrayPerfiles[$_GET['pf']]);
         } else {
-            $arrayRespuesta = array('estado' => 0);
+            $arrayRespuesta = array('estado' => 0, 'error' => 'Ocurrió un error al actualizar el perfil');
         }
         die(json_encode($arrayRespuesta));
     } elseif ($_GET['op'] == 2) {
@@ -42,6 +42,23 @@ if (isset($_GET['op']) and !empty($_GET['op']) and isset($_GET['us']) and !empty
     } elseif ($_GET['op'] == 4) {
         // Eliminamos usuario
         $resultado = Usuario::eliminar(CUENTA_ID, $usuarioId);
+    } elseif ($_GET['op'] == 5) {
+        // Convertir contacto en usuario
+        if (!isset($_GET['pf']) or empty($_GET['pf']))
+            die('0');
+
+        $resultado = Usuario::convertirUsuario(CUENTA_ID, $usuarioId, $_GET['pf']);
+
+        // Si el resultado es false ocurrio un error, de lo contrario esta bien
+        if ($resultado === false) {
+            $mensaje = 'Ocurrió un error al convertir al contacto.\n';
+            $mensaje.= 'Verfique que el contacto tenga una dirección de correo electrónico.';
+            $arrayRespuesta = array('estado' => 0, 'error' => $mensaje);
+        } else {
+            $mensaje = 'Se ha enviado un correo electrónico a ' . $resultado . ' con las instrucciones de acceso.';
+            $arrayRespuesta = array('estado' => 1, 'mensaje' => $mensaje);
+        }
+        die(json_encode($arrayRespuesta));
     }
 
     if ($resultado)

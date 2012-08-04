@@ -27,6 +27,47 @@ class Usuario
         return $bd->obtener(null, 'contacto_id');
     }
 
+    static public function convertirUsuario ($cuentaId, $contactoId, $perfilId)
+    {
+        // Cargamos los datos del contacto a convertir
+        $contacto = Contacto::obtener($cuentaId, $contactoId);
+        if (!$contacto)
+            return false;
+
+        // Obtenermos correo electrónico del contacto
+        if (!isset($contacto['email']))
+            return false;
+        else
+            $email = current($contacto['email']);
+        // Generamos contraseña temporal
+        $password = md5(uniqid('pw'));
+        // Definimos el estado inicial en 3 (invitado pero inactivo)
+        $status = 3;
+
+        $hoy = date('Y-m-d H:i:s');
+
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->insertar('usuarios', array(
+            'cuenta_id:entero'          => $cuentaId,
+            'contacto_id:texto'         => $contacto['contacto_id'],
+            'usuario:texto'             => $email['valor'],
+            'contrasena:texto'          => $password,
+            'perfil_id:entero'          => $perfilId,
+            'estado:entero'             => $status,
+            'fecha_creacion:fecha'       => $hoy,
+            'fecha_actualizacion:fecha' => $hoy
+        ));
+
+        if ($bd->ejecutar()) {
+            return $email['valor'];
+        } else {
+            return false;
+        }
+    }
+
     static public function editarPerfil ($cuentaId, $usuarioId, $perfilId)
     {
         $hoy = date('Y-m-d H:i:s');

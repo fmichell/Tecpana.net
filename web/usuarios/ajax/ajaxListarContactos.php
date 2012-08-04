@@ -122,9 +122,23 @@ foreach ($contactos as $contactoId => $contacto) {
                 <?php
                 if ($vista == 'personas') {
                     if ($usuario) {
-                        echo 'Usuario desde ' . mostrar_fecha($usuario['fecha_creacion'], 4, true);
+                        ?><div class="linea20">Usuario desde <?php echo mostrar_fecha($usuario['fecha_creacion'], 4, true); ?></div><?php
                     } else {
-                        ?><a href="javascript:;" class="boton_gris">Convertir en usuario</a><?php
+                        ?>
+                        <a href="/usuarios/<?php echo $contactoId ?>/convertir-contacto" class="boton_gris convertir-contacto">Convertir en usuario</a>
+                        <div class="linea perfiles">
+                            <select class="selectorPerfil">
+                                <option value="" selected="selected">Seleccione un perfil</option>
+                                <?php
+                                foreach(Usuario::$arrayPerfiles as $id => $perfil) {
+                                    ?><option value="<?php echo $id ?>"><?php echo $perfil ?></option><?php
+                                }
+                                ?>
+                            </select>
+                            <img src="/media/imgs/check16x16.png" alt="Exito" class="icono-exito" style="display: none;">
+                            <img src="/media/imgs/close16x16.png" alt="Cancelar" class="icono-cancelar" title="Cerrar">
+                        </div>
+                        <?php
                     }
                 } else {
                     ?>
