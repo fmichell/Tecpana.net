@@ -63,15 +63,7 @@ function cambiarParamUrl(datos, ventana, divisor)
     ventana.location.href = url_nuevo;
 }
 function vacio(valor){var llave;if(valor===""||valor===0||valor==="0"||valor===null||valor===false||valor===undefined)return true;if(typeof valor=='object'){for(llave in valor){return false}return true}return false}
-/*function ajustarAnchuraTitulos() {
-    var anchoWorkspace = $(".workspaceHeader").width();
-    var anchoMainBoton = $(".mainBoton").width();
-    var anchoH1 = anchoWorkspace;
-    if (anchoWorkspace > 1 && anchoMainBoton > 1) {
-        anchoH1 = anchoWorkspace - anchoMainBoton - 15;
-        $("h1", ".workspaceHeader").css({"width":anchoH1+'px'});
-    }
-}*/
+
 function mandejarTextboxTooltip(elemento, tooltip) {
     $(elemento).css('color','#999');
     
@@ -89,6 +81,21 @@ function mandejarTextboxTooltip(elemento, tooltip) {
         }
     });
 }
+function mostrarMenu() {
+    $("#hm_trigger_element").addClass('active');
+    $("#hm_trigger").addClass("active").focus();
+    $("#SettingsMenu").css({"visibility":"visible"});
+    $("a:first", "#SettingsMenu").focus();
+    $('html').on('click', ocultarMenu);
+}
+function ocultarMenu(event) {
+    $("#hm_trigger").removeClass("active");
+    $("#hm_trigger_element").removeClass('active');
+    $("#SettingsMenu").css({"visibility":"hidden"});
+    $('html').off('click', ocultarMenu);
+    event.stopPropagation();
+}
+
 $(document).on("ready", function() {
     //Ajustando tamano del workspace
     ajustarAlturaWorkspace();
@@ -104,18 +111,14 @@ $(document).on("ready", function() {
     });
     $('.fuiBoton').button();
     //Configurando header menu
-    $("#hm_trigger").click(function() {
-        $("#hm_trigger").addClass("active").focus();
-        $("#SettingsMenu").css({"visibility":"visible"});
-        return false;
-    });
-    $("#hm_trigger").blur(function() {
-        $("#hm_trigger").removeClass("active");
-        $("#SettingsMenu").css({"visibility":"hidden"});
-        return false;
-    });
-    //Definiendo ancho del h1 en la cabecera
-    //ajustarAnchuraTitulos();
+    $("#hm_trigger_element").hover(
+        function() {
+            $(this).addClass('hover');
+        },
+        function() {
+            $(this).removeClass('hover');
+        }
+    );
     //Tooltip nombre contactos
     $('.userThumb').hover(
         function() {
@@ -186,4 +189,10 @@ $(document).on("ready", function() {
             $('input.valor', elemento).val('');
         }
     });
-});
+}).on('click', '#hm_trigger_element:not(.active)', mostrarMenu);
+
+function hola() {
+    alert('hola');
+}
+
+

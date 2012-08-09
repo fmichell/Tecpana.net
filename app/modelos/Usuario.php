@@ -11,8 +11,15 @@ class Usuario
     // Arreglo catálogo de perfiles
     static public $arrayPerfiles = array(   1 => 'Responsable de cuenta',
                                             2 => 'Administador',
-                                            3 => 'Usuario',
-                                            4 => 'Usuario externo');
+                                            3 => 'Usuario avanzado',
+                                            4 => 'Usuario',
+                                            5 => 'Usuario externo');
+
+    // Arreglo catálogo de estados
+    static public $arrayEstados = array (   0 => 'Eliminado',
+                                            1 => 'Activo',
+                                            2 => 'Inactivo',
+                                            3 => 'Esperando invitación');
 
     static public function obtenerTodos ($cuentaId)
     {
@@ -113,5 +120,84 @@ class Usuario
     static public function desactivar ($cuentaId, $usuarioId)
     {
         return self::_editarEstado($cuentaId, $usuarioId, 2);
+    }
+
+    static private function _verificarUsuario ($cuentaId, $correo, $contrasena)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->seleccionar('contacto_id, usuario, perfil_id, zona_tiempo, estado', 'usuarios')
+           ->donde(array('cuenta_id:entero' => $cuentaId,
+                         'usuario:texto' => $correo,
+                         'contrasena:texto' => $contrasena));
+        return $bd->obtenerFila();
+    }
+
+    static public function iniciarSesion ($cuentaId, $correo, $contrasena)
+    {
+        // Verificamos el acceso del usuario
+        $usuario = self::_verificarUsuario($cuentaId, $correo, $contrasena);
+        // Verificamos que el usuario exista, tenga acceso, y no sea usuario externo
+        if (!$usuario or $usuario['estado'] != 1 or $usuario['perfil_id'] == 5)
+            return false;
+
+        // Si todo esta OK, cargamos los datos del contacto
+        $contacto = Contacto::obtener($cuentaId, $usuario['contacto_id']);
+        if (!$contacto)
+            return false;
+
+        // Si todo esta OK, creamos la sesion
+        $_SESSION['USUARIO_ID']     = $usuario['contacto_id'];
+        $_SESSION['USUARIO_NOMBRE'] = $contacto['nombre_completo'];
+        $_SESSION['USUARIO_PERFIL'] = $usuario['perfil_id'];
+        $_SESSION['SESION_TIEMPO']  = time();
+
+        return true;
+    }
+
+    static public function verificarSesion ($perfilesPermitidos = null)
+    {
+        $tiempoLimite = time() + (60*60); // Una hora
+        $tiempoTranscurrido = time() - $_SESSION['SESION_TIEMPO'];
+
+        // Si la sesion USUARIO ID esta vacia cerramos sesion
+        if (!isset($_SESSION['USUARIO_ID']) or empty($_SESSION['USUARIO_ID'])) {
+            header('location: /login/logout');
+            exit;
+        }
+
+        // Si la sesion exedio el tiempo limite cerramos sesion
+        if (!isset($_SESSION['SESION_TIEMPO']) or $tiempoTranscurrido > $tiempoLimite) {
+            header('location: /login/logout');
+            exit;
+        } else {
+            $_SESSION['SESION_TIEMPO'] = time();
+        }
+
+        if ($perfilesPermitidos)
+            self::verificarAcceso($perfilesPermitidos);
+    }
+
+    static public function verificarAcceso ($perfilesPermitidos)
+    {
+        // Si es responsable de cuenta tiene acceso a todo sin consultar
+        if ($_SESSION['USUARIO_PERFIL'] <= 1)
+            return true;
+
+        if (is_array($perfilesPermitidos)) {
+            // Si es un arreglo significa que el acceso es a perfiles especificos
+            if (in_array($_SESSION['USUARIO_PERFIL'], $perfilesPermitidos))
+                return true;
+        } else {
+            // Si no es un arreglo, verificamos q el perfil del usuario sea mayor o igual al permitido
+            if ($perfilesPermitidos >= $_SESSION['USUARIO_PERFIL'])
+                return true;
+        }
+
+        // Si no paso ninguna de las vericaciones anteriores denegamos el acceso
+        header('location: /');
+        exit;
     }
 }

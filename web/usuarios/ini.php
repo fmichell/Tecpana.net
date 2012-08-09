@@ -8,6 +8,9 @@
  */
 include '../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
+
+// Verificamos la sesion y los permisos
+Usuario::verificarSesion(3);
 ?>
 <!DOCTYPE html>
 <html lang="es">

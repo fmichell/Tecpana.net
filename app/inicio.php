@@ -82,6 +82,7 @@ include 'librerias/GestorMySQL.php';
 include 'librerias/GestorCache.php';
 include 'librerias/Tabla.php';
 include 'modelos/Contacto.php';
+include 'modelos/Usuario.php';
 
 if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
     //Para conexion local
@@ -129,3 +130,5 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
 // Declaramos Cuenta Id
 $_SESSION['CUENTA_ID'] = 1;
 define('CUENTA_ID', $_SESSION['CUENTA_ID']);
+
+//util_depurar_var($_SESSION);

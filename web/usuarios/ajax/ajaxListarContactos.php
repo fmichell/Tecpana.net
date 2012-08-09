@@ -8,7 +8,6 @@
  */
 include_once '../../../app/inicio.php';
 include_once SISTEMA_RAIZ . '/modelos/Persona.php';
-include_once SISTEMA_RAIZ . '/modelos/Usuario.php';
 // Cargamos a todos los contactos en un arraglo independiente
 // a los resultados de filtros o busquedas para que sirva de helper
 $listaContactos = Contacto::obtenerTodosSinInfo(CUENTA_ID);
@@ -113,7 +112,10 @@ foreach ($contactos as $contactoId => $contacto) {
                 // Mostrando el perfil del usuario
                 if ($vista == 'usuarios') {
                     ?>
-                    <div class="detalle"><strong>Perfil:</strong> <span class="azul"><?php echo Usuario::$arrayPerfiles[$usuario['perfil_id']] ?></span></div>
+                    <div class="detalle">
+                        <strong>Estado:</strong> <span class="azul"><?php echo Usuario::$arrayEstados[$usuario['estado']] ?></span>
+                        <strong>Perfil:</strong> <span class="azul"><?php echo Usuario::$arrayPerfiles[$usuario['perfil_id']] ?></span>
+                    </div>
                     <?php
                 }
                 ?>

@@ -573,7 +573,7 @@ span.font_size_10 {
     display: block;
 }
 
-#HeaderMenu a:hover {
+#HeaderMenu a:hover, #hm_trigger_element.hover {
     /*estilo*/
     background-color:#4C4C4C;
 }
@@ -583,6 +583,8 @@ span.font_size_10 {
     background-position: right center;
     background-repeat: no-repeat;
     padding-right: 17px!important;
+    padding-left:5px;
+    cursor: pointer;
 }
 
 #HeaderMenu a.active {
@@ -590,7 +592,9 @@ span.font_size_10 {
     color: #0054FF;
 }
 
-#HeaderMenu a#hm_trigger.active {
+#HeaderMenu #hm_trigger.active {
+    background-color: #FFF;
+    color: #0054FF;
     background-image: url(../imgs/hm_vineta_hover.png);
 }
 

@@ -10,6 +10,9 @@ include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Empresa.php';
 include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';
 
+// Verificamos la sesion y los permisos
+Usuario::verificarSesion();
+
 if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'guardar')) {
     // Insertamos contacto
     $resultado = Empresa::agregar(CUENTA_ID, $_POST['razon_social'], $_POST['giro']);

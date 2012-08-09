@@ -9,6 +9,9 @@
 include '../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 
+// Verificamos la sesion y los permisos
+Usuario::verificarSesion();
+
 // Obtenemos etiqueta si la hay
 $label = null;
 if (isset($_GET['etiqueta'])) {

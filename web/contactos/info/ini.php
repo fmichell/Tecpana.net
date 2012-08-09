@@ -14,6 +14,7 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
     $contacto_id = $_GET['id'];
 } else {
     header ('location: /contactos');
+    exit;
 }
 
 // Cargamos a todos los contactos
@@ -23,6 +24,7 @@ if (isset($contactos[$contacto_id])) {
     $contacto = $contactos[$contacto_id];
 } else {
     header ('location: /contactos');
+    exit;
 }
 
 // Obtenemos foto de perfil

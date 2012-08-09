@@ -6,7 +6,7 @@
  * @version: 1.0
  * @descripcion: Iframe para cargar foto del contacto
  */
-include '../../../app/inicio.php';
+include_once '../../../app/inicio.php';
 
 $ventana = true;
 $contacto_id = $_GET['id'];

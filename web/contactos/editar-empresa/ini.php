@@ -10,11 +10,15 @@ include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Empresa.php';
 include_once SISTEMA_RAIZ . '/modelos/CamposContacto.php';
 
+// Verificamos la sesion y los permisos
+Usuario::verificarSesion();
+
 // Obteniendo el id del contacto
 if (isset($_GET['id']) and !empty($_GET['id'])) {
     $contacto_id = $_GET['id'];
 } else {
     header ('location: /contactos');
+    exit;
 }
 
 if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'editar')) {

@@ -13,7 +13,6 @@
  *               4 = Eliminar usuario
  */
 include_once '../../../app/inicio.php';
-include_once SISTEMA_RAIZ . '/modelos/Usuario.php';
 
 if (isset($_GET['op']) and !empty($_GET['op']) and isset($_GET['us']) and !empty($_GET['us'])) {
     // Obtenermos id del usuario

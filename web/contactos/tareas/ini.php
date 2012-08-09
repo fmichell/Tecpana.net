@@ -5,6 +5,7 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
     $contacto_id = $_GET['id'];
 } else {
     header ('location /tareas');
+    exit;
 }
 ?>
 <!DOCTYPE html>
