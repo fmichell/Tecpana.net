@@ -159,14 +159,14 @@ class Usuario
 
     static public function verificarSesion ($perfilesPermitidos = null)
     {
-        $tiempoLimite = time() + (60*60); // Una hora
-        $tiempoTranscurrido = time() - $_SESSION['SESION_TIEMPO'];
-
         // Si la sesion USUARIO ID esta vacia cerramos sesion
         if (!isset($_SESSION['USUARIO_ID']) or empty($_SESSION['USUARIO_ID'])) {
             header('location: /login/logout');
             exit;
         }
+
+        $tiempoLimite = time() + (60*60); // Una hora
+        $tiempoTranscurrido = time() - $_SESSION['SESION_TIEMPO'];
 
         // Si la sesion exedio el tiempo limite cerramos sesion
         if (!isset($_SESSION['SESION_TIEMPO']) or $tiempoTranscurrido > $tiempoLimite) {

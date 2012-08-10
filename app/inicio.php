@@ -8,83 +8,85 @@ $tInicial = microtime(true);
 
 // DEFINIMOS ENCABEZADOS GENERALES
 
-//session_cache_limiter('private');
-header('X-Powered-By: Iliux', true);
+header('X-Powered-By: Tecpana.Net', true);
 header('Content-type: text/html; charset=UTF-8');
 header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"');
 
 // DEFINIMOS CONSTANTES GENERALES
-$local = $desarrollo = $produccion = $ventana = false;
+
 define('SISTEMA_NOMBRE', 'Tecpana.Net');
-if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
-    define('SISTEMA_URL', 'http://tuplan.net/');
-    $local = true;
-} elseif ($_SERVER['HTTP_HOST'] == 'tecpana.net' or $_SERVER['HTTP_HOST'] == 'www.tecpana.net') {
-    $produccion = true;
-    define('SISTEMA_URL', 'http://tecpana.net/');
-} else {
-    $desarrollo = true;
-    define('SISTEMA_URL', 'http://d.tecpana.net/');
-}
-if ($produccion) {
-    define('COOKIE_DOMAIN', '.tecpana.com');
-} else {
-    define('COOKIE_DOMAIN', '');
-}
 define('SISTEMA_RAIZ', dirname(__FILE__));
 define('NL', PHP_EOL);
-$url_path = explode('?', $_SERVER["REQUEST_URI"]);
-$url_path = $url_path[0];
-define('SISTEMA_URL_PATH', $url_path);
-if ($produccion or $desarrollo) {
-    define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/tecpana.net/web/media/profile');
-} else {
-    define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/media/profile');
-}
 
 // PREPARAMOS CAMINO DE INCLUSION
 
 set_include_path(SISTEMA_RAIZ . PATH_SEPARATOR . get_include_path());
 
+// DEFINIMOS EL AMBIENTE DE DESARROLLO
 
-// INICIAMOS ZONAHORARIA
+$local = $desarrollo = $produccion = $ventana = false;
 
-date_default_timezone_set('America/Managua');
+if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
+    $local      = true;
+elseif ($_SERVER['HTTP_HOST'] == 'd.tecpana.net')
+    $desarrollo = true;
+else
+    $produccion = true;
 
 // DEFINIENDO MANEJO DE ERRORES
-if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
-	ini_set('display_errors', 1);
-	error_reporting(E_ALL);
+
+if ($local or $desarrollo) {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
 } else {
-	ini_set('display_errors', 1);
-	error_reporting(E_ALL);
+    ini_set('display_errors', 0);
+    error_reporting(0);
 }
 
-/*
- * INICIAMOS Y PREPARAMOS SESSION
- */
+// DEFINIMOS PATH'S
+
+// Cookies
 if ($produccion) {
-$sessionParams = session_get_cookie_params();
-session_set_cookie_params(
-    $sessionParams["lifetime"],
-    $sessionParams["path"],
-    COOKIE_DOMAIN,
-    $sessionParams["secure"],
-    $sessionParams["httponly"]);
+    define('COOKIE_DOMAIN', $_SERVER['HTTP_HOST']);
+} else {
+    define('COOKIE_DOMAIN', '');
+}
+
+// Url path
+$url_path = explode('?', $_SERVER["REQUEST_URI"]);
+$url_path = $url_path[0];
+define('SISTEMA_URL_PATH', $url_path);
+
+// Profile pictures
+if ($local)
+    define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/media/profile');
+else
+    define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/tecpana.net/web/media/profile');
+
+// INICIAMOS Y PREPARAMOS SESSION
+
+if ($produccion) {
+    $sessionParams = session_get_cookie_params();
+    session_set_cookie_params(
+        $sessionParams["lifetime"],
+        $sessionParams["path"],
+        COOKIE_DOMAIN,
+        $sessionParams["secure"],
+        $sessionParams["httponly"]);
 }
 session_start();
 
-/*
- * CARGAMOS E INICIAMOS LIBRERIAS Y FUNCIONES NECESARIAS
- */
+// CARGAMOS E INICIAMOS LIBRERIAS Y FUNCIONES NECESARIAS
+
 include 'librerias/Util.php';
 include 'librerias/GestorMySQL.php';
 include 'librerias/GestorCache.php';
 include 'librerias/Tabla.php';
+include 'modelos/Cuenta.php';
 include 'modelos/Contacto.php';
 include 'modelos/Usuario.php';
 
-if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
+if ($local) {
     //Para conexion local
     $bd = GestorMySQL::obtenerInstancia('produccion', array(
         'servidores' => array(
@@ -127,8 +129,27 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
     die('Error de conexion con la BD. Revisar inicio.php.');*/
 }
 
-// Declaramos Cuenta Id
-$_SESSION['CUENTA_ID'] = 1;
-define('CUENTA_ID', $_SESSION['CUENTA_ID']);
+// CONFIGURAMOS LA CUENTA
 
-//util_depurar_var($_SESSION);
+// Obtenemos el nombre de la cuenta
+$host       = $_SERVER['HTTP_HOST'];
+$host       = explode('.', $host);
+$subdominio = current($host);
+
+// Cargamos la cuenta de la BD
+$cuenta = Cuenta::obtenerPorSubdominio($subdominio);
+
+// Verificamos la cuenta
+if (!$cuenta) {
+    die('La cuenta no existe o esta suspendida');
+} else {
+    // Definimos constantes de la cuenta
+    define('CUENTA_ID', $cuenta['cuenta_id']);
+    define('SISTEMA_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/');
+
+    // Definimos zona horaria
+    date_default_timezone_set($cuenta['zona_tiempo']);
+}
+
+// Eliminamos la variable cuenta
+unset($cuenta);

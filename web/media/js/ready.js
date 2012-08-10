@@ -191,8 +191,4 @@ $(document).on("ready", function() {
     });
 }).on('click', '#hm_trigger_element:not(.active)', mostrarMenu);
 
-function hola() {
-    alert('hola');
-}
-
 
