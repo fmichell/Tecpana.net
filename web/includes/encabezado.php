@@ -1,7 +1,7 @@
     <!--Header begins-->
     <header id="HeaderWrapper" class="mainWrapper">
         <div id="Logo">
-            <h1><a href="/" title="ir a inicio">alma.<span>tecpana</span>.net</a></h1>
+            <h1><a href="/" title="ir a inicio"><?php echo $_SESSION['SUBDOMINIO'] ?>.<span>tecpana</span>.net</a></h1>
         </div>
         <div id="HeaderMenu">
             <ul>

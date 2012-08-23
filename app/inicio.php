@@ -28,7 +28,7 @@ $local = $desarrollo = $produccion = $ventana = false;
 
 if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')
     $local      = true;
-elseif ($_SERVER['HTTP_HOST'] == 'd.tecpana.net')
+elseif ($_SERVER['HTTP_HOST'] == 'alma.tecpana.net')
     $desarrollo = true;
 else
     $produccion = true;
@@ -62,6 +62,9 @@ if ($local)
     define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/media/profile');
 else
     define('PROFILE_PICTURES_PATH', $_SERVER['DOCUMENT_ROOT'] . '/tecpana.net/web/media/profile');
+
+// Sistema URL
+define('SISTEMA_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/');
 
 // INICIAMOS Y PREPARAMOS SESSION
 
@@ -131,25 +134,10 @@ if ($local) {
 
 // CONFIGURAMOS LA CUENTA
 
-// Obtenemos el nombre de la cuenta
-$host       = $_SERVER['HTTP_HOST'];
-$host       = explode('.', $host);
-$subdominio = current($host);
-
 // Cargamos la cuenta de la BD
-$cuenta = Cuenta::obtenerPorSubdominio($subdominio);
+if (!isset($_SESSION['CUENTA_ID']))
+    Cuenta::obtenerPorSubdominio();
 
-// Verificamos la cuenta
-if (!$cuenta) {
-    die('La cuenta no existe o esta suspendida');
-} else {
-    // Definimos constantes de la cuenta
-    define('CUENTA_ID', $cuenta['cuenta_id']);
-    define('SISTEMA_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/');
-
-    // Definimos zona horaria
-    date_default_timezone_set($cuenta['zona_tiempo']);
-}
-
-// Eliminamos la variable cuenta
-unset($cuenta);
+// Definimos constantes de la cuenta
+define('CUENTA_ID', $_SESSION['CUENTA_ID']);
+date_default_timezone_set($_SESSION['ZONA_TIEMPO']);

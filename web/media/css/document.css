@@ -237,6 +237,10 @@ span.font_size_10 {
     padding:10px;
 }
 
+.interior25 {
+    padding:25px;
+}
+
 .clear {
     clear:both;
 }
@@ -723,6 +727,93 @@ span.font_size_10 {
     background-position:-64px 0;
 }
 
+/* 2.5 Login Window */
+body#Login {
+    background: url("../imgs/login_bg.png") repeat-x top left #0057A6;
+    font-size: 1em;
+}
+
+#Login .mainWrapper {
+    width: 670px;
+    margin: 0 auto;
+}
+
+#Login #MainWrapperLogin {
+    display: block;
+    background: url("../imgs/iluminacion_login.png") no-repeat top center;
+    margin-top: 45px;
+    padding-top: 100px;
+    height: 500px;
+}
+
+#LoginCuenta {
+    font-family: EnigmaticBold;
+    font-size: 32px;
+    color:#FFF;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.textshadow #LoginCuenta {
+    /* css3 */
+    text-shadow: 2px 2px 2px #222222;
+    filter: dropshadow(color=#222222, offx=2, offy=2);
+}
+
+#Login .loginRecuadro {
+    margin: 0 auto;
+    width: 380px;
+    border-radius: 5px;
+    background: url("../imgs/login_recuadro_bg.png") repeat-x top #DDD;
+    line-height: 1.7em;
+}
+
+#Login .separadorLogin {
+    display: block;
+    clear: both;
+    height: 2px;
+    border-top: 1px solid #E2E2E2;
+    border-bottom: 1px solid #FFF;
+}
+
+.textshadow #Login label {
+    text-shadow: 2px 2px 2px #FFFFFF;
+    filter: dropshadow(color=#FFFFFF, offx=2, offy=2);
+}
+
+#Login .loginRecuadro input[type="text"], #Login .loginRecuadro input[type="password"] {
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 1px 0 #EEEEEE inset, 0 1px 0 #FFFFFF;
+    border-radius: 3px 3px 3px 3px;
+    height: 20px;
+    line-height: 20px;
+    padding: 4px;
+}
+
+#Login .btnSubmitLogin {
+    height: 28px;
+    background: url("../imgs/bg_boton_login.png") repeat-x 0 0;
+    border: 1px solid #057ED0;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 28px;
+    padding: 0 10px;
+    border-radius: 3px;
+    display: inline-block;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 0 #FFFFFF;
+}
+
+#Login .btnSubmitLogin:hover {
+    text-decoration: none;
+    background-position: 0 -28px;
+}
+
+#Login .btnSubmitLogin:active {
+    background: #0271BF;
+}
 /* 3. WORKSPACE */
 
 /* 3.1 Workspace Header, Coment Area */
@@ -794,6 +885,7 @@ span.font_size_10 {
     -webkit-box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
     box-shadow: inset 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
 }
+
 .paginas {
     float: right;
     text-align: right;
