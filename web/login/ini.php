@@ -23,6 +23,7 @@ if (isset($_POST['submitLogin'])) {
 <body id="Login">
     <div class="mainWrapper">
         <section id="MainWrapperLogin">
+            <div class="mensaje"><span>Nombre de usuario o contraseña inválido</span></div>
             <h1 id="LoginCuenta"><?php echo $_SESSION['SUBDOMINIO'] ?>.tecpana.net</h1>
             <div class="loginRecuadro">
                 <form method="post" action="" name="frmLogin" id="frmLogin">
@@ -31,7 +32,7 @@ if (isset($_POST['submitLogin'])) {
                             <label for="correo">Tu correo electrónico</label>
                         </div>
                         <div class="linea">
-                            <input type="text" name="correo" id="correo" style="width: 320px;" />
+                            <input type="email" name="correo" id="correo" style="width: 320px;" />
                         </div>
                         <div class="linea20"></div>
                         <div class="linea">
@@ -50,13 +51,15 @@ if (isset($_POST['submitLogin'])) {
                         </div>
                     </div>
                 </form>
+                <div class="ajaxLoader"><img src="/media/imgs/ajax-loader.gif" /></div>
             </div>
         </section>
     </div>
     <script type="text/javascript">
         $(document).on("ready", function() {
             $("#btnSubmitLogin").on("click", function() {
-                $("#frmLogin").submit();
+                $(".loginRecuadro").addClass('opaco');
+
             });
         });
     </script>

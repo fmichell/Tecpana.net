@@ -744,8 +744,25 @@ body#Login {
     margin-top: 45px;
     padding-top: 100px;
     height: 500px;
+    position: relative;
 }
 
+#Login .mensaje {
+    position: absolute;
+    top: 20px;
+    left: 145px;
+    width: 338px;
+    background: url("../imgs/error_noshadow.png") no-repeat 10px 10px rgba(0,0,0,0.7);
+    border: none;
+    padding: 10px 10px 10px 32px;
+    border-radius: 5px;
+    display: none;
+}
+
+#Login .mensaje span {
+    color: #FFF;
+    opacity: 2;
+}
 #LoginCuenta {
     font-family: EnigmaticBold;
     font-size: 32px;
@@ -767,6 +784,22 @@ body#Login {
     border-radius: 5px;
     background: url("../imgs/login_recuadro_bg.png") repeat-x top #DDD;
     line-height: 1.7em;
+    position: relative;
+}
+
+#Login .loginRecuadro.opaco form {
+    opacity: 0.3;
+}
+
+#Login .loginRecuadro .ajaxLoader {
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    visibility: hidden;
+}
+
+#Login .loginRecuadro.opaco .ajaxLoader {
+    visibility: visible;
 }
 
 #Login .separadorLogin {
@@ -782,7 +815,7 @@ body#Login {
     filter: dropshadow(color=#FFFFFF, offx=2, offy=2);
 }
 
-#Login .loginRecuadro input[type="text"], #Login .loginRecuadro input[type="password"] {
+#Login .loginRecuadro input[type="email"], #Login .loginRecuadro input[type="password"] {
     border: 1px solid #CCCCCC;
     box-shadow: 0 1px 0 #EEEEEE inset, 0 1px 0 #FFFFFF;
     border-radius: 3px 3px 3px 3px;
