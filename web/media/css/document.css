@@ -743,7 +743,6 @@ body#Login {
     background: url("../imgs/iluminacion_login.png") no-repeat top center;
     margin-top: 45px;
     padding-top: 100px;
-    height: 500px;
     position: relative;
 }
 
@@ -757,12 +756,9 @@ body#Login {
     padding: 10px 10px 10px 32px;
     border-radius: 5px;
     display: none;
+    color: #FFF;
 }
 
-#Login .mensaje span {
-    color: #FFF;
-    opacity: 2;
-}
 #LoginCuenta {
     font-family: EnigmaticBold;
     font-size: 32px;
