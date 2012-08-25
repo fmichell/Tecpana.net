@@ -176,7 +176,7 @@ include '../../includes/encabezado.php';
                 </div>
                 <!--Workspace Header ends-->
                 <!--Workspace Toolbar begins-->
-                <div class="workspaceToolbar"><!--TODO--></div>
+                <div class="workspaceToolbar"><!--Empty--></div>
                 <!--Workspace Toolbar ends-->
                 <!--Workspace Area Info begins-->
                 <div class="workspaceArea interior10" id="contactInfo">
