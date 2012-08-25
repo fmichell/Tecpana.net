@@ -22,7 +22,10 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
     exit;
 }
 
-if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'editar')) {
+if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'editar') and !empty($_POST['id_contacto'])) {
+    // Capturamos el id del contacto que viene del formulario
+    $contacto_id = $_POST['id_contacto'];
+
     // Capturamos empresa
     if (empty($_POST['empresa'])) {
         $empresa = false; $empresaId = null;
@@ -152,17 +155,16 @@ include '../../includes/encabezado.php';
         <section id="Workspace" class="colum formulario">
             <form method="post" action="" name="frmEditarContacto" id="frmEditarContacto" class="frmContacto">
                 <input type="hidden" name="submitForm" value="editar" />
+                <input type="hidden" name="id_contacto" value="<?php echo $contacto['contacto_id'] ?>">
                 <!--Workspace Header begins-->
                 <div class="workspaceHeader interior10">
                     <div class="userPic">
                         <img src="<?php echo $profilePic['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" id="picContacto">
                         <img src="/media/imgs/maleContact.jpg" alt="Hombre" id="picHombre" />
                         <img src="/media/imgs/famaleContact.jpg" alt="Mujer" id="picMujer" />
-                        <?php if ($profilePic['hayProfile']) { ?>
-                        <a href="javascript:;" id="btnLoadPic">Cambiar foto</a>
-                        <?php } else { ?>
-                        <a href="javascript:;" id="btnLoadPic">Subir foto</a>
-                        <?php } ?>
+                        <a href="/contactos/<?php echo $contacto_id ?>/agregar-foto/" id="btnLoadPic">
+                            <?php echo ($profilePic['hayProfile']) ? 'Cambiar foto' : 'Subir foto' ?>
+                        </a>
                     </div>
                     <div class="floatLeft">
                         <input type="text" value="<?php echo $contacto['nombre'] ?>" class="bigText ancho465es" name="nombre" id="nombre" placeholder="Nombres" /><br />
@@ -176,7 +178,22 @@ include '../../includes/encabezado.php';
                 </div>
                 <!--Workspace Header ends-->
                 <!--Workspace Toolbar begins-->
-                <div class="workspaceToolbar"><!--Empty--></div>
+                <div class="workspaceToolbar">
+                    <div class="opciones">
+                        <ul>
+                            <li><a class="activo"  href="/contactos/<?php echo $contacto_id ?>/editar-persona/">Información de contacto</a></li>
+                            <li>
+                                <a href="/contactos/<?php echo $contacto_id ?>/agregar-foto/">
+                                <?php echo ($profilePic['hayProfile']) ? 'Cambiar foto' : 'Subir foto' ?>
+                                </a>
+                            </li>
+                            <?php if ($contacto_id == $_SESSION['USUARIO_ID']) { ?>
+                            <li><a href="/contactos/<?php echo $contacto_id ?>/editar-perfil/">Información de la cuenta</a></li>
+                            <li><a href="/contactos/<?php echo $contacto_id ?>/cambiar-contrasena/">Cambiar contraseña</a></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
                 <!--Workspace Toolbar ends-->
                 <!--Workspace Area Info begins-->
                 <div class="workspaceArea interior10" id="contactInfo">
@@ -638,17 +655,6 @@ include '../../includes/encabezado.php';
                     <div class="linea10"></div>
                 </div>
                 <!--Workspace Area Info ends-->
-                <!--Workspace Area Picture begins-->
-                <div class="workspaceArea interior10" id="contactPict" style="display: none;">
-                    <div class="linea10"></div>
-                    <?php
-                    $iframeParam = 'id=' . $contacto_id;
-                    if ($profilePic['hayProfile']) $iframeParam.= '&hayProfile';
-                    ?>
-                    <iframe class="contactPict-iframe" scrolling="no" frameborder="0" src="/contactos/agregar-foto/?<?php echo $iframeParam ?>" hspace="0">
-                    </iframe>
-                </div>
-                <!--Workspace Area Picture ends-->
             </form>
         </section>
         <!--Workspace ends-->
@@ -711,11 +717,6 @@ $(document).on("ready", function() {
         } else {
             return false;
         }
-    });
-
-    $('#btnLoadPic').click(function() {
-        $('#contactInfo').hide();
-        $('#contactPict').fadeIn();
     });
 });
 </script>

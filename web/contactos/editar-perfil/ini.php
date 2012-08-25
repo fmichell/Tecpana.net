@@ -19,17 +19,36 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
     exit;
 }
 
+// Verificamos que el usuario en linea solo pueda cambiar su propia contraseña
+if ($contacto_id != $_SESSION['USUARIO_ID'])
+    header ('location: /contactos');
+
+// Editamos información del perfil de usuario
+if (isset($_POST['submitForm']) and ($_POST['submitForm'] == 'editar') and !empty($_POST['id_contacto'])) {
+    // Capturamos el id del contacto que viene del formulario
+    $contacto_id = $_POST['id_contacto'];
+
+    $resultado = Usuario::editarInfoPerfil(CUENTA_ID, $contacto_id, $_POST['usuario'], $_POST['notificaciones'], $_POST['zona']);
+    if (!$resultado) {
+        die('Ocurrio un error');
+    } else {
+        // Redireccionamos a info
+        header('location: /contactos/' . $contacto_id . '/perfil');
+        exit;
+    }
+}
 // Obteniendo datos del contacto
 $contacto = Contacto::obtener(CUENTA_ID, $contacto_id);
 $usuario  = Usuario::obtener(CUENTA_ID, $contacto_id);
+// Obtenemos foto del contacto
+$profilePic = Contacto::obtenerFotos($contacto['foto'], $contacto['tipo'], $contacto['sexo']);
 
 $zonas = Fecha::obtenerZonas();
-//util_depurar_var($zonas);
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Editar <?php echo $contacto['nombre_completo'] ?> - <?php echo SISTEMA_NOMBRE ?></title>
+    <title>Información de la cuenta <?php echo $contacto['nombre_completo'] ?> - <?php echo SISTEMA_NOMBRE ?></title>
     <?php include '../../includes/cabezera.php' ?>
     <link rel="stylesheet" type="text/css" href="/media/css/form.css" />
 </head>
@@ -54,22 +73,36 @@ include '../../includes/encabezado.php';
             <!--Workspace Header begins-->
             <div class="workspaceHeader interior10">
                 <header>
-                    <h1>Editar perfil</h1>
-                    <div class="linea10"></div>
-                    <h2 class="subtitulo"><?php echo 'Usuario: ' . $contacto['nombre_completo'] ?></h2>
+                    <h1>Información de la cuenta &raquo; <?php echo $contacto['nombre_completo'] ?></h1>
+                    <div class="linea30"></div>
                 </header>
             </div>
             <!--Workspace Header ends-->
 
             <!--Workspace Toolbar begins-->
-            <div class="workspaceToolbar"><!--Empty--></div>
+            <div class="workspaceToolbar">
+                <div class="opciones">
+                    <ul>
+                        <li><a href="/contactos/<?php echo $contacto_id ?>/editar-persona/">Información de contacto</a></li>
+                        <li>
+                            <a href="/contactos/<?php echo $contacto_id ?>/agregar-foto/">
+                                <?php echo ($profilePic['hayProfile']) ? 'Cambiar foto' : 'Subir foto' ?>
+                            </a>
+                        </li>
+                        <li><a class="activo" href="/contactos/<?php echo $contacto_id ?>/editar-perfil/">Información de la cuenta</a></li>
+                        <li><a href="/contactos/<?php echo $contacto_id ?>/cambiar-contrasena/">Cambiar contraseña</a></li>
+                    </ul>
+                </div>
+            </div>
             <!--Workspace Toolbar ends-->
 
             <!--Workspace Area Info begins-->
             <div class="workspaceArea interior10">
                 <form method="post" action="" name="frmEditarPerfil" id="frmEditarPerfil" class="frmPerfil">
                     <input type="hidden" name="submitForm" value="editar" />
+                    <input type="hidden" name="id_contacto" value="<?php echo $contacto_id ?>" />
                     <div class="linea10"></div>
+                    <div class="linea30"><strong>Información de la cuenta</strong></div>
                     <dl class="vertical">
                         <dt><label for="usuario">Email para inicio de sesión</label></dt>
                         <dd>
@@ -80,6 +113,17 @@ include '../../includes/encabezado.php';
                                 <option value="<?php echo $email['valor'] ?>" <?php echo $selected ?>><?php echo $email['valor'] ?></option>
                                     <?php
                                 } ?>
+                            </select>
+                        </dd>
+                        <dt><label for="notificaciones">Email para recibir notificaciones</label></dt>
+                        <dd>
+                            <select name="notificaciones" id="notificaciones" class="ancho250es">
+                                <?php foreach ($contacto['email'] as $email) {
+                                $selected = ($usuario['correo_notificacion'] == $email['valor']) ? 'selected="selected"' : '';
+                                ?>
+                                <option value="<?php echo $email['valor'] ?>" <?php echo $selected ?>><?php echo $email['valor'] ?></option>
+                                <?php
+                            } ?>
                             </select>
                         </dd>
                         <dt><label for="zona">Zona tiempo</label></dt>
@@ -98,6 +142,7 @@ include '../../includes/encabezado.php';
                             </select>
                         </dd>
                     </dl>
+
                     <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Guardar cambios</a>
                     <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel" data-contacto="<?php echo $contacto_id ?>">Cancelar</a>
                     <div class="linea10"></div>

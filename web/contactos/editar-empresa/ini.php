@@ -120,11 +120,9 @@ include '../../includes/encabezado.php';
                     <div class="userPic">
                         <img src="<?php echo $profilePic['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" id="picContacto">
                         <img src="/media/imgs/businessContact.jpg" alt="Empresa" id="picEmpresa" />
-                        <?php if ($profilePic['hayProfile']) { ?>
-                        <a href="javascript:;" id="btnLoadPic">Cambiar logotipo</a>
-                        <?php } else { ?>
-                        <a href="javascript:;" id="btnLoadPic">Subir logotipo</a>
-                        <?php } ?>
+                        <a href="javascript:;" id="btnLoadPic">
+                            <?php echo ($profilePic['hayProfile']) ? 'Cambiar logotipo' : 'Subir logotipo' ?>
+                        </a>
                     </div>
                     <div class="floatLeft">
                         <input type="text" value="<?php echo $contacto['nombre'] ?>" name="razon_social" id="razon_social" class="bigText ancho465es" placeholder="Razón Social" /><br />
@@ -133,7 +131,18 @@ include '../../includes/encabezado.php';
                 </div>
                 <!--Workspace Header ends-->
                 <!--Workspace Toolbar begins-->
-                <div class="workspaceToolbar"><!--TODO--></div>
+                <div class="workspaceToolbar">
+                    <div class="opciones">
+                        <ul>
+                            <li><a class="activo" href="/contactos/<?php echo $contacto_id ?>/editar-empresa/">Información de contacto</a></li>
+                            <li>
+                                <a href="/contactos/<?php echo $contacto_id ?>/agregar-foto/">
+                                    <?php echo ($profilePic['hayProfile']) ? 'Cambiar logotipo' : 'Subir logotipo' ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <!--Workspace Toolbar ends-->
                 <!--Workspace Area Info begins-->
                 <div class="workspaceArea interior10" id="contactInfo">
@@ -476,17 +485,6 @@ include '../../includes/encabezado.php';
                     <div class="linea10"></div>
                 </div>
                 <!--Workspace Area Info ends-->
-                <!--Workspace Area Picture begins-->
-                <div class="workspaceArea interior10" id="contactPict" style="display: none;">
-                    <div class="linea10"></div>
-                    <?php
-                    $iframeParam = 'id=' . $contacto_id;
-                    if ($profilePic['hayProfile']) $iframeParam.= '&hayProfile';
-                    ?>
-                    <iframe class="contactPict-iframe" scrolling="no" frameborder="0" src="/contactos/agregar-foto/?<?php echo $iframeParam ?>" hspace="0">
-                    </iframe>
-                </div>
-                <!--Workspace Area Picture ends-->
             </form>
         </section>
         <!--Workspace ends-->
@@ -515,11 +513,6 @@ include '../../includes/pie.php';
             } else {
                 return false;
             }
-        });
-
-        $('#btnLoadPic').click(function() {
-            $('#contactInfo').hide();
-            $('#contactPict').fadeIn();
         });
     });
 </script>

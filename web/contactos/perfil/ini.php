@@ -68,7 +68,7 @@ include '../../includes/menu-principal.php';
         <header class="infoHeader">
             <?php include '../includes/cabecera-contacto.php' ?>
             <div class="mainBoton">
-                <a href="/contactos/<?php echo $contacto_id ?>/editar-perfil" class="botong botong_azul">Editar perfil</a>
+                <a href="/contactos/<?php echo $contacto_id ?>/editar-perfil" class="botong botong_azul">Editar información</a>
             </div>
             <div class="linea5"></div>
         </header>
@@ -85,10 +85,14 @@ include '../../includes/menu-principal.php';
         <dl class="horizontal">
             <dt>Usuario:</dt>
             <dd><div class="elemento"><?php echo $usuario['usuario'] ?></div></dd>
+            <dt>Notificaciones en:</dt>
+            <dd><div class="elemento"><?php echo $usuario['correo_notificacion'] ?></div></dd>
             <dt>Perfil:</dt>
             <dd><div class="elemento"><?php echo Usuario::$arrayPerfiles[$usuario['perfil_id']] ?></div></dd>
             <dt>Zona tiempo:</dt>
             <dd><div class="elemento"><?php echo $usuario['zona_tiempo'] ?></div></dd>
+            <dt>Contraseña:</dt>
+            <dd><div class="elemento"><a class="boton_gris" style="height: 18px; line-height: 18px;" href="/contactos/<?php echo $contacto_id ?>/cambiar-contrasena/">Cambiar contraseña</a></div></dd>
             <dt>Usario desde:</dt>
             <dd><div class="elemento"><?php echo $fecha->mostrar($usuario['fecha_creacion'], 2); ?></div></dd>
             <dt>Última actualización:</dt>

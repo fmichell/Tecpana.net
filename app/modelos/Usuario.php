@@ -27,7 +27,7 @@ class Usuario
         $bd = GestorMySQL::obtenerInstancia();
 
         // Iniciamos consulta
-        $bd->seleccionar('contacto_id, usuario, perfil_id, estado, zona_tiempo, fecha_creacion, fecha_actualizacion', 'usuarios');
+        $bd->seleccionar('contacto_id, usuario, correo_notificacion, perfil_id, estado, zona_tiempo, fecha_creacion, fecha_actualizacion', 'usuarios');
         $bd->donde(array('cuenta_id:entero' => $cuentaId,
                          'estado:entero'    => array('>',0)));
 
@@ -40,7 +40,7 @@ class Usuario
         $bd = GestorMySQL::obtenerInstancia();
 
         // Iniciamos consulta
-        $bd->seleccionar('contacto_id, usuario, perfil_id, estado, zona_tiempo, fecha_creacion, fecha_actualizacion', 'usuarios');
+        $bd->seleccionar('contacto_id, usuario, correo_notificacion, perfil_id, estado, zona_tiempo, fecha_creacion, fecha_actualizacion', 'usuarios');
         $bd->donde(array('cuenta_id:entero' => $cuentaId,
                          'contacto_id:texto' => $usuarioId,
                          'estado:entero'    => array('>',0)));
@@ -59,6 +59,7 @@ class Usuario
             return false;
         else
             $email = current($contacto['email']);
+
         // Generamos contraseña temporal
         $password = md5(uniqid('pw'));
         // Definimos el estado inicial en 3 (invitado pero inactivo)
@@ -75,6 +76,7 @@ class Usuario
             'contacto_id:texto'         => $contacto['contacto_id'],
             'usuario:texto'             => $email['valor'],
             'contrasena:texto'          => $password,
+            'correo_notificacion:texto' => $email['valor'],
             'perfil_id:entero'          => $perfilId,
             'estado:entero'             => $status,
             'fecha_creacion:fecha'       => $ahora,
@@ -120,6 +122,49 @@ class Usuario
         return $bd->ejecutar();
     }
 
+    static public function editarInfoPerfil ($cuentaId, $usuarioId, $usuario, $notificacion, $zonaTiempo)
+    {
+        $ahora = Fecha::obtenerFechaSQL();
+
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->actualizar('usuarios', array(
+            'usuario:texto' => $usuario,
+            'correo_notificacion:texto' => $notificacion,
+            'zona_tiempo:texto' => $zonaTiempo,
+            'fecha_actualizacion:fecha' => $ahora))
+           ->donde(array(
+            'cuenta_id:entero' => $cuentaId,
+            'contacto_id:texto' => $usuarioId));
+
+        return $bd->ejecutar();
+    }
+
+    static public function cambiarContrasena ($cuentaId, $usuario, $contrasenaAnterior, $nuevaContrasena)
+    {
+        $ahora = Fecha::obtenerFechaSQL();
+
+        // Aplicamos encode en la contraseña
+        $contrasenaAnterior = md5($contrasenaAnterior);
+        $nuevaContrasena = md5($nuevaContrasena);
+
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->actualizar('usuarios', array(
+            'contrasena:texto' => $nuevaContrasena,
+            'fecha_actualizacion:fecha' => $ahora))
+           ->donde(array(
+            'cuenta_id:entero' => $cuentaId,
+            'usuario:texto' => $usuario,
+            'contrasena:texto' => $contrasenaAnterior));
+
+        return $bd->ejecutar();
+    }
+
     static public function eliminar ($cuentaId, $usuarioId)
     {
         return self::_editarEstado($cuentaId, $usuarioId, 0);
@@ -137,6 +182,9 @@ class Usuario
 
     static private function _verificarUsuario ($cuentaId, $correo, $contrasena)
     {
+        // Aplicamos encode en la contraseña
+        $contrasena = md5($contrasena);
+
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
 
@@ -166,6 +214,7 @@ class Usuario
         $_SESSION['USUARIO_NOMBRE'] = $contacto['nombre_completo'];
         $_SESSION['USUARIO_PERFIL'] = $usuario['perfil_id'];
         $_SESSION['SESION_TIEMPO']  = time();
+        $_SESSION['ZONA_TIEMPO']    = $usuario['zona_tiempo'];
 
         return true;
     }

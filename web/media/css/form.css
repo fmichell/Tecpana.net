@@ -225,6 +225,15 @@ select.ancho465es {
     line-height:1.3em;
 }
 
+.frmPerfil input, .frmPerfil select, .frmPerfil dt {
+    font-size: 1.1em; /* <= Preparando para mobile (eq 14px) */
+}
+
+.frmPerfil input {
+    height:18px;
+    line-height:18px;
+}
+
 /* Formulario Proyecto */
 .frmProyecto input, .frmProyecto select, .frmProyecto textarea {
     /*font-size:14px;*/
