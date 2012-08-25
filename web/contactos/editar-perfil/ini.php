@@ -21,6 +21,10 @@ if (isset($_GET['id']) and !empty($_GET['id'])) {
 
 // Obteniendo datos del contacto
 $contacto = Contacto::obtener(CUENTA_ID, $contacto_id);
+$usuario  = Usuario::obtener(CUENTA_ID, $contacto_id);
+
+$zonas = Fecha::obtenerZonas();
+//util_depurar_var($zonas);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -62,15 +66,37 @@ include '../../includes/encabezado.php';
             <!--Workspace Toolbar ends-->
 
             <!--Workspace Area Info begins-->
-            <div class="workspaceArea interior10" id="contactInfo">
-                <form method="post" action="" name="frmEditarPerfil" id="frmEditarPerfil" class="frmContacto">
+            <div class="workspaceArea interior10">
+                <form method="post" action="" name="frmEditarPerfil" id="frmEditarPerfil" class="frmPerfil">
                     <input type="hidden" name="submitForm" value="editar" />
                     <div class="linea10"></div>
-                    <dl class="horizontal">
-                        <dt><label for="usuario">Usuario</label></dt>
-                        <dd>Uno</dd>
+                    <dl class="vertical">
+                        <dt><label for="usuario">Email para inicio de sesión</label></dt>
+                        <dd>
+                            <select name="usuario" id="usuario" class="ancho250es">
+                                <?php foreach ($contacto['email'] as $email) {
+                                    $selected = ($usuario['usuario'] == $email['valor']) ? 'selected="selected"' : '';
+                                    ?>
+                                <option value="<?php echo $email['valor'] ?>" <?php echo $selected ?>><?php echo $email['valor'] ?></option>
+                                    <?php
+                                } ?>
+                            </select>
+                        </dd>
                         <dt><label for="zona">Zona tiempo</label></dt>
-                        <dd>Uno</dd>
+                        <dd>
+                            <select name="zona" id="zona" class="ancho250es zonas">
+                                <?php foreach ($zonas as $continente => $zona) { ?>
+                                <optgroup label="<?php echo $continente ?>">
+                                    <?php foreach ($zona as $llave => $etiqueta) {
+                                        $selected = ($usuario['zona_tiempo'] == $llave) ? 'selected="selected"' : '';
+                                        ?>
+                                    <option value="<?php echo $llave ?>" <?php echo $selected ?>><?php echo $etiqueta ?></option>
+                                        <?php
+                                    } ?>
+                                </optgroup>
+                                <?php } ?>
+                            </select>
+                        </dd>
                     </dl>
                     <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnSubmit">Guardar cambios</a>
                     <a class="boton_gris floatLeft btnForm" href="javascript:;" id="btnCancel" data-contacto="<?php echo $contacto_id ?>">Cancelar</a>

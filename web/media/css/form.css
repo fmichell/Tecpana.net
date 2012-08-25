@@ -208,6 +208,22 @@ select.ancho465es {
     padding:5px 0;
     font-size:0.9em;
 }
+/* Ediar perfil */
+.frmPerfil .zonas option {
+    margin-left: 25px;
+}
+
+.frmPerfil dt {
+    text-align:left;
+    color:#6C6C6C;
+    line-height:1.3em;
+}
+
+.frmPerfil dd {
+    display:block;
+    margin-bottom:20px;
+    line-height:1.3em;
+}
 
 /* Formulario Proyecto */
 .frmProyecto input, .frmProyecto select, .frmProyecto textarea {
