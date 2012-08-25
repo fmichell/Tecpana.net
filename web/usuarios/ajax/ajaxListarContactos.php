@@ -55,6 +55,9 @@ $contactos = $tabla->obtener();
 // Obtenemos el ultimo elemento para luego aplicarle la clase CSS last-child
 $ultimo = end($contactos); $last_child = null;
 
+// Declaramos objeto fecha
+$fecha = new Fecha();
+
 foreach ($contactos as $contactoId => $contacto) {
     $contactoId = $contacto['contacto_id'];
     if (isset($usuarios[$contactoId]))
@@ -124,7 +127,7 @@ foreach ($contactos as $contactoId => $contacto) {
                 <?php
                 if ($vista == 'personas') {
                     if ($usuario) {
-                        ?><div class="linea20">Usuario desde <?php echo mostrar_fecha($usuario['fecha_creacion'], 4, true); ?></div><?php
+                        ?><div class="linea20">Usuario desde <?php echo $fecha->mostrar($usuario['fecha_creacion'], 2, '+hora'); ?></div><?php
                     } else {
                         ?>
                         <a href="/usuarios/<?php echo $contactoId ?>/convertir-contacto" class="boton_gris convertir-contacto">Convertir en usuario</a>
@@ -144,7 +147,7 @@ foreach ($contactos as $contactoId => $contacto) {
                     }
                 } else {
                     ?>
-                    <div class="linea20">Usuario desde <?php echo mostrar_fecha($usuario['fecha_creacion'], 4, true); ?></div>
+                    <div class="linea20">Usuario desde <?php echo $fecha->mostrar($usuario['fecha_creacion'], 2, '+hora'); ?></div>
                     <div class="linea opcionesUsuario">
                         <a href="/usuarios/<?php echo $contactoId ?>/editar-perfil" class="editar-perfil">Editar perfil</a>,
                         <?php if ($usuario['estado'] == 1) { ?>

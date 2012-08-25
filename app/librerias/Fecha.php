@@ -36,7 +36,7 @@ class Fecha extends DateTime
      * @param bool $sinUTC
      * @return int
      */
-    static public function generarFechaSQL ($fechaSQL, $sinUTC = false)
+    static public function obtenerMarcaUnix ($fechaSQL, $sinUTC = false)
     {
         // Separamos la fecha de la hora
         list($fecha, $hora) = explode(' ', $fechaSQL);
@@ -52,20 +52,29 @@ class Fecha extends DateTime
             $marca = gmmktime($hora, $minutos, $segundos, $mes, $dia, $ano);
 
         // Retornamos fecha
-        //return date('Y-m-d H:i:s', $marca);
         return $marca;
     }
 
     /**
      * Obtiene la fecha en el formato deseado
      *
+     * @param string $fecha
      * @param int $tipo
      * @param string $opciones
-     * @param bool $con_hora
+     * @param bool $sinUTC
      * @return string
      */
-    public function mostrar ($tipo = 1, $opciones = '', $con_hora = false)
+    public function mostrar ($fecha = null, $tipo = 1, $opciones = '', $sinUTC = false)
     {
+        if (is_null($fecha)) {
+            $fecha = self::obtenerFechaSQL($sinUTC);
+            $fecha = self::obtenerMarcaUnix($fecha, true);
+        } else {
+            $fecha = self::obtenerMarcaUnix($fecha, $sinUTC);
+        }
+
+        $this->setTimestamp($fecha);
+
         if ( strpos($opciones, 'ncorto') === false ) {
             $dias   = array('Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado');
             $meses  = array(null,'Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
@@ -159,5 +168,28 @@ class Fecha extends DateTime
         } else {
             return 'ahorita';
         }
+    }
+
+    public static function obtenerZonas()
+    {
+        $zonas = timezone_identifiers_list();
+
+        $arrayRetorno = array();
+
+        foreach ($zonas as $zona) {
+            $partes = explode('/', $zona);
+
+            $continente = $partes[0];
+            $continente = str_replace('_', ' ', $continente);
+
+            unset($partes[0]);
+
+            $pais = implode('/', $partes);
+            $pais = str_replace('_', ' ', $pais);
+
+            $arrayRetorno[$continente][$zona] = $pais;
+        }
+
+        return $arrayRetorno;
     }
 }

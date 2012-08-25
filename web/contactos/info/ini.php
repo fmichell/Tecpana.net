@@ -9,20 +9,6 @@
 include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 
-echo $ahoraMySQ = Fecha::obtenerFechaSQL();
-echo '<br>';
-echo $ahoraLocal = Fecha::generarFechaSQL($ahoraMySQ);
-echo '<br>';
-$fecha = new Fecha();
-$fecha->setTimestamp($ahoraLocal);
-echo $fecha->mostrar(1, '+hora', true);
-echo '<br>';
-echo $ahoraGTM = Fecha::generarFechaSQL($ahoraMySQ, true);
-$fecha->setTimestamp($ahoraGTM);
-echo '<br>';
-echo $fecha->mostrar(1, '+hora', true);
-exit;
-
 // Obtenemos el id del contacto
 if (isset($_GET['id']) and !empty($_GET['id'])) {
     $contacto_id = $_GET['id'];

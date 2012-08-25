@@ -42,9 +42,8 @@ class Usuario
         // Iniciamos consulta
         $bd->seleccionar('contacto_id, usuario, perfil_id, estado, zona_tiempo, fecha_creacion, fecha_actualizacion', 'usuarios');
         $bd->donde(array('cuenta_id:entero' => $cuentaId,
-                         'contacto_id:entero' => $usuarioId,
+                         'contacto_id:texto' => $usuarioId,
                          'estado:entero'    => array('>',0)));
-
         return $bd->obtenerFila(null);
     }
 

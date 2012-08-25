@@ -30,9 +30,12 @@ if (isset($contactos[$contacto_id])) {
 
 // Obtenemos foto de perfil
 $fotoPerfil = Contacto::obtenerFotos($contacto['foto'], $contacto['tipo'], $contacto['sexo']);
-
 // Cargamos etiquetas del contacto
 $etiquetas = Contacto::obtenerEtiquetas(CUENTA_ID, $contacto_id);
+
+// Declaramos objeto fecha
+$fecha = new Fecha();
+
 // Definiendo submenu activo
 $subMenu = 'perf';
 ?>
@@ -87,9 +90,9 @@ include '../../includes/menu-principal.php';
             <dt>Zona tiempo:</dt>
             <dd><div class="elemento"><?php echo $usuario['zona_tiempo'] ?></div></dd>
             <dt>Usario desde:</dt>
-            <dd><div class="elemento"><?php echo $usuario['fecha_creacion'] ?></div></dd>
+            <dd><div class="elemento"><?php echo $fecha->mostrar($usuario['fecha_creacion'], 2); ?></div></dd>
             <dt>Última actualización:</dt>
-            <dd><div class="elemento"><?php echo $usuario['fecha_actualizacion'] ?></div></dd>
+            <dd><div class="elemento"><?php echo $fecha->mostrar($usuario['fecha_actualizacion'], 2); ?></div></dd>
         </dl>
     </div>
     <!--Workspace Area ends-->
