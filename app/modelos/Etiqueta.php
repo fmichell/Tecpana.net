@@ -11,7 +11,7 @@ class Etiqueta
     static public function crearEtiqueta ($cuentaId, $etiqueta)
     {
         // Definimos variables generales
-        $ahora      = date('Y-m-d H:i:s');
+        $ahora      = Fecha::obtenerFechaSQL();
 
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();

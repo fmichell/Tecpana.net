@@ -64,7 +64,7 @@ select.ancho150es {
 }
 
 select.ancho250es {
-    width:262px;
+    width:252px;
 }
 
 .ancho300es {
@@ -210,16 +210,14 @@ select.ancho465es {
 }
 
 /* Formulario Proyecto */
-.frmProyecto input {
-    height:18px;
-    line-height:18px;
+.frmProyecto input, .frmProyecto select, .frmProyecto textarea {
     /*font-size:14px;*/
     font-size: 1.1em; /* <= Preparando para mobile (eq 14px) */
 }
 
-.frmProyecto select, .frmProyecto textarea {
-    /*font-size:14px;*/
-    font-size: 1.1em; /* <= Preparando para mobile (eq 14px) */
+.frmProyecto input {
+    height:18px;
+    line-height:18px;
 }
 
 .frmProyecto textarea {
@@ -227,17 +225,31 @@ select.ancho465es {
     padding:3px;
 }
 
-.frmProyecto .fecha, .frmProyecto dt, .frmProyecto .contactosInvolucrados p {
-    /*font-size:14px;*/
-    font-size: 1.1em; /* <= Preparando para mobile (eq 14px) */
+.frmProyecto dt {
+    width:160px;
+    text-align:left;
     color:#6C6C6C;
     line-height:1.3em;
 }
 
-.frmProyecto .horizontal dt {
-    margin-right:5px;
+.frmProyecto dd {
+    display:block;
+    padding-left:170px;
+    margin-bottom:20px;
+    margin-left: 0px;
+    line-height:1.3em;
 }
 
-.frmProyecto .vertical dt {
-    margin-bottom:5px;
+.frmProyecto .contactosInvolucrados p {
+    color:#6C6C6C;
+    line-height:1.3em;
+}
+
+.frmProyecto .workspaceArea dt {
+    width: 100%;
+    float: none;
+}
+
+.frmProyecto .workspaceArea dd {
+    padding: 0;
 }

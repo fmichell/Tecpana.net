@@ -32,7 +32,7 @@ class Contacto
     {
         // Definimos variables generales
         $contactoId     = uniqid('ct');
-        $ahora          = date('Y-m-d H:i:s');
+        $ahora          = Fecha::obtenerFechaSQL();
         
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
@@ -81,7 +81,7 @@ class Contacto
                                             $ciudad = null, $estado = null, $paisId = null, $cpostal = null)
     {
         // Definimos variables generales
-        $ahora = date('Y-m-d H:i:s');
+        $ahora = Fecha::obtenerFechaSQL();
         
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
@@ -570,7 +570,7 @@ class Contacto
     static protected function editarContacto ($cuentaId, $contactoId, $tipo, $nombre = null, $apellidos = null, $sexo = null, $titulo = null, $descripcion = null, $empresaId = null)
     {
         // Definimos variables generales
-        $ahora = date('Y-m-d H:i:s');
+        $ahora = Fecha::obtenerFechaSQL();
 
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
@@ -600,7 +600,7 @@ class Contacto
     static private function _actualizarFoto ($cuentaId, $contactoId, $profilePicture)
     {
         // Definimos variables generales
-        $ahora = date('Y-m-d H:i:s');
+        $ahora = Fecha::obtenerFechaSQL();
 
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();

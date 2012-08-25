@@ -1365,7 +1365,7 @@ dl.horizontal dt {
 
 /* 3.3.7.1 Detalle de contacto */
 .infoHeader {
-    margin: 0 117px 0 140px;
+    margin: 0 140px;
 }
 
 .infoHeader .userPic {
@@ -1377,8 +1377,9 @@ dl.horizontal dt {
 }
 
 .infoHeader .mainBoton {
-    float: left;
-    margin-right: -117px;
+    /*float: left;*/
+    float: right;
+    margin-right: -140px;
 }
 
 .etiquetasContacto {

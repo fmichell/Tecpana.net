@@ -27,23 +27,26 @@ include '../../../app/inicio.php';
         <section id="Content">
             <!--Workspace begins-->
             <section id="Workspace" class="colum formulario">
-                <form method="post" action="proyectos_form.html" name="frmAgregarProyecto" id="frmAgregarProyecto" class="frmProyecto">
+                <form method="post" action="" name="frmAgregarProyecto" id="frmAgregarProyecto" class="frmProyecto">
                     <!--Workspace Header begins-->
                     <div class="workspaceHeader interior10">
                         <input type="text" class="bigText ancho98di" placeholder="Nombre del proyecto" id="nombre" required /><br />
-                        <p class="fecha">Planificado para realizarse del: <input type="date" class="selectDate ancho90es" />&nbsp;&nbsp;al&nbsp;&nbsp;<input type="date" class="selectDate ancho90es" />&nbsp;&nbsp;(5d)</p>
-                        <div class="linea10"></div>
                         <dl class="horizontal">
+                            <dt>Planificado para realizarse del:</dt>
+                            <dd>
+                                <input type="date" class="selectDate ancho90es" />&nbsp;&nbsp;al&nbsp;&nbsp;<input type="date" class="selectDate ancho90es" />&nbsp;&nbsp;(5d)
+                            </dd>
+                            <dt><label for="categoria">Categoría:</label></dt>
+                            <dd><input type="text" name="categoria" id="categoria" class="ancho250es" /></dd>
                             <dt><label for="estado">Estado:</label></dt>
                             <dd>
-                                <select name="estado" id="estado" class="ancho150es">
-                                    <option value="1" selected="selected">Activa</option>
-                                    <option value="2">Completada</option>
-                                    <option value="3">Inactiva</option>
+                                <select name="estado" id="estado" class="ancho250es">
+                                    <option value="1" selected="selected">Activo</option>
+                                    <option value="2">En espera</option>
+                                    <option value="3">Finalizado</option>
                                 </select>
                             </dd>
                         </dl>
-                        <div class="linea10"></div>
                         <div class="contactosInvolucrados">
                             <p>Contactos involucrados:</p>
                             <div class="linea5"></div>
@@ -64,7 +67,9 @@ include '../../../app/inicio.php';
                     <div class="workspaceArea interior10">
                         <div class="linea10"></div>
                         <dl class="vertical">
-                            <dt><label for="descripcion">Antecedentes, descripción o breve reseña:</label></dt>
+                            <dt><label for="descripcion">Antecedentes, descripción o breve reseña:</label>
+                                <div class="linea10"></div>
+                            </dt>
                             <dd><textarea name="descripcion" id="descripcion" rows="100" cols="10" class="ancho98di"></textarea></dd>
                         </dl>
                         <div class="linea10"></div>

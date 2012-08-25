@@ -34,6 +34,20 @@ class Usuario
         return $bd->obtener(null, 'contacto_id');
     }
 
+    static public function obtener ($cuentaId, $usuarioId)
+    {
+        // Iniciamos conexion con la BD
+        $bd = GestorMySQL::obtenerInstancia();
+
+        // Iniciamos consulta
+        $bd->seleccionar('contacto_id, usuario, perfil_id, estado, zona_tiempo, fecha_creacion, fecha_actualizacion', 'usuarios');
+        $bd->donde(array('cuenta_id:entero' => $cuentaId,
+                         'contacto_id:entero' => $usuarioId,
+                         'estado:entero'    => array('>',0)));
+
+        return $bd->obtenerFila(null);
+    }
+
     static public function convertirUsuario ($cuentaId, $contactoId, $perfilId)
     {
         // Cargamos los datos del contacto a convertir
@@ -51,7 +65,7 @@ class Usuario
         // Definimos el estado inicial en 3 (invitado pero inactivo)
         $status = 3;
 
-        $hoy = date('Y-m-d H:i:s');
+        $ahora = Fecha::obtenerFechaSQL();
 
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
@@ -64,8 +78,8 @@ class Usuario
             'contrasena:texto'          => $password,
             'perfil_id:entero'          => $perfilId,
             'estado:entero'             => $status,
-            'fecha_creacion:fecha'       => $hoy,
-            'fecha_actualizacion:fecha' => $hoy
+            'fecha_creacion:fecha'       => $ahora,
+            'fecha_actualizacion:fecha' => $ahora
         ));
 
         if ($bd->ejecutar()) {
@@ -77,7 +91,7 @@ class Usuario
 
     static public function editarPerfil ($cuentaId, $usuarioId, $perfilId)
     {
-        $hoy = date('Y-m-d H:i:s');
+        $ahora = Fecha::obtenerFechaSQL();
 
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
@@ -85,7 +99,7 @@ class Usuario
         // Iniciamos consulta
         $bd->actualizar('usuarios', array(
             'perfil_id:entero' => $perfilId,
-            'fecha_actualizacion:fecha' => $hoy))
+            'fecha_actualizacion:fecha' => $ahora))
            ->donde(array('cuenta_id:entero' => $cuentaId, 'contacto_id:texto' => $usuarioId));
 
         return $bd->ejecutar();
@@ -93,7 +107,7 @@ class Usuario
 
     static private function _editarEstado ($cuentaId, $usuarioId, $estadoId)
     {
-        $hoy = date('Y-m-d H:i:s');
+        $ahora = Fecha::obtenerFechaSQL();
 
         // Iniciamos conexion con la BD
         $bd = GestorMySQL::obtenerInstancia();
@@ -101,7 +115,7 @@ class Usuario
         // Iniciamos consulta
         $bd->actualizar('usuarios', array(
             'estado:entero' => $estadoId,
-            'fecha_actualizacion:fecha' => $hoy))
+            'fecha_actualizacion:fecha' => $ahora))
             ->donde(array('cuenta_id:entero' => $cuentaId, 'contacto_id:texto' => $usuarioId));
 
         return $bd->ejecutar();

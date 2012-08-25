@@ -9,9 +9,9 @@
                     <div id="hm_trigger">Bienvenido <?php echo $_SESSION['USUARIO_NOMBRE'] ?></div>
                     <div id="SettingsMenu" class="interior10">
                         <ul>
-                            <li><a href="/contactos/<?php echo $_SESSION['USUARIO_ID'] ?>/info" id="prueba">Mi Perfil</a></li>
+                            <li><a href="/contactos/<?php echo $_SESSION['USUARIO_ID'] ?>/perfil" id="prueba">Mi Perfil</a></li>
                             <li><a href="/usuarios">Usuarios</a></li>
-                            <li><a href="#">Configuración</a></li>
+                            <li><a href="#">Configuración de la cuenta</a></li>
                             <li class="separador" style="margin: 3px 0"><!--separador--></li>
                             <li><a href="/login/logout">Salir</a></li>
                         </ul>

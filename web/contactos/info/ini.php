@@ -9,6 +9,20 @@
 include '../../../app/inicio.php';
 include SISTEMA_RAIZ . '/modelos/Etiqueta.php';
 
+echo $ahoraMySQ = Fecha::obtenerFechaSQL();
+echo '<br>';
+echo $ahoraLocal = Fecha::generarFechaSQL($ahoraMySQ);
+echo '<br>';
+$fecha = new Fecha();
+$fecha->setTimestamp($ahoraLocal);
+echo $fecha->mostrar(1, '+hora', true);
+echo '<br>';
+echo $ahoraGTM = Fecha::generarFechaSQL($ahoraMySQ, true);
+$fecha->setTimestamp($ahoraGTM);
+echo '<br>';
+echo $fecha->mostrar(1, '+hora', true);
+exit;
+
 // Obtenemos el id del contacto
 if (isset($_GET['id']) and !empty($_GET['id'])) {
     $contacto_id = $_GET['id'];
@@ -41,6 +55,8 @@ foreach ($empleados as $empleado_id => $empleado) {
 $etiquetas = Contacto::obtenerEtiquetas(CUENTA_ID, $contacto_id);
 // Cargamos algunos datos varios
 $paises = CamposContacto::obtenerPaises();
+// Definiendo submenu activo
+$subMenu = 'info';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -69,55 +85,12 @@ include '../../includes/encabezado.php';
             <!--Workspace Header begins-->
             <div class="workspaceHeader interior10">
                 <header class="infoHeader">
-                    <div class="userPic"><img src="<?php echo $fotoPerfil['uriProfile'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" /></div>
-                    <div class="floatLeft infoContacto">
-                        <h1><?php echo $contacto['nombre_completo'] ?></h1>
-                        <?php if (!empty($contacto['descripcion'])) { ?>
-                        <div class="linea5"></div>
-                        <h2 class="subtitulo"><?php echo $contacto['descripcion'] ?></h2>
-                        <?php } ?>
-                        <?php if (isset($trabajo['cargo']) and isset($trabajo['empresa'])) { ?>
-                        <div class="linea5"></div>
-                        <h2 class="subtitulo"><?php echo $trabajo['cargo'] ?> en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a></h2>
-                        <?php } elseif (isset($trabajo['empresa'])) { ?>
-                        <div class="linea5"></div>
-                        <h2 class="subtitulo">Trabaja en <a href="/contactos/<?php echo $contacto['empresa_id'] ?>/info"><?php echo $trabajo['empresa'] ?></a></h2>
-                        <?php } ?>
-
-                        <!--Etiquetas-->
-                        <div class="etiquetasContacto">
-                            <ul>
-                                <?php
-                                if (!empty($etiquetas)) {
-                                    foreach ($etiquetas as $etiquetaId => $etiqueta) {
-                                        ?>
-                                        <li><a href="/contactos/etiqueta/<?php echo $etiqueta['etiqueta_seo'] ?>"
-                                               data-etiqueta="<?php echo $etiqueta['etiqueta_id'] ?>"
-                                               data-contacto="<?php echo $contacto_id ?>">
-                                            <?php echo $etiqueta['etiqueta'] ?>
-                                            </a>,
-                                        </li><?php
-                                    }
-                                } ?>
-                                <li><a href="javascript:;" class="gris" id="editarEtiquetas">
-                                    <?php echo (empty($etiquetas)) ? 'Agregar etiquetas' : 'Editar etiquetas'; ?>
-                                    </a>
-                                </li>
-                            </ul>
-                            <div class="agregarEtiqueta" style="display: none">
-                                <label for="valEtiqueta">Agregar una nueva etiqueta:</label>
-                                <input type="text" name="valEtiqueta" id="valEtiqueta" />
-                                <input type="hidden" name="etiqueta_id" id="etiqueta_id" value="nueva">
-                                <a href="javascript:;" class="boton_gris" id="addEtiqueta" rel="<?php echo $contacto_id ?>">Agregar etiqueta</a>
-                                <a href="javascript:;" class="boton_gris" id="cancelEtiquetas">Cerrar</a>
-                            </div>
-                        </div>
-                    </div>
+                    <?php include '../includes/cabecera-contacto.php' ?>
                     <div class="mainBoton">
                         <?php if ($contacto['tipo'] == 1) { ?>
-                        <a href="/contactos/<?php echo $contacto_id ?>/editar-persona" class="botong botong_azul">Editar contacto</a>
+                        <a href="/contactos/<?php echo $contacto_id ?>/editar-persona" class="botong botong_azul">Editar información</a>
                         <?php } elseif ($contacto['tipo'] == 2) { ?>
-                        <a href="/contactos/<?php echo $contacto_id ?>/editar-empresa" class="botong botong_azul">Editar contacto</a>
+                        <a href="/contactos/<?php echo $contacto_id ?>/editar-empresa" class="botong botong_azul">Editar información</a>
                         <?php } ?>
                     </div>
                     <div class="linea5"></div>
@@ -126,15 +99,7 @@ include '../../includes/encabezado.php';
             <!--Workspace Header ends-->
             <!--Workspace Toolbar begins-->
             <div class="workspaceToolbar">
-                <div class="opciones">
-                    <ul>
-                        <li><a href="/contactos/<?php echo $contacto_id ?>/info" class="activo">Información del contacto</a></li>
-                        <?php if ($contacto['tipo'] == 1) { // Opcion solo disponible para personas ?>
-                        <li><a href="/contactos/<?php echo $contacto_id ?>/tareas">Tareas Pendientes</a></li>
-                        <?php } ?>
-                        <li><a href="/contactos/<?php echo $contacto_id ?>/comentarios">Comentarios</a></li>
-                    </ul>
-                </div>
+                <?php include '../includes/menu-usuario.php'; ?>
             </div>
             <!--Workspace Toolbar ends-->
             <!--Workspace Area begins-->
@@ -235,9 +200,9 @@ include '../../includes/encabezado.php';
                 <!-- Solo visible en pantallas menores de 1024 -->
                 <div class="mainBoton">
                     <?php if ($contacto['tipo'] == 1) { ?>
-                    <a href="/contactos/<?php echo $contacto_id ?>/editar-persona" class="botong botong_azul">Editar contacto</a>
+                    <a href="/contactos/<?php echo $contacto_id ?>/editar-persona" class="botong botong_azul">Editar información</a>
                     <?php } elseif ($contacto['tipo'] == 2) { ?>
-                    <a href="/contactos/<?php echo $contacto_id ?>/editar-empresa" class="botong botong_azul">Editar contacto</a>
+                    <a href="/contactos/<?php echo $contacto_id ?>/editar-empresa" class="botong botong_azul">Editar información</a>
                     <?php } ?>
                 </div>
                 <!-- Fin -->

@@ -823,7 +823,7 @@ function sacar_fecha_sql($fecha_sql, $sinUTC=false)
     else return gmmktime($hora,$minuto,$segundo,$mes,$dia,$ano);
 }
 
-function meter_fecha_sql($fecha, $sinUTC=false) {
+function meter_fecha_sql($fecha, $sinUTC = false) {
     if ($sinUTC) {
         return date("Y-m-d H:i:s", $fecha);
     } else {

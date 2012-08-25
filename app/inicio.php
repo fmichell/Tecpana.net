@@ -5,6 +5,24 @@
  **/
 // INICIAMOS RELOJ
 $tInicial = microtime(true);
+/*
+date_default_timezone_set('America/Monterrey');
+echo $fecha = gmdate('Y-m-d H:i:s');
+list($fecha, $hora) = explode(' ', $fecha);
+list($ano, $mes, $dia) = explode('-', $fecha);
+list($hora, $minutos, $segundos) = explode(':', $hora);
+$tiempo = gmmktime($hora, $minutos, $segundos, $mes, $dia, $ano);
+
+echo '<br>';
+echo date('Y:m:d H:i:s');
+
+//echo strftime('')
+/*$todas = timezone_identifiers_list();
+echo '<pre>';
+print_r($todas);
+echo '</pre>';
+exit;
+*/
 
 // DEFINIMOS ENCABEZADOS GENERALES
 
@@ -85,6 +103,7 @@ include 'librerias/Util.php';
 include 'librerias/GestorMySQL.php';
 include 'librerias/GestorCache.php';
 include 'librerias/Tabla.php';
+include 'librerias/Fecha.php';
 include 'modelos/Cuenta.php';
 include 'modelos/Contacto.php';
 include 'modelos/Usuario.php';
