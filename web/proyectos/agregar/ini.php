@@ -55,7 +55,7 @@ include '../../../app/inicio.php';
                             <div class="userThumb"><a href="#"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></a><div class="tooltipNombre">Farah Prado</div></div>
                             <div class="userThumb"><a href="#"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></a><div class="tooltipNombre">Hermenegildo Rodriguez</div></div>
                             <div class="userThumb"><a href="#"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></a><div class="tooltipNombre">Francisco Meneses</div></div>
-                            <div class="addInvolucrados floatLeft"><a href="contacto_involucrados.html" class="abrirInvolucrados" title="Involucrar a un contacto"><img src="/media/imgs/addInvolucrados.png" alt="Involucrar a contacto" /></a></div>
+                            <div class="addInvolucrados floatLeft"><a href="/contactos/involucrados" class="abrirInvolucrados" title="Involucrar a un contacto"><img src="/media/imgs/addInvolucrados.png" alt="Involucrar a contacto" /></a></div>
                         </div>
                         <div class="linea5"></div>
                     </div>

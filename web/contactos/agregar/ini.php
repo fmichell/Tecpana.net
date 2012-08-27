@@ -46,7 +46,7 @@ $ventana = true;
 <!--MainWrapper ends-->
 </div>
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).on("ready", function() {
     $('#irPersona').click(function() {
         parent.location.href = '/contactos/agregar-persona';
     });
