@@ -52,39 +52,8 @@ $ventana = true;
                 </div>
                 <!--Workspace Filtros ends-->
                 <!--Workspace Contactos begins-->
-                <div class="contactos">
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Federico Joaquin Michell Vijil</div>
-                    </a>
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/famaleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Farah Prado</div>
-                    </a>
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Alvaro Diaz</div>
-                    </a>
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Harley Solano</div>
-                    </a>
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/famaleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Maria Fernanda Perez</div>
-                    </a>
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/famaleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Luz Cantillo Olvares</div>
-                    </a>
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/famaleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Esperanza Centeno</div>
-                    </a>
-                    <a href="javascript:;" class="contacto">
-                        <div class="userThumb floatLeft"><img src="/media/imgs/maleThumb.jpg" alt="Hombre" /></div>
-                        <div class="nombre">Keng Chow</div>
-                    </a>
+                <div id="contactos" class="contactos">
+                    <!--Lista de contactos-->
                 </div>
                 <!--Workspace Contactos ends-->
                 <!--Workspace Accion begins-->
@@ -107,6 +76,8 @@ $ventana = true;
     <!--MainWrapper ends-->
 </div>
 <script type="text/javascript">
+    var intervalo;
+    var nombreBuscado = '';
     function calcularAltura() {
         var iframeHeight = $('.fancybox-iframe', parent.document).height();
         var bodyMargin = 16; //8 arriba y 8 abajo
@@ -121,19 +92,79 @@ $ventana = true;
         var altura = iframeHeight - (bodyMargin + involucradosHead + interiorPadding + involucradosTop + contactosPadding + involucradosFooter) - 15;
         return altura;
     }
+    function cargarContactos(filtroNombre) {
+        $('#contactos').fadeTo('fast', 0.10, function() {
+            $(this).load('/contactos/ajax/ajaxListarContactos.php', {'nombre':filtroNombre, 'vista':'iconos'}, function(respuesta, estado) {
+                if (estado == 'success') {
+                    calcularAnchoIconosContactos();
+                    //Mostrando resultados
+                    $('#contactos').fadeTo("fast", 1);
+                } else {
+                    alert('Ocurrió un error al cargar el listado')
+                }
+            });
+        });
+    }
+    function buscarNombre() {
+        var nombre = $('#buscar_contacto').val();
+        if (nombre != '') {
+            cargarContactos(nombre);
+        } else {
+            cargarContactos('');
+        }
+    }
+    function calcularAnchoIconosContactos() {
+        var anchoArea = $('.contactos').width();
+        var anchoIcon = 150;
+        var extra = 27; // padding + borde + margen
+        var iconos = Math.floor(anchoArea / (anchoIcon + extra));
+        var anchoIcon = Math.floor((anchoArea / iconos) - extra);
 
+        $('.contacto').css({'width':anchoIcon+'px'});
+    }
     $(document).on("ready", function() {
+        cargarContactos('');
+
         $('.contactos').css({'height':calcularAltura()+'px'});
 
         $('#cerrar, #cancelar').click(function() {
             parent.$.fancybox.close();
         });
 
-        $('.contacto').click(function() {
+        $('.contacto').live('click', function(event) {
+            event.preventDefault();
+
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
             } else {
                 $(this).addClass('selected');
+            }
+        });
+
+        $('#buscar_contacto').keyup(function(evento) {
+            var nombre = $(this).val();
+            if (nombreBuscado != nombre) {
+                nombreBuscado = nombre;
+                clearTimeout(intervalo);
+                intervalo = setTimeout('buscarNombre()', 600);
+            } else if (evento.which = 13) {
+                clearTimeout(intervalo);
+                buscarNombre();
+            }
+        });
+
+        $("#involucrar").on('click', function() {
+            var involucrados = '';
+            var total = $('.selected').length;
+
+            if (total >= 1) {
+                $(".selected").each(function() {
+                    involucrados+= $(this).data('id');
+                });
+                parent.$("#ctos").html(involucrados);
+                console.log(involucrados);
+            } else {
+                $('#cerrar').click();
             }
         });
     });

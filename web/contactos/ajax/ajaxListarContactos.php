@@ -131,7 +131,7 @@ foreach ($contactos as $contactoId => $contacto) {
     // Mostramos a los contactos
     if ($vista == 'iconos') {
         ?>
-        <a href="/contactos/<?php echo $contactoId ?>/info" class="contacto">
+        <a href="/contactos/<?php echo $contactoId ?>/info" class="contacto" data-id="<?php echo $contactoId ?>">
             <div class="userThumb floatLeft"><img src="<?php echo $fotoPerfil['uriThumbnail'] ?>" alt="<?php echo $contacto['nombre_completo'] ?>" /></div>
             <div class="nombre"><?php echo $contacto['nombre_completo'] ?></div>
         </a>

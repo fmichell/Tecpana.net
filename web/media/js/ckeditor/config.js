@@ -4,7 +4,7 @@
 	config.resize_enabled = false;
 	config.height = 500;
 	config.extraPlugins = 'stylesheetparser';
-	config.contentsCss = 'media/css/ckeditor.css';
+	config.contentsCss = '/media/css/ckeditor.css';
 	config.format_tags = 'p;h1;h2;h3;h4';
 	config.toolbar = 'tbProyect';
 	config.toolbar_tbProyect =
